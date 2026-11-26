@@ -435,6 +435,15 @@ html, body { overflow-x: clip }
 .marq.a .marq-in i { color: #FFFFFF; opacity: .7 }
 @keyframes marq { to { transform: translateX(calc(-100% / 3)) } }
 @media (prefers-reduced-motion: reduce) { .hero-text > *, .hero h1, .hero-vis .owner, .marq-in { animation: none } }
+
+/* ---------- v5: объёмное название вместо планеты ---------- */
+.hero { padding-block: 8px 0; gap: 28px }
+.hero-stage { width: 100%; height: clamp(190px, 34vh, 360px); display: grid; place-items: center; pointer-events: none }
+.hero-stage span { font-family: var(--display); font-weight: 700; font-size: clamp(40px, 9vw, 120px); line-height: 1; letter-spacing: -0.02em;
+  background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent }
+.gl-on .hero-stage span { visibility: hidden }
+.hero h1 { font-size: clamp(26px, 4.4vw, 52px) }
+@media (max-width: 700px) { .hero-stage { height: clamp(170px, 28vh, 260px) } }
 </style>
 
 <canvas id="bg3d" aria-hidden="true"></canvas><div class="aurora" aria-hidden="true"></div>
@@ -447,6 +456,7 @@ html, body { overflow-x: clip }
 
 <div class="wrap">
   <header class="hero" id="top">
+   <div class="hero-stage" id="heroStage" aria-hidden="true"><span>Todas.Studio</span></div>
    <div class="hero-text">
     <div class="eyebrow">Студия в Ташкенте: Telegram-боты, Mini Apps, сайты и ролики</div>
     <h1>Клиенты записываются, заказывают и платят <span>сами</span> — прямо в Telegram</h1>
@@ -1706,7 +1716,7 @@ en: {
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-/* ---------- 3D-фон и движение: планета, самолётики Telegram, частицы, фигуры, наклон карточек, ленты ---------- */
+/* ---------- 3D-фон: объёмное название, самолётики Telegram со шлейфами, звёзды, фигуры; наклон карточек, ленты ---------- */
 (function () {
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const LG = () => document.documentElement.lang || 'ru';
@@ -1749,75 +1759,74 @@ en: {
     watch(); setTimeout(watch, 600);
   }
 
-  const cv = document.getElementById('bg3d');
+  const cv = document.getElementById('bg3d'), stage = document.getElementById('heroStage');
   if (!window.THREE || !cv) return;
   let R; try { R = new THREE.WebGLRenderer({ canvas: cv, antialias: true, alpha: true }); } catch (e) { cv.remove(); return; }
   R.setPixelRatio(Math.min(devicePixelRatio || 1, 1.75)); R.setClearColor(0x000000, 0);
   const scene = new THREE.Scene(); const cam = new THREE.PerspectiveCamera(45, 1, 0.1, 100); cam.position.set(0, 0, 7);
   const ADD = THREE.AdditiveBlending;
   const VS = 'varying vec3 vN; varying vec3 vV; varying vec3 vP; void main(){ vec4 mv = modelViewMatrix*vec4(position,1.); vN = normalize(normalMatrix*normal); vV = normalize(-mv.xyz); vP = position; gl_Position = projectionMatrix*mv; }';
+  const softTex = (stops) => { const c = document.createElement('canvas'); c.width = c.height = 128; const g = c.getContext('2d'); const gr = g.createRadialGradient(64, 64, 0, 64, 64, 64);
+    stops.forEach(([o, col]) => gr.addColorStop(o, col)); g.fillStyle = gr; g.fillRect(0, 0, 128, 128); return new THREE.CanvasTexture(c); };
+  const dotTex = softTex([[0, 'rgba(255,255,255,1)'], [0.3, 'rgba(255,255,255,.55)'], [1, 'rgba(255,255,255,0)']]);
 
-  /* планета */
-  const planet = new THREE.Group(); scene.add(planet);
-  const RAD = 3.4;
-  const pm = new THREE.ShaderMaterial({ uniforms: { uT: { value: 0 }, uF: { value: 1 } }, transparent: true, vertexShader: VS,
-    fragmentShader: 'uniform float uT; uniform float uF; varying vec3 vN; varying vec3 vV; varying vec3 vP; void main(){ float f = 1.0 - max(dot(vN, vV), 0.0); float rim = pow(f, 2.6) * (1.0 + 0.12*sin(uT*1.3)); vec3 c1 = vec3(0.55,0.36,0.96); vec3 c2 = vec3(0.13,0.83,0.93); float m = 0.5 + 0.5*sin(vP.x*0.9 + uT*0.35); vec3 rc = mix(c1, c2, m); float lat = smoothstep(0.965, 1.0, abs(sin(vP.y*10.0))) * 0.10; float lon = smoothstep(0.975, 1.0, abs(sin(atan(vP.z, vP.x)*12.0 + uT*0.05))) * 0.07; float scan = smoothstep(0.0, 0.08, 0.08 - abs(fract(vP.y*0.25 - uT*0.12) - 0.5)) * 0.25; vec3 col = vec3(0.016,0.012,0.04) + rc*(lat+lon+scan*(1.0-f))*(1.0-f) + rc*rim*1.2; gl_FragColor = vec4(col*uF, 1.0); }' });
-  planet.add(new THREE.Mesh(new THREE.SphereGeometry(RAD, 96, 96), pm));
-  const am = new THREE.ShaderMaterial({ uniforms: { uF: { value: 1 } }, side: THREE.BackSide, blending: ADD, transparent: true, depthWrite: false,
-    vertexShader: 'varying vec3 vN; void main(){ vN = normalize(normalMatrix*normal); gl_Position = projectionMatrix*modelViewMatrix*vec4(position,1.); }',
-    fragmentShader: 'uniform float uF; varying vec3 vN; void main(){ float i = pow(max(0.0, 0.62 - dot(vN, vec3(0.,0.,1.))), 2.4); gl_FragColor = vec4(mix(vec3(0.55,0.36,0.96), vec3(0.2,0.8,0.95), 0.35) * i * 1.15 * uF, i * 0.8 * uF); }' });
-  planet.add(new THREE.Mesh(new THREE.SphereGeometry(RAD * 1.16, 64, 64), am));
-  const N = 2600, gp = new Float32Array(N * 3);
-  for (let i = 0; i < N; i++) { const y = 1 - (i / (N - 1)) * 2, r = Math.sqrt(1 - y * y), t = i * 2.39996; gp.set([Math.cos(t) * r * RAD * 1.012, y * RAD * 1.012, Math.sin(t) * r * RAD * 1.012], i * 3); }
-  const gg = new THREE.BufferGeometry(); gg.setAttribute('position', new THREE.BufferAttribute(gp, 3));
-  const dots = new THREE.Points(gg, new THREE.PointsMaterial({ color: 0xB8A6FF, size: 0.022, transparent: true, opacity: 0.55, blending: ADD, depthWrite: false })); planet.add(dots);
-  const ring = (r, c, rx, ry, o) => { const m = new THREE.Mesh(new THREE.TorusGeometry(r, 0.007, 8, 260), new THREE.MeshBasicMaterial({ color: c, transparent: true, opacity: o, blending: ADD, depthWrite: false })); m.rotation.set(rx, ry, 0); planet.add(m); return m; };
-  const r1 = ring(RAD * 1.38, 0x22D3EE, 1.32, 0.25, 0.55), r2 = ring(RAD * 1.62, 0x8B5CF6, 1.2, -0.4, 0.4), r3 = ring(RAD * 1.9, 0x67E8F9, 1.45, 0.6, 0.22);
-  const sat = new THREE.Mesh(new THREE.SphereGeometry(0.06, 16, 16), new THREE.MeshBasicMaterial({ color: 0xE0F7FF })); planet.add(sat);
-  const sat2 = new THREE.Mesh(new THREE.SphereGeometry(0.045, 16, 16), new THREE.MeshBasicMaterial({ color: 0xD8B4FE })); planet.add(sat2);
+  /* объёмное название Todas.Studio шрифтом Unbounded */
+  const FONT = new THREE.FontLoader().parse({"glyphs":{".":{"ha":300,"x_min":35,"x_max":265,"o":"m 150 -10 q 92 5 118 -10 q 50 46 65 20 q 35 105 35 73 q 50 163 35 137 q 92 204 65 189 q 150 220 118 220 q 209 204 183 220 q 250 163 235 189 q 265 105 265 137 q 250 46 265 73 q 209 5 235 20 q 150 -10 183 -10 z"},"S":{"ha":843,"x_min":36,"x_max":809,"o":"m 36 246 l 247 246 q 276 192 252 215 q 340 156 300 169 q 436 144 381 144 q 556 164 512 144 q 600 221 600 183 q 575 266 600 250 q 479 289 550 282 l 339 302 q 114 372 184 316 q 44 525 44 429 q 90 657 44 603 q 218 738 135 711 q 410 766 300 766 q 602 736 518 766 q 736 649 686 705 q 789 519 785 593 l 579 519 q 554 566 575 546 q 495 596 532 585 q 406 606 458 606 q 295 588 336 606 q 254 533 254 569 q 278 491 254 507 q 367 469 303 475 l 516 454 q 687 420 623 444 q 780 352 751 395 q 809 245 809 309 q 762 108 809 166 q 630 16 715 49 q 432 -16 545 -16 q 228 16 316 -16 q 89 108 139 49 q 36 246 39 168 z"},"T":{"ha":818,"x_min":19,"x_max":799,"o":"m 305 659 l 513 659 l 513 0 l 305 0 z m 19 750 l 799 750 l 799 566 l 19 566 z"},"a":{"ha":826,"x_min":32,"x_max":784,"o":"m 572 0 l 546 206 l 573 285 l 546 364 l 572 571 l 784 571 l 748 286 l 784 0 z m 620 285 q 564 127 606 195 q 460 22 523 59 q 315 -16 396 -16 q 168 22 231 -16 q 68 128 104 59 q 32 285 32 196 q 68 444 32 376 q 168 550 104 512 q 315 588 231 588 q 460 550 396 588 q 565 446 523 513 q 620 285 607 378 z m 239 285 q 256 210 239 243 q 305 158 274 177 q 376 140 336 140 q 455 158 418 140 q 520 210 492 177 q 562 285 548 243 q 520 361 548 328 q 455 413 492 394 q 376 432 418 432 q 305 413 336 432 q 256 361 274 394 q 239 285 239 328 z"},"d":{"ha":828,"x_min":32,"x_max":810,"o":"m 576 0 l 549 214 l 584 284 l 550 372 l 598 770 l 810 770 l 751 301 l 787 0 z m 620 285 q 564 127 606 195 q 460 22 523 59 q 315 -16 396 -16 q 168 22 231 -16 q 68 128 104 59 q 32 285 32 196 q 68 444 32 376 q 168 550 104 512 q 315 588 231 588 q 460 550 396 588 q 565 446 523 513 q 620 285 607 378 z m 239 285 q 256 210 239 243 q 305 158 274 177 q 376 140 336 140 q 455 158 418 140 q 520 210 492 177 q 562 285 548 243 q 520 361 548 328 q 455 413 492 394 q 376 432 418 432 q 305 413 336 432 q 256 361 274 394 q 239 285 239 328 z"},"i":{"ha":317,"x_min":39,"x_max":278,"o":"m 56 580 l 159 560 l 261 580 l 261 0 l 56 0 z m 158 627 q 72 654 105 627 q 39 726 39 680 q 72 798 39 771 q 158 825 105 825 q 246 798 213 825 q 278 726 278 771 q 246 654 278 680 q 158 627 213 627 z"},"o":{"ha":792,"x_min":30,"x_max":762,"o":"m 396 -16 q 204 22 286 -16 q 76 128 122 59 q 30 285 30 196 q 76 444 30 376 q 204 550 122 512 q 396 588 286 588 q 588 550 505 588 q 716 444 670 512 q 762 285 762 376 q 716 128 762 196 q 588 22 670 59 q 396 -16 505 -16 z m 396 135 q 482 153 446 135 q 536 205 517 171 q 555 285 555 239 q 536 366 555 333 q 482 418 517 400 q 396 436 446 436 q 310 418 346 436 q 255 366 274 400 q 236 286 236 333 q 255 205 236 239 q 310 153 274 171 q 396 135 346 135 z"},"s":{"ha":748,"x_min":25,"x_max":718,"o":"m 718 186 q 678 75 718 120 q 564 7 638 30 q 386 -16 490 -16 q 198 10 279 -16 q 73 83 118 36 q 25 192 28 130 l 232 192 q 260 152 239 169 q 314 128 280 136 q 395 119 348 119 q 488 131 456 119 q 519 167 519 143 q 495 196 519 186 q 413 210 471 205 l 312 218 q 152 248 211 225 q 66 310 92 272 q 40 395 40 347 q 80 502 40 460 q 194 566 121 545 q 363 588 266 588 q 534 563 459 588 q 654 494 609 538 q 706 389 699 449 l 499 389 q 477 424 494 408 q 430 449 460 439 q 353 459 400 459 q 270 447 298 459 q 241 413 241 435 q 258 386 241 396 q 324 372 276 376 l 457 362 q 613 334 556 356 q 694 274 670 311 q 718 186 718 237 z"},"t":{"ha":603,"x_min":6,"x_max":576,"o":"m 6 420 l 6 509 l 122 556 l 210 725 l 326 725 l 326 571 l 566 571 l 566 420 l 326 420 l 326 252 q 351 165 326 190 q 442 140 376 140 q 516 148 484 140 q 576 167 549 155 l 576 13 q 497 -7 546 2 q 396 -16 448 -16 q 240 13 301 -16 q 151 96 180 42 q 122 224 122 151 l 122 420 z"},"u":{"ha":777,"x_min":49,"x_max":747,"o":"m 302 -16 q 166 17 222 -16 q 79 110 109 50 q 49 252 49 171 l 49 571 l 253 571 l 253 281 q 284 184 253 218 q 373 150 315 150 q 445 168 416 150 q 490 218 474 185 q 506 297 506 251 l 569 264 q 520 110 558 173 q 425 16 481 48 q 302 -16 369 -16 z m 543 0 l 506 229 l 506 571 l 710 571 l 710 197 l 747 0 z"}},"familyName":"Unbounded","ascender":995,"descender":-245,"underlinePosition":-100,"underlineThickness":50,"boundingBox":{"yMin":-320,"xMin":-326,"yMax":1226,"xMax":1847},"resolution":1000,"original_font_information":{"fontFamily":"Unbounded (SIL Open Font License)"}});
+  const nameG = new THREE.Group(); scene.add(nameG);
+  const halo = new THREE.Sprite(new THREE.SpriteMaterial({ map: softTex([[0, 'rgba(139,92,246,.55)'], [0.45, 'rgba(99,102,241,.22)'], [1, 'rgba(34,211,238,0)']]), blending: ADD, transparent: true, depthWrite: false }));
+  halo.position.z = -0.8; nameG.add(halo);
+  const frontFS = 'uniform float uT; uniform float uW; uniform float uH; varying vec3 vN; varying vec3 vV; varying vec3 vP; void main(){ float x = clamp(vP.x / uW + 0.5, 0., 1.); float y = clamp(vP.y / uH + 0.5, 0., 1.); vec3 col = mix(vec3(0.62,0.42,1.0), vec3(0.2,0.85,0.95), smoothstep(0.15, 0.95, x)); col = mix(col, vec3(1.0), y*0.35); float band = fract(uT*0.11) * 2.2 - 0.6; float sweep = smoothstep(0.1, 0.0, abs(band - x + (y-0.5)*0.25)); float f = pow(1.0 - abs(dot(vN, vV)), 2.0); col = col*(0.82 + 0.25*vN.y) + sweep*0.6 + f*0.3; gl_FragColor = vec4(col, 1.0); }';
+  const sideFS = 'uniform float uW; varying vec3 vN; varying vec3 vV; varying vec3 vP; void main(){ float x = clamp(vP.x / uW + 0.5, 0., 1.); vec3 col = mix(vec3(0.22,0.11,0.5), vec3(0.04,0.33,0.45), x); float f = pow(1.0 - abs(dot(vN, vV)), 1.6); col += f*vec3(0.55,0.45,1.0)*0.7; col *= 0.55 + 0.45*(vN.y*0.5 + 0.5); gl_FragColor = vec4(col, 1.0); }';
+  const fronts = [];
+  function line(str) {
+    const geo = new THREE.TextGeometry(str, { font: FONT, size: 1, height: 0.34, curveSegments: 10, bevelEnabled: true, bevelThickness: 0.045, bevelSize: 0.028, bevelSegments: 3 });
+    geo.computeBoundingBox(); const bb = geo.boundingBox, w = bb.max.x - bb.min.x, h = bb.max.y - bb.min.y; geo.center();
+    const fm = new THREE.ShaderMaterial({ uniforms: { uT: { value: 0 }, uW: { value: w }, uH: { value: h } }, vertexShader: VS, fragmentShader: frontFS });
+    const sm = new THREE.ShaderMaterial({ uniforms: { uW: { value: w } }, vertexShader: VS, fragmentShader: sideFS });
+    fronts.push(fm);
+    const g = new THREE.Group(); g.add(new THREE.Mesh(geo, [fm, sm]));
+    g.add(new THREE.LineSegments(new THREE.EdgesGeometry(geo, 30), new THREE.LineBasicMaterial({ color: 0xD8CCFF, transparent: true, opacity: 0.22, blending: ADD, depthWrite: false })));
+    g.userData = { w, h }; return g;
+  }
+  const wide = line('Todas.Studio'); nameG.add(wide);
+  const narrow = new THREE.Group(); const l1 = line('Todas'), l2 = line('.Studio');
+  l1.position.y = 0.62; l2.position.y = -0.62; narrow.add(l1, l2); narrow.userData = { w: Math.max(l1.userData.w, l2.userData.w), h: 2.3 }; nameG.add(narrow);
+  document.documentElement.classList.add('gl-on');
 
-  /* круглая мягкая точка для частиц */
-  const dotTex = (() => { const c = document.createElement('canvas'); c.width = c.height = 64; const g = c.getContext('2d'); const gr = g.createRadialGradient(32, 32, 0, 32, 32, 32);
-    gr.addColorStop(0, 'rgba(255,255,255,1)'); gr.addColorStop(0.35, 'rgba(255,255,255,.55)'); gr.addColorStop(1, 'rgba(255,255,255,0)'); g.fillStyle = gr; g.fillRect(0, 0, 64, 64); return new THREE.CanvasTexture(c); })();
-  /* частицы-сообщения, поднимаются с планеты */
-  const RP = 380, rp = new Float32Array(RP * 3), rcol = new Float32Array(RP * 3), rvel = new Float32Array(RP);
-  const seed = (i, init) => { const th = Math.random() * Math.PI * 2, ph = Math.random() * 1.0;
-    rp[i * 3] = Math.sin(ph) * Math.cos(th) * RAD; rp[i * 3 + 1] = Math.cos(ph) * RAD + (init ? Math.random() * 3.2 : 0); rp[i * 3 + 2] = Math.sin(ph) * Math.sin(th) * RAD; rvel[i] = 0.25 + Math.random() * 0.7; };
-  for (let i = 0; i < RP; i++) seed(i, true);
-  const rg = new THREE.BufferGeometry(); rg.setAttribute('position', new THREE.BufferAttribute(rp, 3)); rg.setAttribute('color', new THREE.BufferAttribute(rcol, 3));
-  const rise = new THREE.Points(rg, new THREE.PointsMaterial({ size: 0.04, map: dotTex, alphaTest: 0.01, vertexColors: true, transparent: true, blending: ADD, depthWrite: false })); planet.add(rise);
+  /* искры вокруг названия */
+  const SPK = 260, spk = new Float32Array(SPK * 3), spc = new Float32Array(SPK * 3), spd = [];
+  for (let i = 0; i < SPK; i++) spd.push({ a: Math.random() * 6.28, r: 0.75 + Math.random() * 0.55, y: (Math.random() - 0.5) * 1.6, s: (0.1 + Math.random() * 0.25) * (Math.random() < 0.5 ? -1 : 1), tw: Math.random() * 6.28 });
+  const spg = new THREE.BufferGeometry(); spg.setAttribute('position', new THREE.BufferAttribute(spk, 3)); spg.setAttribute('color', new THREE.BufferAttribute(spc, 3));
+  scene.add(new THREE.Points(spg, new THREE.PointsMaterial({ size: 0.06, map: dotTex, vertexColors: true, transparent: true, blending: ADD, depthWrite: false })));
 
   /* звёзды */
   const S = 1600, sp = new Float32Array(S * 3);
   for (let i = 0; i < S; i++) sp.set([(Math.random() - .5) * 40, (Math.random() - .5) * 60, -Math.random() * 30 - 2], i * 3);
   const sg = new THREE.BufferGeometry(); sg.setAttribute('position', new THREE.BufferAttribute(sp, 3));
   const stars = new THREE.Points(sg, new THREE.PointsMaterial({ color: 0xFFFFFF, size: 0.07, map: dotTex, transparent: true, opacity: 0.85, depthWrite: false, blending: ADD })); scene.add(stars);
-
-  /* падающая звезда */
   const shoot = new THREE.Line(new THREE.BufferGeometry().setAttribute('position', new THREE.BufferAttribute(new Float32Array(6), 3)),
     new THREE.LineBasicMaterial({ color: 0xFFFFFF, transparent: true, opacity: 0, blending: ADD })); scene.add(shoot);
   const ss = { t: -1 };
 
-  /* бумажные самолётики Telegram со шлейфами */
+  /* бумажные самолётики Telegram со шлейфами вокруг названия */
   const pgeo = new THREE.BufferGeometry();
   pgeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array([0.5, 0, 0, -0.5, 0.03, 0.4, -0.26, 0, 0, 0.5, 0, 0, -0.26, 0, 0, -0.5, 0.03, -0.4, 0.5, 0, 0, -0.26, 0, 0, -0.42, -0.17, 0]), 3));
   pgeo.rotateY(-Math.PI / 2);
   const planes = [];
-  for (let i = 0; i < 4; i++) {
+  for (let i = 0; i < 5; i++) {
     const g = new THREE.Group();
-    g.add(new THREE.Mesh(pgeo, new THREE.MeshBasicMaterial({ color: i % 2 ? 0x9AE9F7 : 0xFFFFFF, side: THREE.DoubleSide, transparent: true, opacity: 0.95 })));
+    g.add(new THREE.Mesh(pgeo, new THREE.MeshBasicMaterial({ color: i % 2 ? 0x9AE9F7 : 0xFFFFFF, side: THREE.DoubleSide })));
     g.add(new THREE.LineSegments(new THREE.EdgesGeometry(pgeo), new THREE.LineBasicMaterial({ color: 0xA78BFA, transparent: true, opacity: 0.9, blending: ADD })));
-    g.scale.setScalar(0.34); scene.add(g);
-    const TL = 54, tp = new Float32Array(TL * 3), tc = new Float32Array(TL * 3);
-    for (let k = 0; k < TL; k++) { const a = Math.pow(1 - k / TL, 1.6); tc.set(i % 2 ? [0.2 * a, 0.8 * a, 0.95 * a] : [0.6 * a, 0.42 * a, 1.0 * a], k * 3); }
+    scene.add(g);
+    const TL = 70, tp = new Float32Array(TL * 3), tc = new Float32Array(TL * 3);
+    for (let k = 0; k < TL; k++) { const a = Math.pow(1 - k / TL, 1.5); tc.set(i % 2 ? [0.2 * a, 0.85 * a, 0.95 * a] : [0.62 * a, 0.42 * a, 1.0 * a], k * 3); }
     const tg = new THREE.BufferGeometry(); tg.setAttribute('position', new THREE.BufferAttribute(tp, 3)); tg.setAttribute('color', new THREE.BufferAttribute(tc, 3));
     scene.add(new THREE.Line(tg, new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, blending: ADD, depthWrite: false })));
-    planes.push({ g, tg, tp, TL, r: RAD * (1.3 + i * 0.17), sp: (0.2 + i * 0.045) * (i % 2 ? -1 : 1), ph: i * 1.6, q: new THREE.Euler(1.15 + i * 0.12, i * 0.8, (i % 2 ? 1 : -1) * 0.25), init: false });
+    planes.push({ g, tg, tp, TL, k: 1 + i * 0.13, rz: 1.1 + i * 0.28, sp: (0.38 + i * 0.05) * (i % 2 ? -1 : 1), ph: i * 1.25, q: new THREE.Euler(0.5 + (i % 3) * 0.22, 0, (i % 2 ? 1 : -1) * (0.14 + i * 0.04)), init: false });
   }
   const tmp = new THREE.Vector3(), nxt = new THREE.Vector3();
-  const orbit = (pl, a, out) => out.set(Math.cos(a) * pl.r, 0, Math.sin(a) * pl.r).applyEuler(pl.q).multiplyScalar(planet.scale.x).add(planet.position);
 
-  /* стеклянные фигуры */
+  /* стеклянные фигуры по краям */
   const glass = c => new THREE.ShaderMaterial({ uniforms: { uC: { value: new THREE.Color(c) } }, transparent: true, blending: ADD, depthWrite: false, side: THREE.DoubleSide, vertexShader: VS,
     fragmentShader: 'uniform vec3 uC; varying vec3 vN; varying vec3 vV; void main(){ float f = pow(1.0 - abs(dot(vN, vV)), 2.0); gl_FragColor = vec4(uC*(0.06 + f*0.95), 1.0); }' });
   const geos = [new THREE.IcosahedronGeometry(0.34, 0), new THREE.OctahedronGeometry(0.32, 0), new THREE.TorusGeometry(0.26, 0.09, 14, 36), new THREE.TetrahedronGeometry(0.34, 0),
@@ -1827,14 +1836,14 @@ en: {
     const col = [0xA78BFA, 0x22D3EE, 0xF0ABFC][i % 3], geo = geos[i % geos.length], g = new THREE.Group();
     g.add(new THREE.Mesh(geo, glass(col)));
     g.add(new THREE.LineSegments(new THREE.EdgesGeometry(geo), new THREE.LineBasicMaterial({ color: col, transparent: true, opacity: 0.55, blending: ADD })));
-    g.userData0 = 0.8 + Math.random() * 1.1;
-    g.userData = { side: i % 2 ? 1 : -1, f: 0.6 + Math.random() * 0.3, y: 1.4 - i * 1.75, z: -0.5 - Math.random() * 3, sp: 0.2 + Math.random() * 0.45, ph: Math.random() * 6 };
+    g.userData = { side: i % 2 ? 1 : -1, f: 0.6 + Math.random() * 0.3, y: 1.4 - i * 1.75, z: -0.5 - Math.random() * 3, sp: 0.2 + Math.random() * 0.45, ph: Math.random() * 6, s: 0.8 + Math.random() * 1.1 };
     scene.add(g); items.push(g);
   }
 
-  let halfW = 3, VH = 5.8;
+  let halfW = 3, VH = 5.8, isNarrow = false;
   function size() { const w = innerWidth, h = innerHeight; R.setSize(w, h, false); cam.aspect = w / h; cam.updateProjectionMatrix();
-    VH = 2 * Math.tan(THREE.MathUtils.degToRad(22.5)) * 7; halfW = VH / 2 * cam.aspect; planet.scale.setScalar(cam.aspect < 0.8 ? 0.62 : 1); items.forEach(m => m.scale.setScalar(m.userData0 * (cam.aspect < 0.8 ? 0.6 : 1))); }
+    VH = 2 * Math.tan(THREE.MathUtils.degToRad(22.5)) * 7; halfW = VH / 2 * cam.aspect; isNarrow = cam.aspect < 1.05;
+    wide.visible = !isNarrow; narrow.visible = isNarrow; items.forEach(m => m.scale.setScalar(m.userData.s * (cam.aspect < 0.8 ? 0.6 : 1))); }
   size(); addEventListener('resize', size);
   let mx = 0, my = 0, cx = 0, cy = 0, sc = scrollY, scs = scrollY, spin = 0, last = 0;
   addEventListener('pointermove', e => { mx = e.clientX / innerWidth * 2 - 1; my = e.clientY / innerHeight * 2 - 1; }, { passive: true });
@@ -1844,28 +1853,40 @@ en: {
     const t = clock.getElapsedTime(), dt = Math.min(0.05, t - last); last = t;
     const prev = scs; scs += (sc - scs) * 0.08; const p = scs / innerHeight;
     spin = Math.min(4, spin * 0.94 + Math.abs(scs - prev) * 0.004);
-    cx += (mx - cx) * 0.04; cy += (my - cy) * 0.04;
-    cam.position.x = cx * 0.45; cam.position.y = -cy * 0.28; cam.lookAt(0, -0.4, 0); cam.rotation.z = Math.sin(p * 0.8) * 0.04;
-    const ps = planet.scale.x, base = -RAD * ps - (cam.aspect < 0.8 ? 1.25 : 1.85);
-    planet.position.y = base - Math.min(p, 2) * 2.2; planet.rotation.y = t * 0.06 + p * 0.5; planet.rotation.x = 0.18;
-    const fade = Math.max(0.12, 1 - p * 0.55); pm.uniforms.uT.value = t; pm.uniforms.uF.value = fade; am.uniforms.uF.value = fade; dots.material.opacity = 0.55 * fade;
-    r1.rotation.z = t * 0.08; r2.rotation.z = -t * 0.05; r3.rotation.z = t * 0.03;
-    sat.position.set(Math.cos(t * 0.5) * RAD * 1.38, 0, Math.sin(t * 0.5) * RAD * 1.38).applyEuler(r1.rotation);
-    sat2.position.set(Math.cos(-t * 0.32 + 2) * RAD * 1.62, 0, Math.sin(-t * 0.32 + 2) * RAD * 1.62).applyEuler(r2.rotation);
-    for (let i = 0; i < RP; i++) { rp[i * 3 + 1] += rvel[i] * dt; const life = (rp[i * 3 + 1] - RAD * 0.55) / 3.6;
-      if (life > 1) seed(i, false); const a = Math.max(0, 1 - life) * fade; rcol.set([0.55 * a, 0.5 * a, 1.0 * a], i * 3); }
-    rg.attributes.position.needsUpdate = true; rg.attributes.color.needsUpdate = true;
+    cx += (mx - cx) * 0.05; cy += (my - cy) * 0.05;
+    cam.position.x = cx * 0.3; cam.position.y = -cy * 0.2; cam.lookAt(0, 0, 0);
+
+    /* название стоит в блоке hero-stage и уезжает вместе со страницей */
+    const r = stage ? stage.getBoundingClientRect() : { top: 0, height: innerHeight * 0.35, width: innerWidth };
+    const px2w = VH / innerHeight, cur = isNarrow ? narrow : wide, dw = cur.userData.w, dh = isNarrow ? 2.3 : wide.userData.h;
+    let s = Math.min(Math.min(r.width, innerWidth * 0.94) * px2w * 0.92 / dw, r.height * px2w * 0.78 / dh);
+    const intro = reduce ? 1 : 1 - Math.pow(1 - Math.min(1, t / 1.8), 3);
+    nameG.position.set(0, (0.5 - (r.top + r.height / 2) / innerHeight) * VH, 0);
+    nameG.scale.setScalar(s * (0.65 + 0.35 * intro));
+    nameG.rotation.x = (1 - intro) * -1.2 + Math.sin(t * 0.5) * 0.07 + cy * 0.12;
+    nameG.rotation.y = (1 - intro) * 0.6 + Math.sin(t * 0.33) * 0.2 + cx * 0.28;
+    halo.scale.set(dw * 1.5, dh * 2.6, 1); halo.material.opacity = 0.75 + Math.sin(t * 1.4) * 0.15;
+    fronts.forEach(m => m.uniforms.uT.value = t);
+    const W = dw * s / 2;   /* полуширина названия в мире */
+    const c0 = nameG.position;
+    for (let i = 0; i < SPK; i++) { const d = spd[i]; d.a += d.s * dt;
+      spk.set([c0.x + Math.cos(d.a) * W * d.r * 1.15, c0.y + d.y * s * (isNarrow ? 1.6 : 0.9), c0.z + Math.sin(d.a) * W * d.r * 0.55], i * 3);
+      const b = (0.45 + 0.55 * Math.sin(t * 2.2 + d.tw)) * intro; spc.set([0.7 * b, 0.6 * b, 1.0 * b], i * 3); }
+    spg.attributes.position.needsUpdate = true; spg.attributes.color.needsUpdate = true;
+    planes.forEach(pl => {
+      const rx = W * 1.05 * pl.k + 0.35, rz = pl.rz * Math.max(0.7, s * 1.5);
+      const pos = (a, out) => out.set(Math.cos(a) * rx, Math.sin(a * 2 + pl.ph) * 0.12 * s, Math.sin(a) * rz).applyEuler(pl.q).add(c0);
+      const a = t * pl.sp + pl.ph; pos(a, tmp); pos(a + 0.04 * Math.sign(pl.sp), nxt);
+      pl.g.position.copy(tmp); pl.g.lookAt(nxt); pl.g.rotateZ(Math.sin(t * 2.2 + pl.ph) * 0.4); pl.g.scale.setScalar(Math.max(0.24, s * 0.42));
+      for (let k = 0; k < pl.TL; k++) { pos(a - k * 0.011 * Math.sign(pl.sp), nxt); pl.tp.set([nxt.x, nxt.y, nxt.z], k * 3); }
+      pl.tg.attributes.position.needsUpdate = true; });
     stars.position.y = p * 1.4; stars.rotation.z = t * 0.004;
-    planes.forEach(pl => { const a = t * pl.sp + pl.ph; orbit(pl, a, tmp); orbit(pl, a + 0.05 * Math.sign(pl.sp), nxt);
-      pl.g.position.copy(tmp); pl.g.lookAt(nxt); pl.g.rotateZ(Math.sin(t * 2 + pl.ph) * 0.35);
-      if (!pl.init) { for (let k = 0; k < pl.TL; k++) pl.tp.set([tmp.x, tmp.y, tmp.z], k * 3); pl.init = true; }
-      pl.tp.copyWithin(3, 0, (pl.TL - 1) * 3); pl.tp.set([tmp.x, tmp.y, tmp.z], 0); pl.tg.attributes.position.needsUpdate = true; });
     if (ss.t < 0 && Math.random() < dt * 0.3) Object.assign(ss, { t: 0, x: (Math.random() * 0.8 + 0.1) * halfW * 1.6, y: VH * 0.7, dx: -(2.2 + Math.random() * 2), dy: -(0.9 + Math.random()) });
     if (ss.t >= 0) { ss.t += dt; const hx = ss.x + ss.dx * ss.t * 3, hy = ss.y + ss.dy * ss.t * 3, a = shoot.geometry.attributes.position;
       a.array.set([hx, hy, -4, hx - ss.dx * 0.45, hy - ss.dy * 0.45, -4]); a.needsUpdate = true;
       shoot.material.opacity = Math.sin(Math.min(ss.t / 1.1, 1) * Math.PI); if (ss.t > 1.1) { ss.t = -1; shoot.material.opacity = 0; } }
     items.forEach(m => { const u = m.userData;
-      m.position.set(u.side * halfW * (cam.aspect < 0.8 ? 1.02 : (cam.aspect > 1.3 ? 0.86 + (u.f - 0.6) * 0.4 : u.f + 0.12)) * (7 - u.z) / 7, u.y + p * VH * 0.55 + Math.sin(t * u.sp + u.ph) * 0.18, u.z);
+      m.position.set(u.side * halfW * (cam.aspect < 0.8 ? 1.02 : (cam.aspect > 1.3 ? 0.86 + (u.f - 0.6) * 0.4 : u.f + 0.12)) * (7 - u.z) / 7, u.y - 1.2 + p * VH * 0.55 + Math.sin(t * u.sp + u.ph) * 0.18, u.z);
       m.rotation.x += (u.sp + spin) * dt; m.rotation.y += (u.sp * 0.7 + spin * 0.6) * dt; });
     R.render(scene, cam);
     if (!reduce) requestAnimationFrame(frame);
