@@ -576,6 +576,39 @@ body.menu-open .scrim { opacity: 1; pointer-events: auto }
   .facts span:last-child { grid-column: 1 / -1 }
   .facts b { font-size: 17px }
 }
+
+/* ---------- живое демо в стиле Telegram (тёмная тема) ---------- */
+.phone:not(.lockphone) .screen { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='170' height='170' viewBox='0 0 170 170' fill='none' stroke='%23fff' stroke-opacity='0.075' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 34l30-12-10 28-5-11z'/%3E%3Cpath d='M29 39l15-17'/%3E%3Cpath d='M112 30c0-6 8-8 10-2 2-6 10-4 10 2 0 7-10 12-10 12s-10-5-10-12z'/%3E%3Cpath d='M70 78l3 7 7.5.5-5.8 4.6 2 7.2-6.7-4-6.7 4 2-7.2-5.8-4.6 7.5-.5z'/%3E%3Ccircle cx='140' cy='100' r='8'/%3E%3Cpath d='M22 140v-20l15-4v20'/%3E%3Ccircle cx='18' cy='140' r='4'/%3E%3Ccircle cx='33' cy='136' r='4'/%3E%3Cpath d='M98 128h26a6 6 0 0 1 6 6v9a6 6 0 0 1-6 6h-16l-8 6v-6a6 6 0 0 1-6-6v-9a6 6 0 0 1 6-6z'/%3E%3Cpath d='M66 14l-9 15h9l-6 14 15-19h-9l6-10z'/%3E%3Ccircle cx='146' cy='150' r='0.5'/%3E%3Ccircle cx='52' cy='112' r='9'/%3E%3Cpath d='M48 114q4 4 8 0'/%3E%3Cpath d='M49 109v.01M55 109v.01'/%3E%3C/svg%3E") 0 0 / 170px 170px, linear-gradient(160deg, #22305a 0%, #152238 45%, #24183e 100%) }
+.display:not(.lock) .sbar { background: #17212B; color: #FFFFFF }
+.screen .bar { background: #17212B; border-bottom: 0; box-shadow: 0 1px 0 rgba(0,0,0,.35); padding: 8px 12px 10px; gap: 10px }
+.tg-back { width: 12px; height: 12px; border-left: 2.5px solid #6AB2F2; border-bottom: 2.5px solid #6AB2F2; transform: rotate(45deg); margin: 0 2px 0 6px; flex: 0 0 auto; border-radius: 1px }
+.screen .ava { background: linear-gradient(135deg, #7F5AF0, #2CB5E8); width: 40px; height: 40px }
+.screen .bar b { color: #FFFFFF }
+.screen .bar small { color: #708499 }
+.screen .bar .reset { color: #6AB2F2 }
+.log { padding: 12px 10px 10px; gap: 6px }
+.msg { position: relative; max-width: 82%; padding: 7px 10px 6px; border-radius: 14px; font-size: 14.5px; line-height: 1.38; color: #FFFFFF }
+.msg.bot { background: #182533; border-bottom-left-radius: 4px; margin-left: 6px }
+.msg.me { background: #2B5278; border-bottom-right-radius: 4px; margin-right: 6px }
+.msg.bot::before, .msg.me::before { content: ""; position: absolute; bottom: 0; width: 10px; height: 14px; background: inherit }
+.msg.bot::before { left: -6px; clip-path: polygon(100% 0, 100% 100%, 0 100%) ; border-bottom-left-radius: 6px }
+.msg.me::before { right: -6px; clip-path: polygon(0 0, 100% 100%, 0 100%); border-bottom-right-radius: 6px }
+.msg .tm { float: right; margin: 7px -2px -3px 10px; font-size: 11px; line-height: 1; color: rgba(255,255,255,.45) }
+.msg.me .tm { color: #7DB4E8 }
+.msg .hint { color: rgba(255,255,255,.55) }
+.msg.typing span { background: #8BA0B5 }
+.log .kb { align-self: flex-start; width: min(82%, 300px); margin: -2px 0 4px 6px; gap: 4px; animation: pop .2s ease-out }
+.log .kb-row { gap: 4px }
+.log .kb button { background: rgba(30,44,64,.78); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border: 0; color: #FFFFFF; font: 500 13.5px var(--body); border-radius: 8px; padding: 9px 6px }
+.log .kb button:hover:not(:disabled) { background: rgba(43,82,120,.92) }
+.log .kb button.picked { background: #2B5278; color: #FFFFFF; opacity: 1 }
+.log .kb button.off { color: rgba(255,255,255,.4) }
+.log .kb button:disabled:not(.picked) { opacity: .55 }
+.tg-input { flex: 0 0 auto; display: flex; align-items: center; gap: 8px; padding: 8px 10px 20px; background: #17212B }
+.ti-menu { flex: 0 0 auto; background: #5288C1; color: #FFFFFF; font: 600 13px var(--body); padding: 7px 12px; border-radius: 16px }
+.ti-field { flex: 1; min-width: 0; color: #6D7F8F; font-size: 14.5px; padding: 6px 4px; white-space: nowrap; overflow: hidden }
+.ti-mic { flex: 0 0 auto; width: 22px; height: 22px; opacity: .8;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238A9AAB' stroke-width='2' stroke-linecap='round'%3E%3Crect x='9' y='3' width='6' height='11' rx='3'/%3E%3Cpath d='M5 11a7 7 0 0 0 14 0M12 18v3'/%3E%3C/svg%3E") center / contain no-repeat }
 </style>
 
 <canvas id="bg3d" aria-hidden="true"></canvas><div class="aurora" aria-hidden="true"></div>
@@ -931,11 +964,13 @@ en: {
   /* ---------- chat engine ---------- */
   const resetLbl = () => L('Заново', 'Qaytadan', 'Restart');
   function chat(screen, head, steps) {
-    screen.innerHTML = `<div class="bar"><div class="ava">${head.icon}</div><div><b>${esc(head.name)}</b><small>${L('бот · демо', 'bot · demo', 'bot · demo')}</small></div>
-      <button class="reset" type="button">${resetLbl()}</button></div><div class="log" aria-live="polite"></div>`;
+    screen.innerHTML = `<div class="bar"><span class="tg-back" aria-hidden="true"></span><div class="ava">${head.icon}</div><div><b>${esc(head.name)}</b><small>${L('бот · демо', 'bot · demo', 'bot · demo')}</small></div>
+      <button class="reset" type="button">${resetLbl()}</button></div><div class="log" aria-live="polite"></div>
+      <div class="tg-input" aria-hidden="true"><span class="ti-menu">${L('Меню', 'Menyu', 'Menu')}</span><span class="ti-field">${L('Сообщение', 'Xabar', 'Message')}</span><span class="ti-mic"></span></div>`;
     const log = screen.querySelector('.log'); const ctx = {}; let busy = false; let timers = [];
     const later = (fn, ms) => timers.push(setTimeout(fn, ms));
-    function add(cls, html) { const b = document.createElement('div'); b.className = 'msg ' + cls; b.innerHTML = html; log.appendChild(b); log.scrollTop = log.scrollHeight; return b; }
+    function add(cls, html) { const b = document.createElement('div'); b.className = 'msg ' + cls; const d = new Date(), tm = String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+      b.innerHTML = html + (cls.includes('typing') ? '' : `<span class="tm">${tm}${cls === 'me' ? ' ✓✓' : ''}</span>`); log.appendChild(b); log.scrollTop = log.scrollHeight; return b; }
     function show(name) {
       const s = steps[name](ctx);
       const b = add('bot', s.text);
@@ -945,7 +980,7 @@ en: {
           row.forEach(btn => { const e = document.createElement('button'); e.type = 'button'; e.textContent = btn.t;
             if (btn.off) { e.disabled = true; e.classList.add('off'); } else e.addEventListener('click', () => choose(btn, e, kb));
             r.appendChild(e); }); kb.appendChild(r); });
-        b.appendChild(kb);
+        log.appendChild(kb);
       }
       log.scrollTop = log.scrollHeight;
       if (s.next) later(() => go(s.next), s.delay || 1600);
@@ -963,7 +998,7 @@ en: {
     reset();
     return () => { timers.forEach(clearTimeout); };
   }
-  const shell = (icon, name, kind) => `<div class="bar"><div class="ava">${icon}</div><div><b>${esc(name)}</b><small>${kind} · ${L('демо', 'demo', 'demo')}</small></div><button class="reset" type="button">${resetLbl()}</button></div><div class="app"></div>`;
+  const shell = (icon, name, kind) => `<div class="bar"><span class="tg-back" aria-hidden="true"></span><div class="ava">${icon}</div><div><b>${esc(name)}</b><small>${kind} · ${L('демо', 'demo', 'demo')}</small></div><button class="reset" type="button">${resetLbl()}</button></div><div class="app"></div>`;
   const backBtn = attr => `<button type="button" class="chip" ${attr}>${L('← Назад', '← Orqaga', '← Back')}</button>`;
   const freeTime = () => L('Свободное время', 'Bo‘sh vaqt', 'Available times');
   const pickTime = () => L('Выберите время', 'Vaqtni tanlang', 'Choose a time');
@@ -1590,7 +1625,7 @@ en: {
         return `<rect x="${x}" y="${y}" width="${bw - 12}" height="${h}" rx="4" fill="${i === 5 ? 'var(--accent)' : 'var(--accent-soft)'}"></rect>
           <text x="${x + (bw - 12) / 2}" y="${Ht - 6}" text-anchor="middle" font-size="10" fill="var(--muted)">${dn[i]}</text>`; }).join('');
       const grid = [0, 4, 8].map(v => { const y = Ht - pb - v / max * (Ht - pb - 8); return `<line x1="${pl}" x2="${W}" y1="${y}" y2="${y}" stroke="var(--line)" stroke-width="1"></line><text x="${pl - 6}" y="${y + 3}" text-anchor="end" font-size="10" fill="var(--muted)">${v}</text>`; }).join('');
-      screen.innerHTML = `<div class="bar"><div class="ava">📊</div><div><b>${L('Учёт · ваш бизнес', 'Hisob · biznesingiz', 'Accounting · your business')}</b><small>${L('Mini App · демо-данные', 'Mini App · demo ma’lumotlar', 'Mini App · demo data')}</small></div></div>
+      screen.innerHTML = `<div class="bar"><span class="tg-back" aria-hidden="true"></span><div class="ava">📊</div><div><b>${L('Учёт · ваш бизнес', 'Hisob · biznesingiz', 'Accounting · your business')}</b><small>${L('Mini App · демо-данные', 'Mini App · demo ma’lumotlar', 'Mini App · demo data')}</small></div></div>
         <div class="app"><div class="app-pad">
           <div class="kpis">
             <div class="kpi"><small>${L('Выручка сегодня', 'Bugungi tushum', 'Revenue today')}</small><b>${mln(7.9)}</b> <em>+18%</em></div>
