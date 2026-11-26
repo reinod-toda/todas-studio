@@ -1749,7 +1749,11 @@ en: {
   }
   function updateHero() {
     const now = new Date(), t = clock(now);
-    let d; try { d = new Intl.DateTimeFormat(heroBox.dataset.loc || 'ru-RU', { weekday: 'long', day: 'numeric', month: 'long' }).format(now); } catch (e) { d = now.toDateString(); }
+    let d;
+    if ((heroBox.dataset.loc || '').startsWith('uz')) {
+      const W = ['Yakshanba', 'Dushanba', 'Seshanba', 'Chorshanba', 'Payshanba', 'Juma', 'Shanba'], M = ['yanvar', 'fevral', 'mart', 'aprel', 'may', 'iyun', 'iyul', 'avgust', 'sentyabr', 'oktyabr', 'noyabr', 'dekabr'];
+      d = W[now.getDay()] + ', ' + now.getDate() + '-' + M[now.getMonth()];
+    } else { try { d = new Intl.DateTimeFormat(heroBox.dataset.loc || 'ru-RU', { weekday: 'long', day: 'numeric', month: 'long' }).format(now); } catch (e) { d = now.toDateString(); } }
     heroBox.querySelector('.lock-clock small').textContent = d.charAt(0).toUpperCase() + d.slice(1);
     heroBox.querySelector('.lock-clock b').textContent = t;
     document.querySelectorAll('.sb-time').forEach(e => { e.textContent = t; });
