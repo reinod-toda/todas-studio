@@ -451,7 +451,7 @@ html, body { overflow-x: clip }
   background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent }
 .gl-on .hero-stage span { visibility: hidden }
 .hero h1 { font-size: clamp(26px, 4.4vw, 52px) }
-@media (max-width: 700px) { .hero-stage { height: clamp(170px, 28vh, 260px) } }
+@media (max-width: 700px) { .hero-stage { height: clamp(120px, 19vh, 170px) } .hero-stage span { font-size: 11vw } }
 
 /* вопросы: стрелка справа */
 .faq summary { list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 16px }
@@ -1958,7 +1958,7 @@ en: {
 
   let halfW = 3, VH = 5.8, isNarrow = false, gut = 0.8;
   function size() { const w = innerWidth, h = innerHeight; R.setSize(w, h, false); cam.aspect = w / h; cam.updateProjectionMatrix();
-    VH = 2 * Math.tan(THREE.MathUtils.degToRad(22.5)) * 7; halfW = VH / 2 * cam.aspect; isNarrow = cam.aspect < 1.05; gut = (Math.min(560, w / 2) / (w / 2) + 1) / 2 - 0.06;
+    VH = 2 * Math.tan(THREE.MathUtils.degToRad(22.5)) * 7; halfW = VH / 2 * cam.aspect; isNarrow = false; /* название всегда в одну строку */ gut = (Math.min(560, w / 2) / (w / 2) + 1) / 2 - 0.06;
     wide.visible = !isNarrow; narrow.visible = isNarrow; const sm = cam.aspect < 0.8; gK.value = sm ? 0.45 : 1; items.forEach(m => { m.scale.setScalar(m.userData.s * (sm ? 0.45 : 1)); m.children[1].material.opacity = sm ? 0.25 : 0.55; }); }
   size(); addEventListener('resize', size);
   let mx = 0, my = 0, cx = 0, cy = 0, sc = scrollY, scs = scrollY, spin = 0, last = 0;
