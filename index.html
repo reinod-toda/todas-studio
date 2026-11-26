@@ -712,6 +712,22 @@ body.menu-open .navlinks a.nl:hover { transition-delay: 0s }
 .indc .ic { width: 64px; height: 64px; border-radius: 20px }
 .indc .ic img { width: 46px; height: 46px; display: block; filter: drop-shadow(0 8px 12px rgba(0,0,0,.45)); transition: transform .35s cubic-bezier(.2, .8, .2, 1) }
 .indc:hover .ic img { transform: translateY(-4px) scale(1.12) rotate(-6deg) }
+
+/* ---------- оптимизация для телефонов ---------- */
+a, button, summary, .tab, .chip, .seat, .torch { -webkit-tap-highlight-color: transparent }
+@media (pointer: coarse) {
+  .svc, .indc, .cgroup, .faq details, .leadform, .leadout, .feed, .reel-info .svc, .process div, .facts span, .ct, .lock .on, .lock .owner-sum, .lock-btns i, .modes, .tab, .log .kb button {
+    -webkit-backdrop-filter: none; backdrop-filter: none }
+  .svc, .indc, .cgroup, .faq details, .leadform, .leadout, .feed, .reel-info .svc, .process div { background-color: rgba(18,15,33,.9) }
+  .facts span, .ct { background: linear-gradient(180deg, rgba(36,28,66,.92), rgba(14,11,28,.92)) }
+  .lock .on, .lock .owner-sum { background: rgba(28,22,50,.82) }
+  .log .kb button { background: rgba(30,44,64,.92) }
+  .aurora::before, .aurora::after { animation: none }
+  .indc:hover, .facts span:hover, .ct:hover, .btn:hover, .navlinks a.nl:hover { transform: none }
+  .indc:hover .ic img { transform: none }
+  .btn:active, .tab:active, .chip:active, .kb button:active, .ct:active, .indc:active { transform: scale(.97); transition: transform .1s }
+  .field input, .leadform select, .leadform textarea, .citem .qtyin { font-size: 16px }
+}
 </style>
 
 <canvas id="bg3d" aria-hidden="true"></canvas><div class="aurora" aria-hidden="true"></div>
@@ -2125,8 +2141,10 @@ en: {
 
   const cv = document.getElementById('bg3d'), stage = document.getElementById('heroStage');
   if (!window.THREE || !cv) return;
-  let R; try { R = new THREE.WebGLRenderer({ canvas: cv, antialias: true, alpha: true }); } catch (e) { cv.remove(); return; }
-  R.setPixelRatio(Math.min(devicePixelRatio || 1, 1.75)); R.setClearColor(0x000000, 0);
+  /* телефоны: меньше пикселей и объектов, глазу незаметно, а прокрутка плавнее */
+  const MOB = matchMedia('(pointer: coarse)').matches || innerWidth < 760;
+  let R; try { R = new THREE.WebGLRenderer({ canvas: cv, antialias: !MOB, alpha: true, powerPreference: MOB ? 'low-power' : 'default' }); } catch (e) { cv.remove(); return; }
+  R.setPixelRatio(Math.min(devicePixelRatio || 1, MOB ? 1.25 : 1.75)); R.setClearColor(0x000000, 0);
   const scene = new THREE.Scene(); const cam = new THREE.PerspectiveCamera(45, 1, 0.1, 100); cam.position.set(0, 0, 7);
   const ADD = THREE.AdditiveBlending;
   const VS = 'varying vec3 vN; varying vec3 vV; varying vec3 vP; void main(){ vec4 mv = modelViewMatrix*vec4(position,1.); vN = normalize(normalMatrix*normal); vV = normalize(-mv.xyz); vP = position; gl_Position = projectionMatrix*mv; }';
@@ -2144,7 +2162,7 @@ en: {
   const sideFS = 'uniform float uW; uniform float uA; varying vec3 vN; varying vec3 vV; varying vec3 vP; void main(){ float x = clamp(vP.x / uW + 0.5, 0., 1.); vec3 col = mix(vec3(0.22,0.11,0.5), vec3(0.04,0.33,0.45), x); float f = pow(1.0 - abs(dot(vN, vV)), 1.6); col += f*vec3(0.55,0.45,1.0)*0.7; col *= 0.55 + 0.45*(vN.y*0.5 + 0.5); gl_FragColor = vec4(col, uA); }';
   const fronts = [];
   function line(str) {
-    const geo = new THREE.TextGeometry(str, { font: FONT, size: 1, height: 0.34, curveSegments: 10, bevelEnabled: true, bevelThickness: 0.045, bevelSize: 0.028, bevelSegments: 3 });
+    const geo = new THREE.TextGeometry(str, { font: FONT, size: 1, height: 0.34, curveSegments: MOB ? 6 : 10, bevelEnabled: true, bevelThickness: 0.045, bevelSize: 0.028, bevelSegments: MOB ? 2 : 3 });
     geo.computeBoundingBox(); const bb = geo.boundingBox, w = bb.max.x - bb.min.x, h = bb.max.y - bb.min.y; geo.center();
     const fm = new THREE.ShaderMaterial({ uniforms: { uT: { value: 0 }, uW: { value: w }, uH: { value: h }, uA }, transparent: true, vertexShader: VS, fragmentShader: frontFS });
     const sm = new THREE.ShaderMaterial({ uniforms: { uW: { value: w }, uA }, transparent: true, vertexShader: VS, fragmentShader: sideFS });
@@ -2160,13 +2178,13 @@ en: {
   document.documentElement.classList.add('gl-on');
 
   /* искры вокруг названия */
-  const SPK = 260, spk = new Float32Array(SPK * 3), spc = new Float32Array(SPK * 3), spd = [];
+  const SPK = MOB ? 140 : 260, spk = new Float32Array(SPK * 3), spc = new Float32Array(SPK * 3), spd = [];
   for (let i = 0; i < SPK; i++) spd.push({ a: Math.random() * 6.28, r: 0.75 + Math.random() * 0.55, y: (Math.random() - 0.5) * 1.6, s: (0.1 + Math.random() * 0.25) * (Math.random() < 0.5 ? -1 : 1), tw: Math.random() * 6.28 });
   const spg = new THREE.BufferGeometry(); spg.setAttribute('position', new THREE.BufferAttribute(spk, 3)); spg.setAttribute('color', new THREE.BufferAttribute(spc, 3));
   scene.add(new THREE.Points(spg, new THREE.PointsMaterial({ size: 0.06, map: dotTex, vertexColors: true, transparent: true, blending: ADD, depthWrite: false })));
 
   /* звёзды */
-  const S = 1600, sp = new Float32Array(S * 3);
+  const S = MOB ? 700 : 1600, sp = new Float32Array(S * 3);
   for (let i = 0; i < S; i++) sp.set([(Math.random() - .5) * 40, (Math.random() - .5) * 60, -Math.random() * 30 - 2], i * 3);
   const sg = new THREE.BufferGeometry(); sg.setAttribute('position', new THREE.BufferAttribute(sp, 3));
   const stars = new THREE.Points(sg, new THREE.PointsMaterial({ color: 0xFFFFFF, size: 0.07, map: dotTex, transparent: true, opacity: 0.85, depthWrite: false, blending: ADD })); scene.add(stars);
@@ -2199,7 +2217,7 @@ en: {
   const geos = [new THREE.IcosahedronGeometry(0.34, 0), new THREE.OctahedronGeometry(0.32, 0), new THREE.TorusGeometry(0.26, 0.09, 14, 36), new THREE.TetrahedronGeometry(0.34, 0),
     new THREE.TorusKnotGeometry(0.2, 0.065, 90, 10), new THREE.DodecahedronGeometry(0.3, 0), new THREE.BoxGeometry(0.4, 0.4, 0.4)];
   const items = [];
-  for (let i = 0; i < 20; i++) {
+  for (let i = 0; i < (MOB ? 12 : 20); i++) {
     const col = [0xA78BFA, 0x22D3EE, 0xF0ABFC][i % 3], geo = geos[i % geos.length], g = new THREE.Group();
     g.add(new THREE.Mesh(geo, glass(col)));
     g.add(new THREE.LineSegments(new THREE.EdgesGeometry(geo), new THREE.LineBasicMaterial({ color: col, transparent: true, opacity: 0.55, blending: ADD })));
@@ -2216,7 +2234,15 @@ en: {
   addEventListener('pointermove', e => { mx = e.clientX / innerWidth * 2 - 1; my = e.clientY / innerHeight * 2 - 1; }, { passive: true });
   addEventListener('scroll', () => { sc = scrollY; }, { passive: true });
   const clock = new THREE.Clock();
+  /* положение блока с названием запоминаем, чтобы не пересчитывать вёрстку каждый кадр */
+  let stageBox = null;
+  const measureStage = () => { if (!stage) return; const b = stage.getBoundingClientRect(); stageBox = { top: b.top + scrollY, height: b.height, width: b.width }; };
+  measureStage(); addEventListener('resize', measureStage); addEventListener('load', measureStage); setTimeout(measureStage, 1500); if (document.fonts) document.fonts.ready.then(measureStage);
+  if (window.ResizeObserver) new ResizeObserver(measureStage).observe(document.body);
+  let fcount = 0;
   function frame() {
+    /* на телефоне ниже первого экрана — 30 кадров в секунду */
+    if (MOB && scrollY > innerHeight * 1.1 && (fcount++ & 1)) { requestAnimationFrame(frame); return; }
     const t = clock.getElapsedTime(), dt = Math.min(0.05, t - last); last = t;
     const prev = scs; scs += (sc - scs) * 0.08; const p = scs / innerHeight;
     spin = Math.min(4, spin * 0.94 + Math.abs(scs - prev) * 0.004);
@@ -2224,7 +2250,7 @@ en: {
     cam.position.x = cx * 0.3; cam.position.y = -cy * 0.2; cam.lookAt(0, 0, 0);
 
     /* название: в первом экране стоит в блоке hero-stage; при прокрутке плавно уходит в центр экрана, вглубь и становится полупрозрачным фоном */
-    const r = stage ? stage.getBoundingClientRect() : { top: 0, height: innerHeight * 0.35, width: innerWidth };
+    const r = stageBox ? { top: stageBox.top - scrollY, height: stageBox.height, width: stageBox.width } : { top: 0, height: innerHeight * 0.35, width: innerWidth };
     const px2w = VH / innerHeight, cur = isNarrow ? narrow : wide, dw = cur.userData.w, dh = isNarrow ? 2.3 : wide.userData.h;
     const sHero = Math.min(Math.min(r.width, innerWidth * 0.94) * px2w * 0.92 / dw, r.height * px2w * 0.78 / dh);
     const k0 = Math.min(1, Math.max(0, (p - 0.05) / 0.75)), k = k0 * k0 * (3 - 2 * k0);
