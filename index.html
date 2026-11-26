@@ -284,6 +284,54 @@ a.btn { display: inline-block; text-decoration: none; text-align: center }
 .leadout { background: var(--surface); border: 1px dashed var(--line); border-radius: 20px; padding: 20px; display: grid; gap: 12px; min-width: 0 }
 .leadout pre { white-space: pre-wrap; word-break: break-word; font: 500 14px/1.5 var(--body); background: var(--bg); border-radius: 12px; padding: 14px; margin: 0 }
 .item.pick.sel { outline: 2px solid var(--accent) }
+
+/* ---------- оформление v2: телефон владельца в первом экране, узор гирих ---------- */
+:root { --pattern: #B3C5DC; --shadow: rgba(15,27,45,.32) }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --pattern: #2C4068; --shadow: rgba(0,0,0,.7) } }
+:root[data-theme="dark"] { --pattern: #2C4068; --shadow: rgba(0,0,0,.7) }
+.wrap { gap: clamp(56px, 8vw, 96px) }
+h1 { font-size: clamp(30px, 4.6vw, 50px) }
+h2 { font-size: clamp(24px, 3.3vw, 36px); line-height: 1.14 }
+.eyebrow { text-transform: none; letter-spacing: 0; font-size: 14px; color: var(--accent) }
+.hero h1 span { color: inherit }
+.hero { max-width: none; grid-template-columns: minmax(0, 1.12fr) minmax(0, .88fr); gap: 48px; align-items: center; padding-block: 12px 8px }
+.hero-text { display: grid; gap: 18px; min-width: 0 }
+@media (max-width: 920px) { .hero { grid-template-columns: minmax(0, 1fr); gap: 32px } }
+.hero-vis { position: relative; min-width: 0 }
+.girih { position: absolute; left: 0; top: -44px; width: 100%; height: calc(100% + 88px); z-index: 0;
+  -webkit-mask-image: radial-gradient(closest-side, #000 55%, transparent); mask-image: radial-gradient(closest-side, #000 55%, transparent) }
+.girih pattern rect, .girih pattern path { fill: none; stroke: var(--pattern); stroke-width: 1.4 }
+.girih .gfill { fill: url(#girih); stroke: none }
+.owner { position: relative; z-index: 1; background: var(--surface); border: 1px solid var(--line); border-radius: 28px; padding: 18px;
+  display: grid; gap: 14px; box-shadow: 0 40px 80px -40px var(--shadow); max-width: 440px; margin-inline: auto }
+.owner-head b { display: block; font-family: var(--display); font-size: 16px; font-weight: 600 }
+.owner-head small { display: block; color: var(--muted); font-size: 13px; margin-top: 2px }
+.owner-feed { display: grid; gap: 8px }
+.on { display: grid; grid-template-columns: 40px minmax(0, 1fr) auto; gap: 10px; align-items: center; background: var(--bg); border-radius: 16px; padding: 10px 12px }
+.on-ic { width: 40px; height: 40px; border-radius: 12px; background: var(--accent-soft); display: grid; place-items: center; font-size: 20px }
+.on-tx { min-width: 0 }
+.on-tx b { display: block; font-size: 14px; line-height: 1.25 }
+.on-tx small { display: block; color: var(--muted); font-size: 12.5px; line-height: 1.35 }
+.on-r { display: grid; text-align: right; font-variant-numeric: tabular-nums }
+.on-r b { font-size: 13px; white-space: nowrap; color: var(--ok) }
+.on-r small { color: var(--muted); font-size: 12px }
+.on.in { animation: notein .55s cubic-bezier(.2, .8, .2, 1) }
+@keyframes notein { from { transform: translateY(-12px) scale(.97); opacity: .25 } to { transform: none; opacity: 1 } }
+@media (prefers-reduced-motion: reduce) { .on.in { animation: none } }
+.owner-sum { display: flex; flex-wrap: wrap; gap: 4px 14px; align-items: baseline; border-top: 1px dashed var(--line); padding-top: 12px; font-variant-numeric: tabular-nums }
+.owner-sum span { color: var(--muted); font-size: 13px; margin-right: auto }
+.owner-sum b { font-family: var(--display); font-weight: 600; font-size: 16px }
+.process div::before { font-size: 30px; line-height: 1 }
+@media (min-width: 1040px) { .calc-list { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start } }
+.sitefoot { border-top: 1px solid var(--line); padding-top: 28px; display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 20px 32px }
+.sitefoot .logo { color: var(--ink); text-decoration: none }
+.sf-brand { display: grid; gap: 10px; align-content: start }
+.sf-brand p { color: var(--muted); max-width: 44ch }
+.sf-nav { display: flex; flex-wrap: wrap; gap: 6px 18px; align-content: start; justify-content: flex-end }
+.sf-nav a { color: var(--ink); text-decoration: none; font-weight: 600; font-size: 14px }
+.sf-nav a:hover { color: var(--accent) }
+.sitefoot .foot { grid-column: 1 / -1 }
+@media (max-width: 700px) { .sitefoot { grid-template-columns: minmax(0, 1fr) } .sf-nav { justify-content: flex-start } }
 </style>
 
 <nav class="topnav" aria-label="Разделы"><div class="topnav-in">
@@ -295,13 +343,16 @@ a.btn { display: inline-block; text-decoration: none; text-align: center }
 
 <div class="wrap">
   <header class="hero" id="top">
-    <div class="eyebrow">Ташкент · Telegram-боты · Mini Apps · сайты · ролики</div>
+   <div class="hero-text">
+    <div class="eyebrow">Студия в Ташкенте: Telegram-боты, Mini Apps, сайты и ролики</div>
     <h1>Клиенты записываются, заказывают и платят <span>сами</span> — прямо в Telegram</h1>
     <p>Ниже работающие демо для восьми видов бизнеса. Нажимайте кнопки так, как это сделает ваш клиент, и смотрите справа, что в это время получает владелец.</p>
     <div class="facts">
       <span><b>до 14</b> рабочих дней</span><span><b>от $70</b> за бота</span><span><b>в сумах</b> по курсу ЦБ</span><span><b>рус · узб · англ</b> языки</span><span><b>по договору</b></span>
     </div>
     <div class="herocta"><a class="btn" href="#demo">Смотреть демо</a><a class="btn ghost" href="#calc">Рассчитать стоимость</a></div>
+   </div>
+   <div class="hero-vis"><svg class="girih" aria-hidden="true"><defs><pattern id="girih" width="64" height="64" patternUnits="userSpaceOnUse"><rect x="16" y="16" width="32" height="32"/><rect x="16" y="16" width="32" height="32" transform="rotate(45 32 32)"/><path d="M0 0L16 16M64 0L48 16M0 64L16 48M64 64L48 48M32 0V9.4M32 64V54.6M0 32H9.4M64 32H54.6"/></pattern></defs><rect class="gfill" width="100%" height="100%"/></svg><div class="owner" id="owner" role="img"></div></div>
   </header>
 
   <section class="section" id="demo">
@@ -449,7 +500,11 @@ a.btn { display: inline-block; text-decoration: none; text-align: center }
     </div>
   </section>
 
-  <p class="foot">Все компании, цены и цифры в демо придуманы для примера. © Todas.Studio, Ташкент</p>
+  <footer class="sitefoot">
+    <div class="sf-brand"><a class="logo" href="#top"><i>T</i><span>Todas.Studio</span></a><p>Telegram-боты, Mini Apps, сайты и ролики для бизнеса в Ташкенте.</p></div>
+    <nav class="sf-nav" aria-label="Разделы"><a href="#demo">Демо</a><a href="#industries">Отрасли</a><a href="#reels">Ролики</a><a href="#calc">Калькулятор</a><a href="#prices">Цены</a><a href="#faq">Вопросы</a><a href="#lead">Оставить заявку</a></nav>
+    <p class="foot">Все компании, цены и цифры в демо придуманы для примера. © Todas.Studio, Ташкент</p>
+  </footer>
 </div>
 
 <script>
@@ -458,7 +513,7 @@ uz: {
   'Todas.Studio — демо': 'Todas.Studio — demo',
   'Разделы': 'Bo‘limlar', 'Язык': 'Til',
   'Демо': 'Demo', 'Отрасли': 'Sohalar', 'Ролики': 'Roliklar', 'Калькулятор': 'Kalkulyator', 'Цены': 'Narxlar', 'Вопросы': 'Savollar', 'Оставить заявку': 'Ariza qoldirish',
-  'Ташкент · Telegram-боты · Mini Apps · сайты · ролики': 'Toshkent · Telegram-botlar · Mini Apps · saytlar · roliklar',
+  'Студия в Ташкенте: Telegram-боты, Mini Apps, сайты и ролики': 'Toshkentdagi studiya: Telegram-botlar, Mini Apps, saytlar va roliklar',
   'Клиенты записываются, заказывают и платят': 'Mijozlar', 'сами': 'o‘zlari', '— прямо в Telegram': 'yoziladi, buyurtma beradi va to‘laydi — to‘g‘ridan-to‘g‘ri Telegram’da',
   'Ниже работающие демо для восьми видов бизнеса. Нажимайте кнопки так, как это сделает ваш клиент, и смотрите справа, что в это время получает владелец.': 'Quyida sakkiz turdagi biznes uchun ishlaydigan demolar. Tugmalarni mijozingiz qanday bossa, shunday bosing va o‘ngda shu paytda biznes egasi nimani olishini kuzating.',
   'до 14': '14 ish kuni', 'рабочих дней': 'gacha', 'от $70': 'bot', 'за бота': '$70 dan', 'в сумах': 'MB kursi', 'по курсу ЦБ': 'bo‘yicha so‘mda', 'рус · узб · англ': 'rus · o‘zb · ing', 'языки': 'tillari', 'по договору': 'shartnoma asosida',
@@ -511,13 +566,14 @@ uz: {
   'Укажите имя и телефон или Telegram, чтобы мы могли с вами связаться.': 'Siz bilan bog‘lanishimiz uchun ism va telefon yoki Telegram’ni kiriting.', 'Подготовить заявку': 'Arizani tayyorlash',
   'Как это работает': 'Bu qanday ishlaydi',
   'Заполните форму, и мы соберём готовый текст заявки. Скопируйте его и отправьте менеджеру, который прислал вам эту ссылку. Он перезвонит в удобное время.': 'Formani to‘ldiring, biz tayyor ariza matnini yig‘amiz. Uni nusxalab, sizga ushbu havolani yuborgan menejerga yuboring. U qulay vaqtda qo‘ng‘iroq qiladi.',
+  'Telegram-боты, Mini Apps, сайты и ролики для бизнеса в Ташкенте.': 'Toshkentdagi biznes uchun Telegram-botlar, Mini Apps, saytlar va roliklar.',
   'Все компании, цены и цифры в демо придуманы для примера. © Todas.Studio, Ташкент': 'Demodagi barcha kompaniyalar, narxlar va raqamlar misol uchun o‘ylab topilgan. © Todas.Studio, Toshkent'
 },
 en: {
   'Todas.Studio — демо': 'Todas.Studio — demo',
   'Разделы': 'Sections', 'Язык': 'Language',
   'Демо': 'Demos', 'Отрасли': 'Industries', 'Ролики': 'Videos', 'Калькулятор': 'Calculator', 'Цены': 'Prices', 'Вопросы': 'FAQ', 'Оставить заявку': 'Get in touch',
-  'Ташкент · Telegram-боты · Mini Apps · сайты · ролики': 'Tashkent · Telegram bots · Mini Apps · websites · videos',
+  'Студия в Ташкенте: Telegram-боты, Mini Apps, сайты и ролики': 'A studio in Tashkent: Telegram bots, Mini Apps, websites and videos',
   'Клиенты записываются, заказывают и платят': 'Customers book, order and pay', 'сами': 'by themselves', '— прямо в Telegram': '— right in Telegram',
   'Ниже работающие демо для восьми видов бизнеса. Нажимайте кнопки так, как это сделает ваш клиент, и смотрите справа, что в это время получает владелец.': 'Below are working demos for eight types of business. Tap the buttons the way your customer would, and watch on the right what the owner receives at the same moment.',
   'до 14': 'up to 14', 'рабочих дней': 'working days', 'от $70': 'from $70', 'за бота': 'per bot', 'в сумах': 'in UZS', 'по курсу ЦБ': 'at the Central Bank rate', 'рус · узб · англ': 'ru · uz · en', 'языки': 'languages', 'по договору': 'under contract',
@@ -570,6 +626,7 @@ en: {
   'Укажите имя и телефон или Telegram, чтобы мы могли с вами связаться.': 'Enter your name and phone or Telegram so we can get back to you.', 'Подготовить заявку': 'Prepare request',
   'Как это работает': 'How it works',
   'Заполните форму, и мы соберём готовый текст заявки. Скопируйте его и отправьте менеджеру, который прислал вам эту ссылку. Он перезвонит в удобное время.': 'Fill in the form and we’ll put together a ready request. Copy it and send it to the manager who shared this link with you. They’ll call you back at a convenient time.',
+  'Telegram-боты, Mini Apps, сайты и ролики для бизнеса в Ташкенте.': 'Telegram bots, Mini Apps, websites and videos for businesses in Tashkent.',
   'Все компании, цены и цифры в демо придуманы для примера. © Todas.Studio, Ташкент': 'All companies, prices and numbers in the demos are made up for illustration. © Todas.Studio, Tashkent'
 }
 };
@@ -1333,7 +1390,7 @@ en: {
     ['📊', L('Любой бизнес', 'Har qanday biznes', 'Any business'), L('Учёт заказов и выручки, отчёт владельцу каждый вечер.', 'Buyurtmalar va tushum hisobi, har kechqurun egasiga hisobot.', 'Order and revenue tracking, a report to the owner every evening.'), from('$70'), 'owner']];
   function renderIndustries() {
     document.getElementById('indGrid').innerHTML = industries().map(([e, n, d, p, k]) =>
-      `<div class="indc"><div class="ic">${e}</div><h3>${n}</h3><p>${d}</p><div class="foot2"><b>${p}</b><a href="#${k}">${L('Смотреть демо →', 'Demoni ko‘rish →', 'See demo →')}</a></div></div>`).join('');
+      `<div class="indc"><div class="ic">${e}</div><h3>${n}</h3><p>${d}</p><div class="foot2"><b>${p}</b><a href="#${k}">${L('Смотреть демо', 'Demoni ko‘rish', 'See demo')}</a></div></div>`).join('');
   }
 
   /* ---------- калькулятор ---------- */
@@ -1444,9 +1501,42 @@ en: {
     renderLeadOut();
   });
 
+  /* ---------- первый экран: телефон владельца ---------- */
+  const heroBox = document.getElementById('owner');
+  const HERO = () => [
+    ['💈', L('Новая запись', 'Yangi yozuv', 'New booking'), L('Азиз, стрижка и борода, сегодня в 15:30', 'Aziz, soch va soqol, bugun 15:30 da', 'Aziz, haircut and beard, today at 15:30'), 120000],
+    ['🍛', L('Заказ №214 оплачен', '№214 buyurtma to‘landi', 'Order #214 paid'), L('Плов ×2, самса ×4, через Payme', 'Osh ×2, somsa ×4, Payme orqali', 'Plov ×2, samsa ×4, via Payme'), 148000],
+    ['🎮', L('ПК забронирован', 'PK bron qilindi', 'PC booked'), L('VIP-зал, ПК 7, на 3 часа, Click', 'VIP-zal, PK 7, 3 soatga, Click', 'VIP room, PC 7, 3 hours, Click'), 75000],
+    ['🦷', L('Запись к врачу', 'Shifokorga yozuv', 'Doctor appointment'), L('Чистка зубов завтра в 10:00, напоминание отправлено', 'Tish tozalash ertaga 10:00 da, eslatma yuborildi', 'Teeth cleaning tomorrow at 10:00, reminder sent'), 250000],
+    ['☕', L('Бонусы начислены', 'Bonuslar qo‘shildi', 'Points added'), L('Карта 4821, +1 200 баллов', 'Karta 4821, +1 200 ball', 'Card 4821, +1,200 points'), 0],
+    ['🏨', L('Номер забронирован', 'Xona bron qilindi', 'Room booked'), L('Стандарт, 2 ночи, с трансфером', 'Standart, 2 kecha, transfer bilan', 'Standard, 2 nights, with transfer'), 1260000],
+    ['🎓', L('Оплата за курс', 'Kurs uchun to‘lov', 'Course payment'), L('English B1, группа 3, через Uzum', 'English B1, 3-guruh, Uzum orqali', 'English B1, group 3, via Uzum'), 450000]
+  ];
+  const plural = (n, a, b, c) => { const m = n % 10, h = n % 100; return m === 1 && h !== 11 ? a : m >= 2 && m <= 4 && (h < 12 || h > 14) ? b : c; };
+  const som = v => String(v).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' ' + L('сум', 'so‘m', 'UZS');
+  const clock = d => String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+  const hs = { i: 0, shown: [], count: 23, total: 2870000 };
+  { const t0 = Date.now(); for (let k = 0; k < 4; k++) { hs.shown.push([hs.i, clock(new Date(t0 - (k * 9 + 2) * 60000))]); hs.i++; } }
+  function heroNote([ix, t]) { const [e, ti, de, amt] = HERO()[ix];
+    return `<div class="on"><span class="on-ic" aria-hidden="true">${e}</span><span class="on-tx"><b>${ti}</b><small>${de}</small></span><span class="on-r">${amt ? `<b>+${som(amt)}</b>` : ''}<small>${t}</small></span></div>`; }
+  function renderHero() {
+    heroBox.setAttribute('aria-label', L('Пример: что приходит владельцу', 'Namuna: egasiga nima keladi', 'Example: what the owner receives'));
+    heroBox.innerHTML = `<div class="owner-head"><b>${L('Телефон владельца', 'Biznes egasining telefoni', 'The owner’s phone')}</b><small>${L('Так выглядит день, когда заявки и оплаты приходят сами', 'Arizalar va to‘lovlar o‘zi kelganda kun shunday o‘tadi', 'A day when requests and payments come in on their own')}</small></div>
+      <div class="owner-feed">${hs.shown.map(heroNote).join('')}</div>
+      <div class="owner-sum"><span>${L('Сегодня', 'Bugun', 'Today')}</span><b>${hs.count} ${L(plural(hs.count, 'заявка', 'заявки', 'заявок'), 'ta ariza', 'requests')}</b><b>${som(hs.total)}</b></div>`;
+  }
+  renderHero();
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) setInterval(() => {
+    if (document.hidden) return;
+    const ix = hs.i % HERO().length; hs.i++;
+    hs.shown.unshift([ix, clock(new Date())]); hs.shown.length = 4;
+    hs.count++; hs.total += HERO()[ix][3];
+    renderHero(); heroBox.querySelector('.on').classList.add('in');
+  }, 3800);
+
   /* ---------- перевод статичного текста (словари в window.__I18N) ---------- */
   const DICT = window.__I18N || {};
-  const SKIP = '#screen, #side, #indGrid, #calcList, #calcSum, #tabs, #modes, #lfBiz, script, style';
+  const SKIP = '#owner, #screen, #side, #indGrid, #calcList, #calcSum, #tabs, #modes, #lfBiz, script, style';
   const textNodes = [];
   (function collect(root) {
     const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, { acceptNode: n => (!n.nodeValue.trim() || n.parentElement.closest(SKIP)) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT });
@@ -1499,7 +1589,7 @@ en: {
   document.querySelectorAll('[data-lang]').forEach(b => b.addEventListener('click', () => {
     if (LANG === b.dataset.lang) return; LANG = b.dataset.lang;
     try { localStorage.setItem('todas-lang', LANG); } catch (e) {}
-    applyStatic(); renderIndustries(); renderCalcList(); renderSum(); renderBizOptions(); renderLeadOut(); open(current);
+    applyStatic(); renderIndustries(); renderCalcList(); renderSum(); renderBizOptions(); renderLeadOut(); renderHero(); open(current);
   }));
   window.addEventListener('hashchange', () => route(false));
   applyStatic(); renderIndustries(); renderCalcList(); renderSum(); renderBizOptions();
