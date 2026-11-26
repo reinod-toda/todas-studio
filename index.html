@@ -635,9 +635,10 @@ body.menu-open .scrim { opacity: 1; pointer-events: auto }
 body.menu-open .navlinks a:nth-child(7) { transition-delay: .38s } body.menu-open .navlinks a:nth-child(8) { transition-delay: .43s }
 
 /* ---------- выдвижное меню v2: раскрытие кругом, иконки, свечение ---------- */
-.navlinks { width: min(390px, 88vw); isolation: isolate; gap: 6px; transform: none;
+.navlinks { width: min(390px, 88vw); isolation: isolate; gap: 6px; -webkit-transform: translateZ(0); transform: translateZ(0); will-change: clip-path; -webkit-backface-visibility: hidden; backface-visibility: hidden;
+  -webkit-clip-path: circle(0px at calc(100% - 46px) 30px);
   clip-path: circle(0px at calc(100% - 46px) 30px); transition: clip-path .65s cubic-bezier(.7, 0, .2, 1), visibility 0s .65s }
-body.menu-open .navlinks { clip-path: circle(150% at calc(100% - 46px) 30px); transition: clip-path .75s cubic-bezier(.2, .8, .2, 1), visibility 0s }
+body.menu-open .navlinks { -webkit-clip-path: circle(150% at calc(100% - 46px) 30px); clip-path: circle(150% at calc(100% - 46px) 30px); transition: clip-path .75s cubic-bezier(.2, .8, .2, 1), visibility 0s }
 .navlinks::before { content: ""; position: absolute; inset: -25%; z-index: -1; pointer-events: none;
   background: radial-gradient(38% 26% at 78% 12%, rgba(139,92,246,.42), transparent 70%), radial-gradient(40% 28% at 12% 88%, rgba(34,211,238,.26), transparent 70%), radial-gradient(30% 20% at 30% 40%, rgba(240,171,252,.12), transparent 70%);
   animation: nlGlow 9s ease-in-out infinite alternate }
@@ -649,7 +650,10 @@ body.menu-open .navlinks { clip-path: circle(150% at calc(100% - 46px) 30px); tr
 .nl-head::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, var(--glass-line), transparent) }
 .navlinks a.nl { display: grid; grid-template-columns: 46px minmax(0, 1fr) 14px; gap: 14px; align-items: center; padding: 11px 14px; border-radius: 18px; white-space: normal;
   filter: blur(6px); transition: opacity .4s, transform .55s cubic-bezier(.2, .8, .2, 1), filter .5s, background .25s, box-shadow .25s }
-body.menu-open .navlinks a { filter: none }
+body.menu-open .navlinks a { filter: blur(0px) }
+/* Safari: отдельный слой для кнопок, иначе после анимации они пропадают */
+.navlinks a, .nl-ic, .navlinks::before { -webkit-transform: translateZ(0); -webkit-backface-visibility: hidden; backface-visibility: hidden }
+.navlinks::before { will-change: transform }
 .navlinks a.nl:hover { transform: translateX(6px); background: rgba(139,92,246,.12) }
 .navlinks a.nl.cur { background: rgba(139,92,246,.16); box-shadow: inset 3px 0 0 #22D3EE }
 .navlinks a.cur::after { display: none }
