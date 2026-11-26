@@ -428,9 +428,9 @@ html, body { overflow-x: clip }
 .marq { position: absolute; left: -6%; right: -6%; overflow: hidden; padding-block: 14px; white-space: nowrap }
 .marq.a { background: var(--grad); transform: rotate(-3deg) rotateX(10deg); box-shadow: 0 24px 70px -20px var(--glow); z-index: 1 }
 .marq.b { background: rgba(20,17,36,.78); border-block: 1px solid var(--glass-line); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); transform: rotate(2.6deg) }
-.marq-in { display: inline-flex; gap: 28px; align-items: center; animation: marq 46s linear infinite; font-family: var(--display); font-size: clamp(17px, 2.3vw, 27px); font-weight: 600 }
+.marq-in { display: inline-flex; gap: 28px; align-items: center; will-change: transform; font-family: var(--display); font-size: clamp(17px, 2.3vw, 27px); font-weight: 600 }
 .marq.a .marq-in { color: #FFFFFF }
-.marq.b .marq-in { color: var(--muted); animation-direction: reverse; animation-duration: 54s }
+.marq.b .marq-in { color: var(--muted) }
 .marq-in i { font-style: normal; color: var(--cyan) }
 .marq.a .marq-in i { color: #FFFFFF; opacity: .7 }
 @keyframes marq { to { transform: translateX(calc(-100% / 3)) } }
@@ -1743,7 +1743,23 @@ en: {
      T('3D-ролики', '3D-roliklar', '3D videos'), T('Автоотчёты', 'Avtohisobotlar', 'Auto-reports'), 'amoCRM', 'Bitrix24']];
   function renderMarq() { document.querySelectorAll('.marq-in').forEach((el, i) => { const row = MQ()[i].map(w => `<span>${w}</span><i>✦</i>`).join(''); el.innerHTML = row + row + row; }); }
   renderMarq();
-  document.querySelectorAll('[data-lang]').forEach(b => b.addEventListener('click', () => setTimeout(renderMarq, 0)));
+  /* ленты двигаются скриптом: работает в любом браузере, при прокрутке ускоряются */
+  const mq = [...document.querySelectorAll('.marq-in')].map((el, i) => ({ el, dir: i ? 1 : -1, o: 0, third: 0 }));
+  const mqMeasure = () => mq.forEach(m => { m.third = m.el.scrollWidth / 3; });
+  let mqLast = 0, mqBoost = 0, mqY = scrollY;
+  function mqTick(now) {
+    const dt = mqLast ? Math.min(0.05, (now - mqLast) / 1000) : 0; mqLast = now;
+    mqBoost = mqBoost * 0.92 + Math.abs(scrollY - mqY) * 0.8; mqY = scrollY;
+    mq.forEach((m, i) => { if (!m.third) mqMeasure(); if (!m.third) return;
+      m.o = (m.o + (i ? 48 : 58) * (1 + mqBoost / 60) * dt) % m.third;
+      const x = m.dir < 0 ? -m.o : -m.third + m.o;
+      m.el.style.transform = `translate3d(${x.toFixed(1)}px,0,0)`; });
+    requestAnimationFrame(mqTick);
+  }
+  requestAnimationFrame(mqTick);
+  addEventListener('resize', mqMeasure);
+  document.querySelectorAll('[data-lang]').forEach(b => b.addEventListener('click', () => setTimeout(() => { renderMarq(); mqMeasure(); }, 0)));
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(mqMeasure);
 
   /* подсветка карточек под курсором */
   document.addEventListener('pointermove', e => { const c = e.target.closest && e.target.closest('.svc, .indc, .cgroup, .faq details, .leadform, .leadout, .feed');
