@@ -350,7 +350,8 @@ body { background: var(--bg) }
 .aurora::after { background: radial-gradient(circle, #0E7490, transparent 65%); right: -30vmax; top: 90vh; animation: drift2 34s ease-in-out infinite alternate }
 @keyframes drift1 { to { transform: translate(18vw, 40vh) } }
 @keyframes drift2 { to { transform: translate(-16vw, -50vh) } }
-.topnav, .wrap { position: relative; z-index: 1 }
+.wrap { position: relative; z-index: 1 }
+.topnav { position: sticky; z-index: 30 }
 .topnav { background: rgba(8,7,16,.62); -webkit-backdrop-filter: blur(16px) saturate(1.4); backdrop-filter: blur(16px) saturate(1.4); border-bottom-color: var(--glass-line) }
 body::before { background: rgba(8,7,16,.9) }
 .navlinks a:hover { background: rgba(139,92,246,.14) }
@@ -458,14 +459,56 @@ html, body { overflow-x: clip }
 .faq summary::after { content: ""; flex: 0 0 auto; width: 9px; height: 9px; margin-right: 4px; border-right: 2px solid #C4B5FD; border-bottom: 2px solid #C4B5FD;
   transform: translateY(-3px) rotate(45deg); transition: transform .3s cubic-bezier(.2, .8, .2, 1) }
 .faq details[open] summary::after { transform: translateY(2px) rotate(-135deg) }
+
+/* ---------- телефон ---------- */
+.burger { display: block; width: 42px; height: 42px; border-radius: 12px; border: 1px solid var(--glass-line); background: rgba(255,255,255,.05); cursor: pointer; padding: 0; position: relative; flex: 0 0 auto }
+.burger span { position: absolute; left: 12px; right: 12px; height: 2px; border-radius: 2px; background: var(--ink); transition: transform .3s, opacity .3s }
+.burger span:nth-child(1) { top: 14px } .burger span:nth-child(2) { top: 20px } .burger span:nth-child(3) { top: 26px }
+.topnav.open .burger span:nth-child(1) { transform: translateY(6px) rotate(45deg) }
+.topnav.open .burger span:nth-child(2) { opacity: 0 }
+.topnav.open .burger span:nth-child(3) { transform: translateY(-6px) rotate(-45deg) }
+/* разделы: выдвижная панель справа на всех экранах */
+.lang { margin-left: auto }
+.navlinks { position: fixed; top: 0; right: 0; bottom: 0; left: auto; width: min(360px, 86vw); z-index: 25; display: flex; flex-direction: column; gap: 4px; overflow-y: auto; flex: none;
+  padding: calc(env(safe-area-inset-top, 0px) + 84px) max(22px, env(safe-area-inset-right, 0px)) 28px 22px;
+  background: linear-gradient(180deg, #140F2A 0%, #0A0814 70%); border-left: 1px solid var(--glass-line); box-shadow: -30px 0 80px -20px rgba(0,0,0,.85);
+  transform: translateX(105%); visibility: hidden; transition: transform .5s cubic-bezier(.2, .8, .2, 1), visibility 0s .5s }
+body.menu-open .navlinks { transform: none; visibility: visible; transition: transform .5s cubic-bezier(.2, .8, .2, 1), visibility 0s }
+.navlinks a { display: flex; align-items: center; justify-content: space-between; font-size: 19px; font-weight: 600; padding: 14px 16px; border-radius: 14px; color: var(--ink); text-decoration: none; white-space: nowrap;
+  opacity: 0; transform: translateX(28px); transition: opacity .35s, transform .5s cubic-bezier(.2, .8, .2, 1), background .2s }
+body.menu-open .navlinks a { opacity: 1; transform: none }
+body.menu-open .navlinks a:nth-child(1) { transition-delay: .08s } body.menu-open .navlinks a:nth-child(2) { transition-delay: .13s }
+body.menu-open .navlinks a:nth-child(3) { transition-delay: .18s } body.menu-open .navlinks a:nth-child(4) { transition-delay: .23s }
+body.menu-open .navlinks a:nth-child(5) { transition-delay: .28s } body.menu-open .navlinks a:nth-child(6) { transition-delay: .33s }
+.navlinks a:hover, .navlinks a.cur { background: rgba(139,92,246,.16) }
+.navlinks a.cur::after { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 12px var(--cyan) }
+.navlinks .only-m { display: flex; justify-content: center; margin-top: 14px; background: var(--grad); color: #FFFFFF; font-weight: 700 }
+.scrim { position: fixed; inset: 0; z-index: 24; background: rgba(4,3,10,.55); -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px); opacity: 0; pointer-events: none; transition: opacity .35s }
+body.menu-open .scrim { opacity: 1; pointer-events: auto }
+@media (max-width: 760px) {
+  .topnav-in { gap: 10px }
+  .topnav .logo span { display: inline; font-size: 14px }
+  .navcta { display: none }
+  .screen { height: 560px; max-height: 74vh; min-height: 470px }
+  .reel figcaption { font-size: 13px }
+  .facts span { font-size: 13px; padding: 5px 10px }
+}
+@media (max-width: 380px) { .topnav .logo span { display: none } }
+.reel figcaption { flex-wrap: wrap; row-gap: 2px }
+.reel figcaption span { white-space: nowrap }
+.faq details { transition: border-color .3s, box-shadow .3s }
+.faq details[open] { border-color: rgba(167,139,250,.45); box-shadow: 0 24px 60px -34px var(--glow) }
+.faq details.anim { overflow: hidden }
+.faq summary { transition: color .2s } .faq summary:hover { color: #C4B5FD }
 </style>
 
 <canvas id="bg3d" aria-hidden="true"></canvas><div class="aurora" aria-hidden="true"></div>
 <nav class="topnav" aria-label="Разделы"><div class="topnav-in">
   <a class="logo" href="#top"><i>T</i><span>Todas.Studio</span></a>
-  <div class="navlinks"><a href="#demo">Демо</a><a href="#industries">Отрасли</a><a href="#reels">Ролики</a><a href="#prices">Цены</a><a href="#faq">Вопросы</a></div>
+  <div class="navlinks"><a href="#demo">Демо</a><a href="#industries">Отрасли</a><a href="#reels">Ролики</a><a href="#prices">Цены</a><a href="#faq">Вопросы</a><a class="only-m" href="#lead">Оставить заявку</a></div>
   <div class="lang" role="group" aria-label="Язык"><button type="button" data-lang="ru">RU</button><button type="button" data-lang="uz">UZ</button><button type="button" data-lang="en">EN</button></div>
   <a class="navcta" href="#lead">Оставить заявку</a>
+  <button type="button" class="burger" id="burger" aria-label="Меню" aria-expanded="false"><span></span><span></span><span></span></button>
 </div></nav>
 
 <div class="wrap">
@@ -640,7 +683,7 @@ html, body { overflow-x: clip }
 window.__I18N = {
 uz: {
   'Todas.Studio — демо': 'Todas.Studio — demo',
-  'Разделы': 'Bo‘limlar', 'Язык': 'Til',
+  'Разделы': 'Bo‘limlar', 'Язык': 'Til', 'Меню': 'Menyu',
   'Демо': 'Demo', 'Отрасли': 'Sohalar', 'Ролики': 'Roliklar', 'Калькулятор': 'Kalkulyator', 'Цены': 'Narxlar', 'Вопросы': 'Savollar', 'Оставить заявку': 'Ariza qoldirish',
   'Студия в Ташкенте: Telegram-боты, Mini Apps, сайты и ролики': 'Toshkentdagi studiya: Telegram-botlar, Mini Apps, saytlar va roliklar',
   'Клиенты записываются, заказывают и платят': 'Mijozlar', 'сами': 'o‘zlari', '— прямо в Telegram': 'yoziladi, buyurtma beradi va to‘laydi — to‘g‘ridan-to‘g‘ri Telegram’da',
@@ -700,7 +743,7 @@ uz: {
 },
 en: {
   'Todas.Studio — демо': 'Todas.Studio — demo',
-  'Разделы': 'Sections', 'Язык': 'Language',
+  'Разделы': 'Sections', 'Язык': 'Language', 'Меню': 'Menu',
   'Демо': 'Demos', 'Отрасли': 'Industries', 'Ролики': 'Videos', 'Калькулятор': 'Calculator', 'Цены': 'Prices', 'Вопросы': 'FAQ', 'Оставить заявку': 'Get in touch',
   'Студия в Ташкенте: Telegram-боты, Mini Apps, сайты и ролики': 'A studio in Tashkent: Telegram bots, Mini Apps, websites and videos',
   'Клиенты записываются, заказывают и платят': 'Customers book, order and pay', 'сами': 'by themselves', '— прямо в Telegram': '— right in Telegram',
@@ -1767,6 +1810,42 @@ en: {
   document.querySelectorAll('[data-lang]').forEach(b => b.addEventListener('click', () => setTimeout(() => { renderMarq(); mqMeasure(); }, 0)));
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(mqMeasure);
 
+  /* разделы: выдвижная панель справа, кнопка в шапке */
+  const navEl = document.querySelector('.topnav'), burger = document.getElementById('burger'), links = document.querySelector('.navlinks');
+  if (navEl && burger && links) {
+    document.body.appendChild(links);
+    const scrim = document.createElement('div'); scrim.className = 'scrim'; document.body.appendChild(scrim);
+    const setOpen = o => { document.body.classList.toggle('menu-open', o); navEl.classList.toggle('open', o); burger.setAttribute('aria-expanded', String(o)); };
+    burger.addEventListener('click', () => setOpen(!document.body.classList.contains('menu-open')));
+    links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setOpen(false)));
+    scrim.addEventListener('click', () => setOpen(false));
+    addEventListener('keydown', e => { if (e.key === 'Escape') setOpen(false); });
+    /* подсветка раздела, где сейчас посетитель */
+    const map = {}; links.querySelectorAll('a[href^="#"]:not(.only-m)').forEach(a => { map[a.getAttribute('href').slice(1)] = a; });
+    if ('IntersectionObserver' in window) {
+      const spy = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) Object.values(map).forEach(a => a.classList.toggle('cur', a === map[en.target.id])); }), { rootMargin: '-45% 0px -50% 0px' });
+      Object.keys(map).forEach(id => { const el = document.getElementById(id); if (el) spy.observe(el); });
+    }
+  }
+  /* вопросы: плавное раскрытие и закрытие */
+  document.querySelectorAll('.faq details').forEach(d => {
+    const sm = d.querySelector('summary'), body = d.querySelector('p'); let run = null;
+    sm.addEventListener('click', e => {
+      e.preventDefault(); if (run) return;
+      const from = d.offsetHeight; d.classList.add('anim');
+      const done = () => { run = null; d.classList.remove('anim'); };
+      if (!d.open) {
+        d.open = true; const to = d.offsetHeight;
+        run = d.animate([{ height: from + 'px' }, { height: to + 'px' }], { duration: 420, easing: 'cubic-bezier(.2, .8, .2, 1)' }); run.onfinish = done;
+        if (body) body.animate([{ opacity: 0, transform: 'translateY(-10px)', filter: 'blur(4px)' }, { opacity: 1, transform: 'none', filter: 'blur(0)' }], { duration: 480, easing: 'ease-out' });
+      } else {
+        const cs = getComputedStyle(d), to = sm.offsetHeight + parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom) + parseFloat(cs.borderTopWidth) + parseFloat(cs.borderBottomWidth);
+        if (body) body.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 200, fill: 'forwards' });
+        run = d.animate([{ height: from + 'px' }, { height: to + 'px' }], { duration: 340, easing: 'cubic-bezier(.4, 0, .2, 1)' });
+        run.onfinish = () => { d.open = false; if (body) body.getAnimations().forEach(x => x.cancel()); done(); };
+      }
+    });
+  });
   /* подсветка карточек под курсором */
   document.addEventListener('pointermove', e => { const c = e.target.closest && e.target.closest('.svc, .indc, .cgroup, .faq details, .leadform, .leadout, .feed');
     if (!c) return; const r = c.getBoundingClientRect(); c.style.setProperty('--mx', (e.clientX - r.left) + 'px'); c.style.setProperty('--my', (e.clientY - r.top) + 'px'); }, { passive: true });
@@ -1863,8 +1942,9 @@ en: {
   const tmp = new THREE.Vector3(), nxt = new THREE.Vector3();
 
   /* стеклянные фигуры по краям */
-  const glass = c => new THREE.ShaderMaterial({ uniforms: { uC: { value: new THREE.Color(c) } }, transparent: true, blending: ADD, depthWrite: false, side: THREE.DoubleSide, vertexShader: VS,
-    fragmentShader: 'uniform vec3 uC; varying vec3 vN; varying vec3 vV; void main(){ float f = pow(1.0 - abs(dot(vN, vV)), 2.0); gl_FragColor = vec4(uC*(0.06 + f*0.95), 1.0); }' });
+  const gK = { value: 1 };
+  const glass = c => new THREE.ShaderMaterial({ uniforms: { uC: { value: new THREE.Color(c) }, uK: gK }, transparent: true, blending: ADD, depthWrite: false, side: THREE.DoubleSide, vertexShader: VS,
+    fragmentShader: 'uniform vec3 uC; uniform float uK; varying vec3 vN; varying vec3 vV; void main(){ float f = pow(1.0 - abs(dot(vN, vV)), 2.0); gl_FragColor = vec4(uC*(0.06 + f*0.95)*uK, 1.0); }' });
   const geos = [new THREE.IcosahedronGeometry(0.34, 0), new THREE.OctahedronGeometry(0.32, 0), new THREE.TorusGeometry(0.26, 0.09, 14, 36), new THREE.TetrahedronGeometry(0.34, 0),
     new THREE.TorusKnotGeometry(0.2, 0.065, 90, 10), new THREE.DodecahedronGeometry(0.3, 0), new THREE.BoxGeometry(0.4, 0.4, 0.4)];
   const items = [];
@@ -1879,7 +1959,7 @@ en: {
   let halfW = 3, VH = 5.8, isNarrow = false, gut = 0.8;
   function size() { const w = innerWidth, h = innerHeight; R.setSize(w, h, false); cam.aspect = w / h; cam.updateProjectionMatrix();
     VH = 2 * Math.tan(THREE.MathUtils.degToRad(22.5)) * 7; halfW = VH / 2 * cam.aspect; isNarrow = cam.aspect < 1.05; gut = (Math.min(560, w / 2) / (w / 2) + 1) / 2 - 0.06;
-    wide.visible = !isNarrow; narrow.visible = isNarrow; items.forEach(m => m.scale.setScalar(m.userData.s * (cam.aspect < 0.8 ? 0.6 : 1))); }
+    wide.visible = !isNarrow; narrow.visible = isNarrow; const sm = cam.aspect < 0.8; gK.value = sm ? 0.45 : 1; items.forEach(m => { m.scale.setScalar(m.userData.s * (sm ? 0.45 : 1)); m.children[1].material.opacity = sm ? 0.25 : 0.55; }); }
   size(); addEventListener('resize', size);
   let mx = 0, my = 0, cx = 0, cy = 0, sc = scrollY, scs = scrollY, spin = 0, last = 0;
   addEventListener('pointermove', e => { mx = e.clientX / innerWidth * 2 - 1; my = e.clientY / innerHeight * 2 - 1; }, { passive: true });
@@ -1906,22 +1986,23 @@ en: {
     nameG.scale.setScalar(s * (0.65 + 0.35 * intro));
     nameG.rotation.x = (1 - intro) * -1.2 + Math.sin(t * 0.5) * 0.07 + cy * 0.12 * (1 - 0.5 * k);
     nameG.rotation.y = (1 - intro) * 0.6 + Math.sin(t * 0.33) * (0.2 - 0.1 * k) + cx * 0.28 * (1 - 0.6 * k);
-    const fadeN = 1 - 0.75 * k, fadeP = 1 - 0.5 * k;
+    const mob = cam.aspect < 0.8, fadeN = 1 - (mob ? 1 : 0.75) * k, fadeP = 1 - (mob ? 1 : 0.5) * k;
+    nameG.visible = fadeN > 0.02;
     uA.value = fadeN; edgeMats.forEach(m => { m.opacity = 0.22 * fadeN; });
-    halo.scale.set(dw * 1.5, dh * 2.6, 1); halo.material.opacity = (0.75 + Math.sin(t * 1.4) * 0.15) * (1 - 0.65 * k);
+    halo.scale.set(dw * 1.5, dh * 2.6, 1); halo.material.opacity = (0.75 + Math.sin(t * 1.4) * 0.15) * (1 - (mob ? 1 : 0.65) * k);
     fronts.forEach(m => m.uniforms.uT.value = t);
     const W = dw * s / 2;   /* полуширина названия в мире */
     const c0 = nameG.position;
     for (let i = 0; i < SPK; i++) { const d = spd[i]; d.a += d.s * dt;
       spk.set([c0.x + Math.cos(d.a) * W * d.r * 1.15, c0.y + d.y * s * (isNarrow ? 1.6 : 0.9), c0.z + Math.sin(d.a) * W * d.r * 0.55], i * 3);
-      const b = (0.45 + 0.55 * Math.sin(t * 2.2 + d.tw)) * intro * (1 - 0.55 * k); spc.set([0.7 * b, 0.6 * b, 1.0 * b], i * 3); }
+      const b = (0.45 + 0.55 * Math.sin(t * 2.2 + d.tw)) * intro * (1 - (mob ? 1 : 0.55) * k); spc.set([0.7 * b, 0.6 * b, 1.0 * b], i * 3); }
     spg.attributes.position.needsUpdate = true; spg.attributes.color.needsUpdate = true;
     planes.forEach(pl => {
       const rx = W * 1.05 * pl.k + 0.35, rz = pl.rz * Math.max(0.7, s * 1.5);
       const pos = (a, out) => out.set(Math.cos(a) * rx, Math.sin(a * 2 + pl.ph) * 0.12 * s, Math.sin(a) * rz).applyEuler(pl.q).add(c0);
       const a = t * pl.sp + pl.ph; pos(a, tmp); pos(a + 0.04 * Math.sign(pl.sp), nxt);
       pl.g.position.copy(tmp); pl.g.lookAt(nxt); pl.g.rotateZ(Math.sin(t * 2.2 + pl.ph) * 0.4); pl.g.scale.setScalar(Math.max(0.24, s * 0.42));
-      pl.g.children.forEach(c => { c.material.opacity = (c.isLineSegments ? 0.9 : 1) * fadeP; }); pl.trail.material.opacity = fadeP;
+      pl.g.children.forEach(c => { c.material.opacity = (c.isLineSegments ? 0.9 : 1) * fadeP; }); pl.trail.material.opacity = fadeP; pl.g.visible = pl.trail.visible = fadeP > 0.02;
       for (let k = 0; k < pl.TL; k++) { pos(a - k * 0.011 * Math.sign(pl.sp), nxt); pl.tp.set([nxt.x, nxt.y, nxt.z], k * 3); }
       pl.tg.attributes.position.needsUpdate = true; });
     stars.position.y = p * 1.4; stars.rotation.z = t * 0.004;
