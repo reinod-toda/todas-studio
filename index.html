@@ -434,6 +434,13 @@ html, body { overflow-x: clip }
 .marq-in i { font-style: normal; color: var(--cyan) }
 .marq.a .marq-in i { color: #FFFFFF; opacity: .7 }
 @keyframes marq { to { transform: translateX(calc(-100% / 3)) } }
+.marq.b .marq-in { color: var(--ink) }
+@media (max-width: 760px) {
+  .marq-wrap { height: auto; display: flex; flex-direction: column; gap: 14px; padding-block: 18px }
+  .marq { position: relative; left: auto; right: auto; width: 112%; margin-left: -6% }
+  .marq.a { transform: rotate(-2.5deg) }
+  .marq.b { transform: rotate(2deg) }
+}
 @media (prefers-reduced-motion: reduce) and (max-width: 0px) { .hero-text > *, .hero h1, .hero-vis .owner, .marq-in { animation: none } }
 
 /* ---------- v5: объёмное название вместо планеты ---------- */
