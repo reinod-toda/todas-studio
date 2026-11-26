@@ -451,6 +451,13 @@ html, body { overflow-x: clip }
 .gl-on .hero-stage span { visibility: hidden }
 .hero h1 { font-size: clamp(26px, 4.4vw, 52px) }
 @media (max-width: 700px) { .hero-stage { height: clamp(170px, 28vh, 260px) } }
+
+/* вопросы: стрелка справа */
+.faq summary { list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 16px }
+.faq summary::-webkit-details-marker { display: none }
+.faq summary::after { content: ""; flex: 0 0 auto; width: 9px; height: 9px; margin-right: 4px; border-right: 2px solid #C4B5FD; border-bottom: 2px solid #C4B5FD;
+  transform: translateY(-3px) rotate(45deg); transition: transform .3s cubic-bezier(.2, .8, .2, 1) }
+.faq details[open] summary::after { transform: translateY(2px) rotate(-135deg) }
 </style>
 
 <canvas id="bg3d" aria-hidden="true"></canvas><div class="aurora" aria-hidden="true"></div>
@@ -588,7 +595,6 @@ html, body { overflow-x: clip }
   </section>
 
   <section class="section" id="faq">
-    <div class="eyebrow">Вопросы</div>
     <h2>Частые вопросы</h2>
     <div class="faq">
       <details><summary>Нужно ли клиентам что-то устанавливать?</summary><p>Нет. Бот и Mini App работают внутри Telegram, который у ваших клиентов уже есть. Клиент нажимает ссылку или кнопку и сразу пользуется.</p></details>
