@@ -1,0 +1,1511 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Todas.Studio — Telegram-боты, Mini Apps и сайты для бизнеса в Ташкенте</title>
+<meta name="description" content="Telegram-боты, Mini Apps, сайты и ролики для бизнеса в Ташкенте. Онлайн-запись, доставка, бронь, бонусные карты. Запуск до 14 рабочих дней, оплата в сумах. Живые демо на сайте.">
+<meta name="theme-color" content="#1D4ED8">
+<link rel="canonical" href="https://todas.uz/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://todas.uz/">
+<meta property="og:title" content="Todas.Studio — Telegram-боты и Mini Apps для бизнеса">
+<meta property="og:description" content="Клиенты записываются, заказывают и платят сами — прямо в Telegram. 8 живых демо, калькулятор стоимости, RU · UZ · EN.">
+<meta property="og:image" content="https://todas.uz/og.png">
+<meta property="og:locale" content="ru_RU">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%231D4ED8'/%3E%3Ctext x='32' y='44' font-family='Arial' font-weight='700' font-size='36' fill='white' text-anchor='middle'%3ET%3C/text%3E%3C/svg%3E">
+<style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Manrope:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: заголовок студии → вкладки демо → «телефон» с живым демо + панель «что видит владелец» → услуги, процесс, условия */
+:root {
+  --bg: #EEF3F2; --surface: #FFFFFF; --ink: #0F1B2D; --muted: #56676F; --line: #D4DEDB;
+  --accent: #1D4ED8; --accent-soft: #E3EAFE; --ok: #0F8C7B; --ok-soft: #DDF3EE; --warn: #B4480F;
+  --chat: #D9E6E2; --bot: #FFFFFF; --me: #D4EFE4; --frame: #0F1B2D; --kb: #F4F8F7;
+  --display: "Unbounded", "Arial Black", system-ui, sans-serif;
+  --body: "Manrope", "Segoe UI", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0B1220; --surface: #121B2C; --ink: #E6EDF5; --muted: #93A3B5; --line: #24324B;
+  --accent: #7B9BFF; --accent-soft: #1B2A4E; --ok: #34C6B0; --ok-soft: #12302E; --warn: #F08A4B;
+  --chat: #0E1828; --bot: #18243A; --me: #173B3A; --frame: #02060D; --kb: #1C2A42; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #0B1220; --surface: #121B2C; --ink: #E6EDF5; --muted: #93A3B5; --line: #24324B;
+  --accent: #7B9BFF; --accent-soft: #1B2A4E; --ok: #34C6B0; --ok-soft: #12302E; --warn: #F08A4B;
+  --chat: #0E1828; --bot: #18243A; --me: #173B3A; --frame: #02060D; --kb: #1C2A42; color-scheme: dark }
+
+* { box-sizing: border-box }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.wrap { max-width: 1120px; margin: 0 auto; padding-block: 28px 56px; display: grid; gap: 56px }
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; letter-spacing: -0.01em }
+h1 { font-size: clamp(28px, 5.2vw, 54px); line-height: 1.08; font-weight: 700 }
+h2 { font-size: clamp(22px, 3vw, 30px); font-weight: 700 }
+h3 { font-size: 17px; font-weight: 500 }
+p { margin: 0 }
+.eyebrow { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-weight: 700 }
+.brand { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap }
+.logo { font-family: var(--display); font-weight: 700; font-size: 18px; display: flex; align-items: center; gap: 10px }
+.logo i { width: 28px; height: 28px; border-radius: 8px; background: var(--accent); display: inline-grid; place-items: center; color: var(--surface); font-style: normal; font-size: 14px }
+.hero { display: grid; gap: 18px; max-width: 820px }
+.hero p { color: var(--muted); font-size: 18px; max-width: 62ch }
+.hero h1 span { color: var(--accent) }
+
+/* tabs */
+.tabs { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: thin }
+.tab { flex: 0 0 auto; border: 1px solid var(--line); background: var(--surface); color: var(--ink); font: 600 14px var(--body);
+  padding: 10px 16px; border-radius: 999px; cursor: pointer }
+.tab[aria-selected="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink) }
+.tab:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px }
+
+.stage { display: grid; grid-template-columns: minmax(0, 390px) minmax(0, 1fr); gap: 40px; align-items: start; margin-top: 20px }
+@media (max-width: 820px) { .stage { grid-template-columns: minmax(0, 1fr); gap: 24px } }
+
+.phonecol { display: grid; gap: 12px; justify-items: center; min-width: 0 }
+.modes { display: inline-flex; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 4px; gap: 4px }
+.modes button { border: 0; background: transparent; color: var(--muted); font: 700 14px var(--body); padding: 8px 18px; border-radius: 999px; cursor: pointer }
+.modes button[aria-pressed="true"] { background: var(--accent); color: var(--surface) }
+.hall { display: grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap: 6px }
+.hall.ps { grid-template-columns: repeat(4, minmax(0,1fr)) }
+.seat { aspect-ratio: 1; max-width: 100%; border-radius: 10px; border: 2px solid var(--ok); background: var(--ok-soft); color: var(--ink); font: 700 13px var(--body); cursor: pointer; display: grid; place-items: center; font-variant-numeric: tabular-nums }
+.seat:disabled { border-color: var(--line); background: var(--bg); color: var(--muted); cursor: default; text-decoration: line-through }
+.seat.on { border-color: var(--accent); background: var(--accent); color: var(--surface) }
+.legend { display: flex; gap: 14px; font-size: 12px; color: var(--muted); flex-wrap: wrap }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 5px; vertical-align: -1px }
+.screenline { text-align: center; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); border-bottom: 3px solid var(--line); padding-bottom: 4px }
+.big { font-family: var(--display); font-size: 40px; line-height: 1; font-variant-numeric: tabular-nums }
+
+/* phone */
+.phone { width: 100%; max-width: 390px; margin: 0 auto; background: var(--frame); border-radius: 38px; padding: 10px; box-shadow: 0 30px 60px -30px rgba(15,27,45,.45) }
+.screen { background: var(--chat); border-radius: 30px; height: 660px; max-height: 78vh; min-height: 520px; display: flex; flex-direction: column; overflow: hidden }
+.bar { display: flex; align-items: center; gap: 10px; padding: 14px 16px; background: var(--surface); border-bottom: 1px solid var(--line) }
+.ava { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; font-size: 18px; background: var(--accent-soft); flex: 0 0 auto }
+.bar b { display: block; font-size: 15px; line-height: 1.2 }
+.bar small { color: var(--muted); font-size: 12px }
+.bar .reset { margin-left: auto; border: 0; background: transparent; color: var(--accent); font: 600 13px var(--body); cursor: pointer; padding: 6px }
+
+.log { flex: 1; overflow-y: auto; padding: 14px 12px 18px; display: flex; flex-direction: column; gap: 8px }
+.msg { max-width: 86%; padding: 9px 12px; border-radius: 16px; font-size: 14.5px; line-height: 1.45; animation: pop .18s ease-out }
+.msg.bot { background: var(--bot); align-self: flex-start; border-bottom-left-radius: 5px }
+.msg.me { background: var(--me); align-self: flex-end; border-bottom-right-radius: 5px }
+.msg .hint { display: block; margin-top: 6px; color: var(--muted); font-size: 12px }
+.msg.typing { display: flex; gap: 4px; padding: 12px 14px }
+.msg.typing span { width: 6px; height: 6px; border-radius: 50%; background: var(--muted); animation: blink 1s infinite }
+.msg.typing span:nth-child(2) { animation-delay: .15s } .msg.typing span:nth-child(3) { animation-delay: .3s }
+.kb { display: grid; gap: 6px; margin-top: 10px }
+.kb-row { display: flex; gap: 6px }
+.kb button { flex: 1 1 0; min-width: 0; border: 1px solid var(--line); background: var(--kb); color: var(--accent); font: 600 13px var(--body);
+  padding: 9px 6px; border-radius: 10px; cursor: pointer; font-variant-numeric: tabular-nums }
+.kb button:hover:not(:disabled) { background: var(--accent-soft) }
+.kb button:disabled { cursor: default; opacity: .55 }
+.kb button.off { color: var(--muted); text-decoration: line-through; opacity: .5 }
+.kb button.picked { background: var(--accent); color: var(--surface); opacity: 1 }
+@keyframes pop { from { transform: translateY(4px); opacity: .4 } to { transform: none; opacity: 1 } }
+@keyframes blink { 50% { opacity: .25 } }
+@media (prefers-reduced-motion: reduce) { .msg, .msg.typing span, .pulse { animation: none } }
+
+/* mini app screens */
+.app { flex: 1; overflow-y: auto; background: var(--bg); display: flex; flex-direction: column }
+.app-pad { padding: 14px; display: grid; gap: 12px }
+.chips { display: flex; gap: 6px; overflow-x: auto }
+.chip { flex: 0 0 auto; border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 999px; padding: 6px 12px; font: 600 13px var(--body); cursor: pointer }
+.chip.on { background: var(--ink); color: var(--bg); border-color: var(--ink) }
+.item { display: grid; grid-template-columns: 52px minmax(0,1fr) auto; gap: 10px; align-items: center; background: var(--surface); border-radius: 14px; padding: 10px }
+.item .pic { width: 52px; height: 52px; border-radius: 12px; background: var(--accent-soft); display: grid; place-items: center; font-size: 26px }
+.item b { font-size: 14px; display: block; line-height: 1.25 }
+.item small { color: var(--muted); font-size: 12.5px; font-variant-numeric: tabular-nums }
+.qty { display: flex; align-items: center; gap: 6px }
+.qty button { width: 30px; height: 30px; border-radius: 50%; border: 0; background: var(--accent); color: var(--surface); font: 700 16px var(--body); cursor: pointer }
+.qty button.minus { background: var(--accent-soft); color: var(--accent) }
+.qty span { min-width: 16px; text-align: center; font-weight: 700; font-variant-numeric: tabular-nums }
+.cartbar { margin: auto 12px 12px; position: sticky; bottom: 12px; border: 0; background: var(--accent); color: var(--surface); border-radius: 14px; padding: 14px 16px;
+  display: flex; justify-content: space-between; font: 700 15px var(--body); cursor: pointer; font-variant-numeric: tabular-nums }
+.cartbar:disabled { background: var(--line); color: var(--muted); cursor: default }
+.card { background: var(--surface); border-radius: 14px; padding: 14px; display: grid; gap: 8px }
+.row { display: flex; justify-content: space-between; gap: 10px; font-variant-numeric: tabular-nums; font-size: 14px }
+.row.total { font-weight: 700; font-size: 16px; border-top: 1px dashed var(--line); padding-top: 8px }
+.field { display: grid; gap: 4px; font-size: 13px; color: var(--muted) }
+.field input { font: 500 14px var(--body); color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 10px }
+.pay { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 6px }
+.pay button { border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 10px; padding: 10px 4px; font: 600 13px var(--body); cursor: pointer }
+.pay button.on { border-color: var(--accent); background: var(--accent-soft); color: var(--accent) }
+.pay button:disabled { opacity: .45; text-decoration: line-through; cursor: default }
+.pay.slots { grid-template-columns: repeat(4, minmax(0,1fr)) }
+.item.pick { width: 100%; border: 0; text-align: left; font: inherit; color: inherit; cursor: pointer }
+.item.pick:hover { outline: 2px solid var(--accent-soft) }
+.codebig { font-family: var(--display); font-size: 22px; letter-spacing: .12em; font-variant-numeric: tabular-nums }
+.steps { display: grid; gap: 0 }
+.st { display: grid; grid-template-columns: 26px 1fr; gap: 10px; align-items: start; padding-bottom: 14px; position: relative }
+.st i { width: 26px; height: 26px; border-radius: 50%; border: 2px solid var(--line); background: var(--surface); display: grid; place-items: center; font-style: normal; font-size: 12px; z-index: 1 }
+.st:not(:last-child)::after { content: ""; position: absolute; left: 12px; top: 26px; bottom: 0; width: 2px; background: var(--line) }
+.st.done i { background: var(--ok); border-color: var(--ok); color: var(--surface) }
+.st.now i { border-color: var(--accent); color: var(--accent) }
+.st b { font-size: 14px; display: block } .st small { color: var(--muted); font-size: 12.5px }
+.pulse { animation: blink 1.2s infinite }
+
+.loy { background: linear-gradient(135deg, var(--accent), var(--ok)); color: #FFFFFF; border-radius: 18px; padding: 18px; display: grid; gap: 12px }
+.loy .pts { font-family: var(--display); font-size: 34px; font-variant-numeric: tabular-nums; line-height: 1 }
+.loy small { opacity: .85; font-size: 12.5px }
+.prog { height: 8px; background: rgba(255,255,255,.3); border-radius: 99px; overflow: hidden }
+.prog div { height: 100%; background: #FFFFFF; border-radius: 99px; transition: width .5s }
+.qr { background: #FFFFFF; border-radius: 14px; padding: 12px; display: grid; place-items: center; gap: 6px; color: #0F1B2D }
+.qr canvas { width: 150px; height: 150px; image-rendering: pixelated }
+.btn { border: 0; background: var(--accent); color: var(--surface); border-radius: 12px; padding: 12px; font: 700 14px var(--body); cursor: pointer }
+.btn.ghost { background: var(--accent-soft); color: var(--accent) }
+
+.kpis { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 8px }
+.kpi { background: var(--surface); border-radius: 14px; padding: 12px }
+.kpi small { color: var(--muted); font-size: 12px; display: block }
+.kpi b { font-family: var(--display); font-weight: 500; font-size: 18px; font-variant-numeric: tabular-nums }
+.kpi em { font-style: normal; font-size: 12px; color: var(--ok); font-weight: 700 }
+.chart svg { width: 100%; height: auto; display: block }
+
+/* side panel */
+.side { display: grid; gap: 22px; min-width: 0 }
+.side .lead { font-size: 17px; color: var(--muted); max-width: 60ch }
+.feats { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px }
+.feats li { display: grid; grid-template-columns: 22px 1fr; gap: 8px; font-size: 15px }
+.feats li::before { content: "✓"; color: var(--ok); font-weight: 700 }
+.feed { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 16px; display: grid; gap: 10px }
+.feed-head { display: flex; justify-content: space-between; align-items: center; gap: 10px }
+.feed-list { display: grid; gap: 8px; max-height: 260px; overflow-y: auto }
+.note { border-left: 3px solid var(--ok); background: var(--ok-soft); border-radius: 8px; padding: 8px 10px; font-size: 13.5px; animation: pop .25s ease-out }
+.empty { color: var(--muted); font-size: 13.5px }
+.price { display: flex; flex-wrap: wrap; gap: 8px; align-items: baseline }
+.price b { font-family: var(--display); font-size: 24px; font-weight: 700 }
+.price span { color: var(--muted); font-size: 14px }
+
+/* lower sections */
+.section { display: grid; gap: 20px }
+.grid3 { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px }
+@media (max-width: 820px) { .grid3 { grid-template-columns: minmax(0,1fr) } }
+.svc { background: var(--surface); border-radius: 16px; padding: 18px; display: grid; gap: 10px; align-content: start }
+.svc ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px }
+.svc li { display: flex; justify-content: space-between; gap: 12px; font-size: 14.5px; border-bottom: 1px solid var(--line); padding-bottom: 8px }
+.svc li:last-child { border-bottom: 0; padding-bottom: 0 }
+.svc li span:last-child { font-weight: 700; white-space: nowrap; font-variant-numeric: tabular-nums }
+.reels { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 32px; align-items: start }
+@media (max-width: 820px) { .reels { grid-template-columns: minmax(0, 1fr) } }
+.reel-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; min-width: 0 }
+.reel { margin: 0; display: grid; gap: 8px; width: 100%; min-width: 0 }
+.reel figcaption b { font-size: 13.5px; line-height: 1.3 }
+.reel video { width: 100%; max-width: 100%; aspect-ratio: 9 / 16; border-radius: 22px; background: var(--frame); display: block; object-fit: cover }
+.reel figcaption { display: flex; justify-content: space-between; gap: 8px; font-size: 14px }
+.reel figcaption span { color: var(--muted) }
+.reel-info { display: grid; gap: 16px; min-width: 0 }
+.reel-info .lead { font-size: 17px; color: var(--muted); max-width: 60ch }
+.process { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 12px; counter-reset: s }
+@media (max-width: 820px) { .process { grid-template-columns: minmax(0,1fr) } }
+.process div { border-top: 3px solid var(--accent); padding-top: 12px; display: grid; gap: 6px; counter-increment: s }
+.process div::before { content: counter(s); font-family: var(--display); color: var(--accent); font-size: 14px }
+.process p { color: var(--muted); font-size: 14.5px }
+.terms { background: var(--ink); color: var(--bg); border-radius: 20px; padding: 24px; display: grid; gap: 14px }
+.terms ul { margin: 0; padding-left: 18px; display: grid; gap: 6px }
+.foot { color: var(--muted); font-size: 13px }
+
+/* nav */
+html { scroll-behavior: smooth }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto } }
+.section, .hero { scroll-margin-top: 80px }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--surface) }
+.topnav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; margin-inline: calc(-1 * max(16px, env(safe-area-inset-left, 0px))) calc(-1 * max(16px, env(safe-area-inset-right, 0px)));
+  background: var(--surface); border-bottom: 1px solid var(--line) }
+.topnav-in { max-width: 1120px; margin: 0 auto; display: flex; align-items: center; gap: 16px; padding-block: 10px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)) }
+.topnav a { color: var(--ink); text-decoration: none }
+.topnav .logo { font-size: 15px; flex: 0 0 auto }
+.navlinks { display: flex; gap: 4px; overflow-x: auto; flex: 1; min-width: 0; scrollbar-width: none }
+.navlinks a { padding: 6px 10px; border-radius: 8px; font-size: 14px; font-weight: 600; color: var(--muted); white-space: nowrap }
+.navlinks a:hover { background: var(--bg); color: var(--ink) }
+.navcta { flex: 0 0 auto; background: var(--accent); color: var(--surface) !important; padding: 8px 14px; border-radius: 10px; font-weight: 700; font-size: 14px }
+@media (max-width: 640px) { .topnav .logo span { display: none } .navcta { padding: 8px 10px; font-size: 13px } }
+a.btn { display: inline-block; text-decoration: none; text-align: center }
+.btn.light { background: var(--bg); color: var(--ink); justify-self: start }
+.facts { display: flex; flex-wrap: wrap; gap: 8px }
+.facts span { background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px; font-size: 14px; color: var(--muted) }
+.facts b { color: var(--ink) }
+.herocta { display: flex; flex-wrap: wrap; gap: 10px }
+.herocta .btn { padding: 13px 20px }
+.lead-muted { color: var(--muted); max-width: 65ch }
+
+.lang { display: inline-flex; flex: 0 0 auto; border: 1px solid var(--line); border-radius: 10px; padding: 2px; gap: 2px; background: var(--bg) }
+.lang button { border: 0; background: transparent; color: var(--muted); font: 700 12.5px var(--body); padding: 6px 8px; border-radius: 8px; cursor: pointer; letter-spacing: .04em }
+.lang button[aria-pressed="true"] { background: var(--ink); color: var(--bg) }
+@media (max-width: 640px) { .lang button { padding: 6px 6px } .navcta { display: none } }
+
+/* industries */
+.ind { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr)); gap: 12px }
+.indc { background: var(--surface); border-radius: 16px; padding: 16px; display: grid; gap: 8px; align-content: start; border: 1px solid transparent }
+.indc:hover { border-color: var(--line) }
+.indc .ic { font-size: 26px }
+.indc p { color: var(--muted); font-size: 14.5px }
+.indc .foot2 { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-top: 4px }
+.indc .foot2 b { font-variant-numeric: tabular-nums }
+.indc a { color: var(--accent); font-weight: 700; text-decoration: none; font-size: 14px }
+
+/* calculator */
+.calc { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 340px); gap: 24px; align-items: start }
+@media (max-width: 820px) { .calc { grid-template-columns: minmax(0, 1fr) } }
+.calc-list { display: grid; gap: 16px; min-width: 0 }
+.cgroup { background: var(--surface); border-radius: 16px; padding: 14px 16px; display: grid; gap: 4px }
+.cgroup h3 { margin-bottom: 6px }
+.citem { display: grid; grid-template-columns: 22px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 7px 0; border-bottom: 1px solid var(--line); font-size: 14.5px; cursor: pointer }
+.citem:last-child { border-bottom: 0 }
+.citem input[type=checkbox] { width: 18px; height: 18px; accent-color: var(--accent); margin: 0 }
+.citem .pr { font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap }
+.citem small { display: block; color: var(--muted); font-size: 12.5px }
+.citem .qtyin { width: 64px; font: 600 14px var(--body); padding: 4px 6px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); color: var(--ink); margin-top: 4px }
+.calc-sum { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 76px); background: var(--ink); color: var(--bg); border-radius: 20px; padding: 20px; display: grid; gap: 12px }
+.calc-sum .row { font-size: 14.5px }
+.calc-sum .total { font-family: var(--display); font-size: 32px; line-height: 1; font-variant-numeric: tabular-nums }
+.calc-sum .muted { opacity: .7; font-size: 13px }
+.calc-sum .btn { background: var(--accent); color: var(--surface) }
+.calc-sum .btn.ghost { background: transparent; color: var(--bg); border: 1px solid currentColor }
+.calc-sum ul { margin: 0; padding-left: 18px; font-size: 13.5px; display: grid; gap: 2px; opacity: .85 }
+
+/* faq */
+.faq { display: grid; gap: 8px; max-width: 820px }
+.faq details { background: var(--surface); border-radius: 14px; padding: 14px 18px }
+.faq summary { cursor: pointer; font-weight: 700; font-size: 16px; list-style-position: outside }
+.faq details p { margin-top: 10px; color: var(--muted) }
+
+/* lead */
+.leadbox { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; align-items: start }
+@media (max-width: 820px) { .leadbox { grid-template-columns: minmax(0, 1fr) } }
+.leadform { background: var(--surface); border-radius: 20px; padding: 20px; display: grid; gap: 12px }
+.leadform select, .leadform textarea { font: 500 14px var(--body); color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 10px; width: 100%; max-width: 100% }
+.leadform textarea { resize: vertical }
+.formerr { color: var(--warn); font-size: 14px; font-weight: 600 }
+.leadout { background: var(--surface); border: 1px dashed var(--line); border-radius: 20px; padding: 20px; display: grid; gap: 12px; min-width: 0 }
+.leadout pre { white-space: pre-wrap; word-break: break-word; font: 500 14px/1.5 var(--body); background: var(--bg); border-radius: 12px; padding: 14px; margin: 0 }
+.item.pick.sel { outline: 2px solid var(--accent) }
+</style>
+
+<nav class="topnav" aria-label="Разделы"><div class="topnav-in">
+  <a class="logo" href="#top"><i>T</i><span>Todas.Studio</span></a>
+  <div class="navlinks"><a href="#demo">Демо</a><a href="#industries">Отрасли</a><a href="#reels">Ролики</a><a href="#calc">Калькулятор</a><a href="#prices">Цены</a><a href="#faq">Вопросы</a></div>
+  <div class="lang" role="group" aria-label="Язык"><button type="button" data-lang="ru">RU</button><button type="button" data-lang="uz">UZ</button><button type="button" data-lang="en">EN</button></div>
+  <a class="navcta" href="#lead">Оставить заявку</a>
+</div></nav>
+
+<div class="wrap">
+  <header class="hero" id="top">
+    <div class="eyebrow">Ташкент · Telegram-боты · Mini Apps · сайты · ролики</div>
+    <h1>Клиенты записываются, заказывают и платят <span>сами</span> — прямо в Telegram</h1>
+    <p>Ниже работающие демо для восьми видов бизнеса. Нажимайте кнопки так, как это сделает ваш клиент, и смотрите справа, что в это время получает владелец.</p>
+    <div class="facts">
+      <span><b>до 14</b> рабочих дней</span><span><b>от $70</b> за бота</span><span><b>в сумах</b> по курсу ЦБ</span><span><b>рус · узб · англ</b> языки</span><span><b>по договору</b></span>
+    </div>
+    <div class="herocta"><a class="btn" href="#demo">Смотреть демо</a><a class="btn ghost" href="#calc">Рассчитать стоимость</a></div>
+  </header>
+
+  <section class="section" id="demo">
+    <div class="eyebrow">Живые демо</div>
+    <h2>Попробуйте как ваш клиент</h2>
+    <div class="tabs" role="tablist" id="tabs"></div>
+    <div class="stage">
+      <div class="phonecol">
+        <div class="modes" id="modes" role="group" aria-label="Формат" hidden></div>
+        <div class="phone"><div class="screen" id="screen"></div></div>
+      </div>
+      <aside class="side" id="side"></aside>
+    </div>
+  </section>
+
+  <section class="section" id="industries">
+    <div class="eyebrow">Отрасли</div>
+    <h2>Что сделаем для вашего бизнеса</h2>
+    <div class="ind" id="indGrid"></div>
+  </section>
+
+  <section class="section" id="reels">
+    <div class="eyebrow">Видео</div>
+    <h2>Ролики для Reels и TikTok</h2>
+    <div class="reels">
+      <div class="reel-grid">
+        <figure class="reel">
+          <video src="reels/reel-1.mp4" poster="reels/reel-1.jpg" controls playsinline preload="metadata" aria-label="Пример ролика: 3D-история с персонажами"></video>
+          <figcaption><b>3D-история с персонажами</b><span>35 сек</span></figcaption>
+        </figure>
+        <figure class="reel">
+          <video src="reels/reel-2.mp4" poster="reels/reel-2.jpg" controls playsinline preload="metadata" aria-label="Пример ролика: 3D-реклама холодного кофе"></video>
+          <figcaption><b>3D-реклама товара</b><span>10 сек</span></figcaption>
+        </figure>
+      </div>
+      <div class="reel-info">
+        <p class="lead">Вертикальные ролики, которые смотрят до конца: сюжет с героями, 3D-анимация, монтаж и звук. Делаем под ваш продукт и вашу аудиторию, на русском или узбекском.</p>
+        <div class="svc"><ul>
+          <li><span>Ролик для Reels / TikTok, 15–60 сек</span><span>$25</span></li>
+          <li><span>3D-ролик товара</span><span>$50</span></li>
+          <li><span>Анимированный ролик-объяснение, 1–2 мин</span><span>$130</span></li>
+          <li><span>Пакет: 8 роликов в месяц, 2 в неделю</span><span>$190/мес</span></li>
+        </ul></div>
+        <p class="empty">Нажмите на видео, чтобы посмотреть. Звук включается в плеере.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="calc">
+    <div class="eyebrow">Калькулятор</div>
+    <h2>Сколько это будет стоить</h2>
+    <p class="lead-muted">Отметьте, что вам нужно. Это предварительный расчёт, точную цену назовём после короткого брифа.</p>
+    <div class="calc">
+      <div class="calc-list" id="calcList"></div>
+      <aside class="calc-sum" id="calcSum" aria-live="polite"></aside>
+    </div>
+  </section>
+
+  <section class="section" id="prices">
+    <div class="eyebrow">Все услуги</div>
+    <h2>Цены от</h2>
+    <div class="grid3">
+      <div class="svc"><h3>Telegram-боты и Mini Apps</h3><ul>
+        <li><span>Бот-визитка</span><span>$70</span></li>
+        <li><span>Бот онлайн-записи</span><span>$270</span></li>
+        <li><span>Бот-магазин, ИИ-консультант</span><span>$370</span></li>
+        <li><span>Бот доставки</span><span>$470</span></li>
+        <li><span>Mini App записи или лояльности</span><span>$570</span></li>
+        <li><span>Mini App учёта для бизнеса</span><span>$970</span></li>
+      </ul></div>
+      <div class="svc"><h3>Сайты и приложения</h3><ul>
+        <li><span>Лендинг</span><span>$170</span></li>
+        <li><span>Сайт компании</span><span>$370</span></li>
+        <li><span>Сайт с онлайн-записью</span><span>$470</span></li>
+        <li><span>Интернет-магазин</span><span>$770</span></li>
+        <li><span>CRM под бизнес</span><span>$1 170</span></li>
+        <li><span>Мобильное приложение</span><span>$2 470</span></li>
+      </ul></div>
+      <div class="svc"><h3>Автоматизация и контент</h3><ul>
+        <li><span>Автоотчёты владельцу</span><span>$70</span></li>
+        <li><span>Подключение Payme / Click / Uzum</span><span>$80</span></li>
+        <li><span>Интеграция с amoCRM / Bitrix24</span><span>$120</span></li>
+        <li><span>Ролик для Reels / TikTok</span><span>$25</span></li>
+        <li><span>Пакет 8 роликов в месяц</span><span>$190</span></li>
+        <li><span>Логотип и фирменный стиль</span><span>$85</span></li>
+      </ul></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="eyebrow">Как работаем</div>
+    <h2>От звонка до запуска — до 14 рабочих дней</h2>
+    <div class="process">
+      <div><h3>Бриф</h3><p>15 минут: разбираем, где вы теряете клиентов и время.</p></div>
+      <div><h3>Прототип</h3><p>Показываем, как будет работать, ещё до основной разработки.</p></div>
+      <div><h3>Запуск</h3><p>Делаем, тестируем вместе с вами и подключаем оплату.</p></div>
+      <div><h3>Поддержка</h3><p>Сервер, резервные копии, исправления — $30 в месяц.</p></div>
+    </div>
+  </section>
+
+  <section class="terms">
+    <h2>Условия</h2>
+    <ul>
+      <li>Цены в долларах, оплата в сумах по курсу ЦБ на день платежа.</li>
+      <li>50% предоплата, 50% после того, как вы приняли работу.</li>
+      <li>Два круга правок входят в стоимость.</li>
+      <li>Всё по договору, права на результат переходят вам после оплаты.</li>
+    </ul>
+    <a class="btn light" href="#lead">Оставить заявку</a>
+  </section>
+
+  <section class="section" id="faq">
+    <div class="eyebrow">Вопросы</div>
+    <h2>Частые вопросы</h2>
+    <div class="faq">
+      <details><summary>Нужно ли клиентам что-то устанавливать?</summary><p>Нет. Бот и Mini App работают внутри Telegram, который у ваших клиентов уже есть. Клиент нажимает ссылку или кнопку и сразу пользуется.</p></details>
+      <details><summary>Что выбрать: бота или Mini App?</summary><p>Бот с кнопками проще и дешевле, его достаточно для записи, заявок и рассылок. Mini App выглядит как приложение: схема зала, каталог с фото, корзина, личный кабинет. Если сомневаетесь, покажем оба варианта на встрече.</p></details>
+      <details><summary>Сколько времени занимает разработка?</summary><p>До 14 рабочих дней. Простые боты — от 3–5 дней. Для больших систем (CRM, мобильное приложение) за это время запускаем базовую версию.</p></details>
+      <details><summary>Как оплачивать?</summary><p>Цены считаем в долларах, оплата в сумах по курсу ЦБ на день платежа: переводом на карту, через Payme или Click. 50% предоплата, 50% после того, как вы приняли работу.</p></details>
+      <details><summary>Что входит в поддержку за $30 в месяц?</summary><p>Сервер, резервные копии, мониторинг работы, исправление ошибок и мелкие правки до 1 часа в месяц. Новые функции оплачиваются отдельно, $12 в час.</p></details>
+      <details><summary>Можно ли на узбекском языке?</summary><p>Да. Делаем на русском, узбекском и английском, второй язык стоит от $40.</p></details>
+      <details><summary>Чей будет бот и код?</summary><p>Ваш. По договору права на результат переходят вам после полной оплаты. Если откажетесь от поддержки, передадим исходный код и инструкцию.</p></details>
+      <details><summary>Можно подключить к нашей CRM или таблицам?</summary><p>Да: amoCRM, Bitrix24, Google Таблицы. Заявки и заказы будут попадать туда автоматически.</p></details>
+      <details><summary>А если что-то сломается?</summary><p>В рамках поддержки исправляем ошибки. Сбои самого Telegram или платёжных систем от нас не зависят, но мы следим за ними и предупреждаем вас.</p></details>
+    </div>
+  </section>
+
+  <section class="section" id="lead">
+    <div class="eyebrow">Заявка</div>
+    <h2>Обсудим ваш проект</h2>
+    <div class="leadbox">
+      <form id="leadForm" class="leadform" novalidate>
+        <label class="field" for="lfName">Как вас зовут<input id="lfName" autocomplete="name" placeholder="Имя"></label>
+        <label class="field" for="lfPhone">Телефон или Telegram<input id="lfPhone" inputmode="tel" autocomplete="tel" placeholder="+998 __ ___-__-__"></label>
+        <label class="field" for="lfBiz">Ваш бизнес<select id="lfBiz"></select></label>
+        <label class="field" for="lfNeed">Что нужно<textarea id="lfNeed" rows="4" placeholder="Например: бот записи и напоминания клиентам"></textarea></label>
+        <label class="field" for="lfTime">Когда удобно созвониться<select id="lfTime"><option>В любое время</option><option>Утром, 10:00–12:00</option><option>Днём, 12:00–15:00</option><option>Вечером, 15:00–18:00</option></select></label>
+        <p class="formerr" id="lfErr" hidden>Укажите имя и телефон или Telegram, чтобы мы могли с вами связаться.</p>
+        <button type="submit" class="btn">Подготовить заявку</button>
+      </form>
+      <div class="leadout" id="leadOut">
+        <h3>Как это работает</h3>
+        <p class="lead-muted">Заполните форму, и мы соберём готовый текст заявки. Скопируйте его и отправьте менеджеру, который прислал вам эту ссылку. Он перезвонит в удобное время.</p>
+      </div>
+    </div>
+  </section>
+
+  <p class="foot">Все компании, цены и цифры в демо придуманы для примера. © Todas.Studio, Ташкент</p>
+</div>
+
+<script>
+window.__I18N = {
+uz: {
+  'Todas.Studio — демо': 'Todas.Studio — demo',
+  'Разделы': 'Bo‘limlar', 'Язык': 'Til',
+  'Демо': 'Demo', 'Отрасли': 'Sohalar', 'Ролики': 'Roliklar', 'Калькулятор': 'Kalkulyator', 'Цены': 'Narxlar', 'Вопросы': 'Savollar', 'Оставить заявку': 'Ariza qoldirish',
+  'Ташкент · Telegram-боты · Mini Apps · сайты · ролики': 'Toshkent · Telegram-botlar · Mini Apps · saytlar · roliklar',
+  'Клиенты записываются, заказывают и платят': 'Mijozlar', 'сами': 'o‘zlari', '— прямо в Telegram': 'yoziladi, buyurtma beradi va to‘laydi — to‘g‘ridan-to‘g‘ri Telegram’da',
+  'Ниже работающие демо для восьми видов бизнеса. Нажимайте кнопки так, как это сделает ваш клиент, и смотрите справа, что в это время получает владелец.': 'Quyida sakkiz turdagi biznes uchun ishlaydigan demolar. Tugmalarni mijozingiz qanday bossa, shunday bosing va o‘ngda shu paytda biznes egasi nimani olishini kuzating.',
+  'до 14': '14 ish kuni', 'рабочих дней': 'gacha', 'от $70': 'bot', 'за бота': '$70 dan', 'в сумах': 'MB kursi', 'по курсу ЦБ': 'bo‘yicha so‘mda', 'рус · узб · англ': 'rus · o‘zb · ing', 'языки': 'tillari', 'по договору': 'shartnoma asosida',
+  'Смотреть демо': 'Demoni ko‘rish', 'Рассчитать стоимость': 'Narxni hisoblash',
+  'Живые демо': 'Jonli demolar', 'Попробуйте как ваш клиент': 'Mijozingiz kabi sinab ko‘ring', 'Формат': 'Format',
+  'Что сделаем для вашего бизнеса': 'Biznesingiz uchun nima qilamiz',
+  'Видео': 'Video', 'Ролики для Reels и TikTok': 'Reels va TikTok uchun roliklar',
+  '3D-история с персонажами': 'Qahramonli 3D-hikoya', '35 сек': '35 soniya', '3D-реклама товара': 'Tovarning 3D-reklamasi', '10 сек': '10 soniya',
+  'Пример ролика: 3D-история с персонажами': 'Rolik namunasi: qahramonli 3D-hikoya', 'Пример ролика: 3D-реклама холодного кофе': 'Rolik namunasi: sovuq qahvaning 3D-reklamasi',
+  'Вертикальные ролики, которые смотрят до конца: сюжет с героями, 3D-анимация, монтаж и звук. Делаем под ваш продукт и вашу аудиторию, на русском или узбекском.': 'Oxirigacha ko‘riladigan vertikal roliklar: qahramonli syujet, 3D-animatsiya, montaj va ovoz. Mahsulotingiz va auditoriyangiz uchun rus yoki o‘zbek tilida qilamiz.',
+  'Ролик для Reels / TikTok, 15–60 сек': 'Reels / TikTok uchun rolik, 15–60 soniya', '3D-ролик товара': 'Tovarning 3D-roligi', 'Анимированный ролик-объяснение, 1–2 мин': 'Animatsion tushuntiruvchi rolik, 1–2 daqiqa',
+  'Пакет: 8 роликов в месяц, 2 в неделю': 'Paket: oyiga 8 ta rolik, haftasiga 2 ta', '$190/мес': '$190/oy',
+  'Нажмите на видео, чтобы посмотреть. Звук включается в плеере.': 'Ko‘rish uchun videoni bosing. Ovoz pleyerda yoqiladi.',
+  'Сколько это будет стоить': 'Bu qancha turadi', 'Отметьте, что вам нужно. Это предварительный расчёт, точную цену назовём после короткого брифа.': 'Kerakli narsalarni belgilang. Bu taxminiy hisob-kitob, aniq narxni qisqa brifdan keyin aytamiz.',
+  'Все услуги': 'Barcha xizmatlar', 'Цены от': 'Boshlang‘ich narxlar', 'Telegram-боты и Mini Apps': 'Telegram-botlar va Mini Apps',
+  'Бот-визитка': 'Bot-vizitka', 'Бот онлайн-записи': 'Onlayn yozilish boti', 'Бот-магазин, ИИ-консультант': 'Bot-do‘kon, SI-maslahatchi', 'Бот доставки': 'Yetkazib berish boti',
+  'Mini App записи или лояльности': 'Yozilish yoki sodiqlik Mini App', 'Mini App учёта для бизнеса': 'Biznes uchun hisob Mini App',
+  'Сайты и приложения': 'Saytlar va ilovalar', 'Лендинг': 'Lending', 'Сайт компании': 'Kompaniya sayti', 'Сайт с онлайн-записью': 'Onlayn yozilishli sayt', 'Интернет-магазин': 'Internet-do‘kon',
+  'CRM под бизнес': 'Biznesingiz uchun CRM', 'Мобильное приложение': 'Mobil ilova', 'Автоматизация и контент': 'Avtomatlashtirish va kontent',
+  'Автоотчёты владельцу': 'Egasiga avtohisobotlar', 'Подключение Payme / Click / Uzum': 'Payme / Click / Uzum ulash', 'Интеграция с amoCRM / Bitrix24': 'amoCRM / Bitrix24 bilan integratsiya',
+  'Ролик для Reels / TikTok': 'Reels / TikTok uchun rolik', 'Пакет 8 роликов в месяц': 'Oyiga 8 ta rolik paketi', 'Логотип и фирменный стиль': 'Logotip va firma uslubi',
+  'Как работаем': 'Qanday ishlaymiz', 'От звонка до запуска — до 14 рабочих дней': 'Qo‘ng‘iroqdan ishga tushirishgacha — 14 ish kunigacha',
+  'Бриф': 'Brif', '15 минут: разбираем, где вы теряете клиентов и время.': '15 daqiqa: mijoz va vaqtni qayerda yo‘qotayotganingizni aniqlaymiz.',
+  'Прототип': 'Prototip', 'Показываем, как будет работать, ещё до основной разработки.': 'Asosiy ishlab chiqishdan oldin qanday ishlashini ko‘rsatamiz.',
+  'Запуск': 'Ishga tushirish', 'Делаем, тестируем вместе с вами и подключаем оплату.': 'Qilamiz, siz bilan birga sinaymiz va to‘lovni ulaymiz.',
+  'Поддержка': 'Qo‘llab-quvvatlash', 'Сервер, резервные копии, исправления — $30 в месяц.': 'Server, zaxira nusxalar, tuzatishlar — oyiga $30.',
+  'Условия': 'Shartlar', 'Цены в долларах, оплата в сумах по курсу ЦБ на день платежа.': 'Narxlar dollarda, to‘lov to‘lov kunidagi MB kursi bo‘yicha so‘mda.',
+  '50% предоплата, 50% после того, как вы приняли работу.': '50% oldindan to‘lov, 50% ishni qabul qilganingizdan keyin.', 'Два круга правок входят в стоимость.': 'Ikki marta tuzatish narxga kiradi.',
+  'Всё по договору, права на результат переходят вам после оплаты.': 'Hammasi shartnoma bo‘yicha, natijaga huquqlar to‘lovdan keyin sizga o‘tadi.',
+  'Частые вопросы': 'Ko‘p beriladigan savollar',
+  'Нужно ли клиентам что-то устанавливать?': 'Mijozlar biror narsa o‘rnatishi kerakmi?',
+  'Нет. Бот и Mini App работают внутри Telegram, который у ваших клиентов уже есть. Клиент нажимает ссылку или кнопку и сразу пользуется.': 'Yo‘q. Bot va Mini App mijozlaringizda allaqachon bor Telegram ichida ishlaydi. Mijoz havola yoki tugmani bosadi va darhol foydalanadi.',
+  'Что выбрать: бота или Mini App?': 'Nimani tanlash kerak: bot yoki Mini App?',
+  'Бот с кнопками проще и дешевле, его достаточно для записи, заявок и рассылок. Mini App выглядит как приложение: схема зала, каталог с фото, корзина, личный кабинет. Если сомневаетесь, покажем оба варианта на встрече.': 'Tugmali bot oddiyroq va arzonroq, u yozilish, arizalar va xabar tarqatish uchun yetarli. Mini App ilovaga o‘xshaydi: zal sxemasi, rasmli katalog, savat, shaxsiy kabinet. Ikkilansangiz, uchrashuvda ikkala variantni ko‘rsatamiz.',
+  'Сколько времени занимает разработка?': 'Ishlab chiqish qancha vaqt oladi?',
+  'До 14 рабочих дней. Простые боты — от 3–5 дней. Для больших систем (CRM, мобильное приложение) за это время запускаем базовую версию.': '14 ish kunigacha. Oddiy botlar — 3–5 kundan. Katta tizimlar (CRM, mobil ilova) uchun shu muddatda asosiy versiyani ishga tushiramiz.',
+  'Как оплачивать?': 'Qanday to‘lanadi?',
+  'Цены считаем в долларах, оплата в сумах по курсу ЦБ на день платежа: переводом на карту, через Payme или Click. 50% предоплата, 50% после того, как вы приняли работу.': 'Narxlarni dollarda hisoblaymiz, to‘lov to‘lov kunidagi MB kursi bo‘yicha so‘mda: kartaga o‘tkazma, Payme yoki Click orqali. 50% oldindan, 50% ishni qabul qilganingizdan keyin.',
+  'Что входит в поддержку за $30 в месяц?': 'Oyiga $30 lik qo‘llab-quvvatlashga nima kiradi?',
+  'Сервер, резервные копии, мониторинг работы, исправление ошибок и мелкие правки до 1 часа в месяц. Новые функции оплачиваются отдельно, $12 в час.': 'Server, zaxira nusxalar, ishlashni kuzatish, xatolarni tuzatish va oyiga 1 soatgacha mayda tuzatishlar. Yangi funksiyalar alohida to‘lanadi, soatiga $12.',
+  'Можно ли на узбекском языке?': 'O‘zbek tilida qilsa bo‘ladimi?', 'Да. Делаем на русском, узбекском и английском, второй язык стоит от $40.': 'Ha. Rus, o‘zbek va ingliz tillarida qilamiz, ikkinchi til $40 dan.',
+  'Чей будет бот и код?': 'Bot va kod kimniki bo‘ladi?',
+  'Ваш. По договору права на результат переходят вам после полной оплаты. Если откажетесь от поддержки, передадим исходный код и инструкцию.': 'Sizniki. Shartnoma bo‘yicha natijaga huquqlar to‘liq to‘lovdan keyin sizga o‘tadi. Qo‘llab-quvvatlashdan voz kechsangiz, dastlabki kod va yo‘riqnomani topshiramiz.',
+  'Можно подключить к нашей CRM или таблицам?': 'Bizning CRM yoki jadvallarimizga ulasa bo‘ladimi?', 'Да: amoCRM, Bitrix24, Google Таблицы. Заявки и заказы будут попадать туда автоматически.': 'Ha: amoCRM, Bitrix24, Google Sheets. Arizalar va buyurtmalar u yerga avtomatik tushadi.',
+  'А если что-то сломается?': 'Agar biror narsa buzilsa-chi?',
+  'В рамках поддержки исправляем ошибки. Сбои самого Telegram или платёжных систем от нас не зависят, но мы следим за ними и предупреждаем вас.': 'Qo‘llab-quvvatlash doirasida xatolarni tuzatamiz. Telegram yoki to‘lov tizimlarining o‘zidagi nosozliklar bizga bog‘liq emas, lekin biz ularni kuzatib boramiz va sizni ogohlantiramiz.',
+  'Заявка': 'Ariza', 'Обсудим ваш проект': 'Loyihangizni muhokama qilamiz', 'Как вас зовут': 'Ismingiz', 'Телефон или Telegram': 'Telefon yoki Telegram', 'Ваш бизнес': 'Biznesingiz',
+  'Что нужно': 'Nima kerak', 'Когда удобно созвониться': 'Qachon qo‘ng‘iroq qilish qulay', 'Имя': 'Ism', 'Например: бот записи и напоминания клиентам': 'Masalan: yozilish boti va mijozlarga eslatmalar',
+  'В любое время': 'Istalgan vaqtda', 'Утром, 10:00–12:00': 'Ertalab, 10:00–12:00', 'Днём, 12:00–15:00': 'Kunduzi, 12:00–15:00', 'Вечером, 15:00–18:00': 'Kechqurun, 15:00–18:00',
+  'Укажите имя и телефон или Telegram, чтобы мы могли с вами связаться.': 'Siz bilan bog‘lanishimiz uchun ism va telefon yoki Telegram’ni kiriting.', 'Подготовить заявку': 'Arizani tayyorlash',
+  'Как это работает': 'Bu qanday ishlaydi',
+  'Заполните форму, и мы соберём готовый текст заявки. Скопируйте его и отправьте менеджеру, который прислал вам эту ссылку. Он перезвонит в удобное время.': 'Formani to‘ldiring, biz tayyor ariza matnini yig‘amiz. Uni nusxalab, sizga ushbu havolani yuborgan menejerga yuboring. U qulay vaqtda qo‘ng‘iroq qiladi.',
+  'Все компании, цены и цифры в демо придуманы для примера. © Todas.Studio, Ташкент': 'Demodagi barcha kompaniyalar, narxlar va raqamlar misol uchun o‘ylab topilgan. © Todas.Studio, Toshkent'
+},
+en: {
+  'Todas.Studio — демо': 'Todas.Studio — demo',
+  'Разделы': 'Sections', 'Язык': 'Language',
+  'Демо': 'Demos', 'Отрасли': 'Industries', 'Ролики': 'Videos', 'Калькулятор': 'Calculator', 'Цены': 'Prices', 'Вопросы': 'FAQ', 'Оставить заявку': 'Get in touch',
+  'Ташкент · Telegram-боты · Mini Apps · сайты · ролики': 'Tashkent · Telegram bots · Mini Apps · websites · videos',
+  'Клиенты записываются, заказывают и платят': 'Customers book, order and pay', 'сами': 'by themselves', '— прямо в Telegram': '— right in Telegram',
+  'Ниже работающие демо для восьми видов бизнеса. Нажимайте кнопки так, как это сделает ваш клиент, и смотрите справа, что в это время получает владелец.': 'Below are working demos for eight types of business. Tap the buttons the way your customer would, and watch on the right what the owner receives at the same moment.',
+  'до 14': 'up to 14', 'рабочих дней': 'working days', 'от $70': 'from $70', 'за бота': 'per bot', 'в сумах': 'in UZS', 'по курсу ЦБ': 'at the Central Bank rate', 'рус · узб · англ': 'ru · uz · en', 'языки': 'languages', 'по договору': 'under contract',
+  'Смотреть демо': 'See the demos', 'Рассчитать стоимость': 'Estimate the cost',
+  'Живые демо': 'Live demos', 'Попробуйте как ваш клиент': 'Try it like your customer would', 'Формат': 'Format',
+  'Что сделаем для вашего бизнеса': 'What we’ll build for your business',
+  'Видео': 'Video', 'Ролики для Reels и TikTok': 'Videos for Reels and TikTok',
+  '3D-история с персонажами': '3D story with characters', '35 сек': '35 sec', '3D-реклама товара': '3D product ad', '10 сек': '10 sec',
+  'Пример ролика: 3D-история с персонажами': 'Sample video: 3D story with characters', 'Пример ролика: 3D-реклама холодного кофе': 'Sample video: 3D iced coffee ad',
+  'Вертикальные ролики, которые смотрят до конца: сюжет с героями, 3D-анимация, монтаж и звук. Делаем под ваш продукт и вашу аудиторию, на русском или узбекском.': 'Vertical videos people watch to the end: a story with characters, 3D animation, editing and sound. Made for your product and audience, in Russian or Uzbek.',
+  'Ролик для Reels / TikTok, 15–60 сек': 'Reels / TikTok video, 15–60 sec', '3D-ролик товара': '3D product video', 'Анимированный ролик-объяснение, 1–2 мин': 'Animated explainer, 1–2 min',
+  'Пакет: 8 роликов в месяц, 2 в неделю': 'Package: 8 videos a month, 2 a week', '$190/мес': '$190/mo',
+  'Нажмите на видео, чтобы посмотреть. Звук включается в плеере.': 'Tap a video to watch. Turn on sound in the player.',
+  'Сколько это будет стоить': 'How much will it cost', 'Отметьте, что вам нужно. Это предварительный расчёт, точную цену назовём после короткого брифа.': 'Tick what you need. This is a preliminary estimate; we’ll confirm the exact price after a short brief.',
+  'Все услуги': 'All services', 'Цены от': 'Starting prices', 'Telegram-боты и Mini Apps': 'Telegram bots & Mini Apps',
+  'Бот-визитка': 'Business card bot', 'Бот онлайн-записи': 'Online booking bot', 'Бот-магазин, ИИ-консультант': 'Shop bot, AI assistant', 'Бот доставки': 'Delivery bot',
+  'Mini App записи или лояльности': 'Booking or loyalty Mini App', 'Mini App учёта для бизнеса': 'Business accounting Mini App',
+  'Сайты и приложения': 'Websites & apps', 'Лендинг': 'Landing page', 'Сайт компании': 'Company website', 'Сайт с онлайн-записью': 'Website with online booking', 'Интернет-магазин': 'Online store',
+  'CRM под бизнес': 'Custom CRM', 'Мобильное приложение': 'Mobile app', 'Автоматизация и контент': 'Automation & content',
+  'Автоотчёты владельцу': 'Auto-reports for the owner', 'Подключение Payme / Click / Uzum': 'Payme / Click / Uzum integration', 'Интеграция с amoCRM / Bitrix24': 'amoCRM / Bitrix24 integration',
+  'Ролик для Reels / TikTok': 'Reels / TikTok video', 'Пакет 8 роликов в месяц': '8 videos a month package', 'Логотип и фирменный стиль': 'Logo & brand identity',
+  'Как работаем': 'How we work', 'От звонка до запуска — до 14 рабочих дней': 'From first call to launch in up to 14 working days',
+  'Бриф': 'Brief', '15 минут: разбираем, где вы теряете клиентов и время.': '15 minutes: we find where you lose customers and time.',
+  'Прототип': 'Prototype', 'Показываем, как будет работать, ещё до основной разработки.': 'We show how it will work before the main development.',
+  'Запуск': 'Launch', 'Делаем, тестируем вместе с вами и подключаем оплату.': 'We build it, test it with you and connect payments.',
+  'Поддержка': 'Support', 'Сервер, резервные копии, исправления — $30 в месяц.': 'Server, backups, fixes — $30 a month.',
+  'Условия': 'Terms', 'Цены в долларах, оплата в сумах по курсу ЦБ на день платежа.': 'Prices in USD, paid in UZS at the Central Bank rate on the day of payment.',
+  '50% предоплата, 50% после того, как вы приняли работу.': '50% upfront, 50% after you accept the work.', 'Два круга правок входят в стоимость.': 'Two rounds of revisions are included.',
+  'Всё по договору, права на результат переходят вам после оплаты.': 'Everything is under contract; the rights to the result pass to you after payment.',
+  'Частые вопросы': 'Frequently asked questions',
+  'Нужно ли клиентам что-то устанавливать?': 'Do customers need to install anything?',
+  'Нет. Бот и Mini App работают внутри Telegram, который у ваших клиентов уже есть. Клиент нажимает ссылку или кнопку и сразу пользуется.': 'No. The bot and Mini App run inside Telegram, which your customers already have. They tap a link or a button and start using it.',
+  'Что выбрать: бота или Mini App?': 'Which should I choose: a bot or a Mini App?',
+  'Бот с кнопками проще и дешевле, его достаточно для записи, заявок и рассылок. Mini App выглядит как приложение: схема зала, каталог с фото, корзина, личный кабинет. Если сомневаетесь, покажем оба варианта на встрече.': 'A bot with buttons is simpler and cheaper, and it’s enough for bookings, requests and broadcasts. A Mini App looks like an app: a hall map, a photo catalog, a cart, a personal account. If you’re unsure, we’ll show both at the meeting.',
+  'Сколько времени занимает разработка?': 'How long does development take?',
+  'До 14 рабочих дней. Простые боты — от 3–5 дней. Для больших систем (CRM, мобильное приложение) за это время запускаем базовую версию.': 'Up to 14 working days. Simple bots take from 3–5 days. For big systems (CRM, mobile app) we launch a core version in that time.',
+  'Как оплачивать?': 'How do I pay?',
+  'Цены считаем в долларах, оплата в сумах по курсу ЦБ на день платежа: переводом на карту, через Payme или Click. 50% предоплата, 50% после того, как вы приняли работу.': 'We quote in USD and you pay in UZS at the Central Bank rate on the day of payment: by card transfer, Payme or Click. 50% upfront, 50% after you accept the work.',
+  'Что входит в поддержку за $30 в месяц?': 'What does the $30/month support include?',
+  'Сервер, резервные копии, мониторинг работы, исправление ошибок и мелкие правки до 1 часа в месяц. Новые функции оплачиваются отдельно, $12 в час.': 'Server, backups, monitoring, bug fixes and small changes up to 1 hour a month. New features are billed separately at $12 an hour.',
+  'Можно ли на узбекском языке?': 'Can it be in Uzbek?', 'Да. Делаем на русском, узбекском и английском, второй язык стоит от $40.': 'Yes. We build in Russian, Uzbek and English; a second language starts at $40.',
+  'Чей будет бот и код?': 'Who owns the bot and the code?',
+  'Ваш. По договору права на результат переходят вам после полной оплаты. Если откажетесь от поддержки, передадим исходный код и инструкцию.': 'You do. Under the contract the rights pass to you after full payment. If you stop support, we hand over the source code and instructions.',
+  'Можно подключить к нашей CRM или таблицам?': 'Can it connect to our CRM or spreadsheets?', 'Да: amoCRM, Bitrix24, Google Таблицы. Заявки и заказы будут попадать туда автоматически.': 'Yes: amoCRM, Bitrix24, Google Sheets. Requests and orders will land there automatically.',
+  'А если что-то сломается?': 'What if something breaks?',
+  'В рамках поддержки исправляем ошибки. Сбои самого Telegram или платёжных систем от нас не зависят, но мы следим за ними и предупреждаем вас.': 'Support covers bug fixes. Outages of Telegram itself or payment systems are outside our control, but we monitor them and let you know.',
+  'Заявка': 'Request', 'Обсудим ваш проект': 'Let’s discuss your project', 'Как вас зовут': 'Your name', 'Телефон или Telegram': 'Phone or Telegram', 'Ваш бизнес': 'Your business',
+  'Что нужно': 'What you need', 'Когда удобно созвониться': 'Best time to call', 'Имя': 'Name', 'Например: бот записи и напоминания клиентам': 'For example: a booking bot and client reminders',
+  'В любое время': 'Any time', 'Утром, 10:00–12:00': 'Morning, 10:00–12:00', 'Днём, 12:00–15:00': 'Afternoon, 12:00–15:00', 'Вечером, 15:00–18:00': 'Evening, 15:00–18:00',
+  'Укажите имя и телефон или Telegram, чтобы мы могли с вами связаться.': 'Enter your name and phone or Telegram so we can get back to you.', 'Подготовить заявку': 'Prepare request',
+  'Как это работает': 'How it works',
+  'Заполните форму, и мы соберём готовый текст заявки. Скопируйте его и отправьте менеджеру, который прислал вам эту ссылку. Он перезвонит в удобное время.': 'Fill in the form and we’ll put together a ready request. Copy it and send it to the manager who shared this link with you. They’ll call you back at a convenient time.',
+  'Все компании, цены и цифры в демо придуманы для примера. © Todas.Studio, Ташкент': 'All companies, prices and numbers in the demos are made up for illustration. © Todas.Studio, Tashkent'
+}
+};
+</script>
+<script>
+(function () {
+  /* ---------- язык: ru / uz / en ---------- */
+  const LANGS = ['ru', 'uz', 'en'];
+  let LANG = 'ru';
+  try { const s = localStorage.getItem('todas-lang'); if (LANGS.includes(s)) LANG = s; } catch (e) {}
+  const L = (ru, uz, en) => LANG === 'uz' ? uz : LANG === 'en' ? en : ru;
+  const cap = s => s[0].toUpperCase() + s.slice(1);
+  const N = x => (LANG !== 'ru' && x[LANG]) ? x[LANG] : x.n;
+  const F = (x, f) => (LANG !== 'ru' && x[f + cap(LANG)]) ? x[f + cap(LANG)] : (x[f] || '');
+
+  const MONTHS = { ru: ['янв', 'фев', 'мар', 'апр', 'мая', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'], uz: ['yan', 'fev', 'mar', 'apr', 'may', 'iyn', 'iyl', 'avg', 'sen', 'okt', 'noy', 'dek'], en: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] };
+  const WD = { ru: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'], uz: ['Ya', 'Du', 'Se', 'Ch', 'Pa', 'Ju', 'Sh'], en: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] };
+  const fmt = n => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+  const sum = n => fmt(n) + L(' сум', ' so‘m', ' UZS');
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const chunk = (a, n) => a.reduce((r, x, i) => (i % n ? r[r.length - 1].push(x) : r.push([x]), r), []);
+  const pad = n => String(n).padStart(2, '0');
+  const hm = d => pad(d.getHours()) + ':' + pad(d.getMinutes());
+  const nowStamp = () => hm(new Date());
+  const dmy = d => LANG === 'en' ? MONTHS.en[d.getMonth()] + ' ' + d.getDate() : d.getDate() + ' ' + MONTHS[LANG][d.getMonth()];
+  const days = () => [0, 1, 2].map(i => { const d = new Date(); d.setDate(d.getDate() + i);
+    return { i, label: (i === 0 ? L('Сегодня', 'Bugun', 'Today') : i === 1 ? L('Завтра', 'Ertaga', 'Tomorrow') : WD[LANG][d.getDay()]) + ', ' + dmy(d) }; });
+  const supNote = () => L('+ поддержка $30/мес · запуск до 14 рабочих дней', '+ qo‘llab-quvvatlash $30/oy · 14 ish kunigacha ishga tushirish', '+ $30/mo support · launch within 14 working days');
+  const from = p => L('от ' + p, p + ' dan', 'from ' + p);
+  const atTime = (day, t) => L(`${day} в ${t}`, `${day}, soat ${t}`, `${day} at ${t}`);
+  const phoneMask = '+998 90 *** ** 41';
+
+  /* ---------- side panel ---------- */
+  const side = document.getElementById('side');
+  let feedList;
+  function renderSide(d) {
+    side.innerHTML = `
+      <div class="eyebrow">${esc(d.kicker)}</div>
+      <h2>${esc(d.title)}</h2>
+      <p class="lead">${esc(d.lead)}</p>
+      <p class="empty">${L('Делаем в двух форматах: обычным ботом с кнопками или Mini App внутри Telegram. Переключите формат над телефоном.', 'Ikki formatda qilamiz: tugmali oddiy bot yoki Telegram ichidagi Mini App. Formatni telefon ustida almashtiring.', 'We build it in two formats: a simple bot with buttons or a Mini App inside Telegram. Switch the format above the phone.')}</p>
+      <ul class="feats">${d.feats.map(f => `<li>${esc(f)}</li>`).join('')}</ul>
+      <div class="feed"><div class="feed-head"><h3>${esc(d.feedTitle)}</h3><span class="eyebrow">${L('в реальном времени', 'real vaqtda', 'live')}</span></div>
+        <div class="feed-list" id="feed"><p class="empty">${esc(d.feedEmpty)}</p></div></div>
+      <div class="price"><b>${esc(d.price)}</b><span>${esc(d.priceNote)}</span></div>`;
+    feedList = document.getElementById('feed');
+  }
+  function feed(html) {
+    const e = feedList.querySelector('.empty'); if (e) e.remove();
+    const n = document.createElement('div'); n.className = 'note'; n.innerHTML = `<b>${nowStamp()}</b> · ${html}`;
+    feedList.prepend(n);
+  }
+
+  /* ---------- chat engine ---------- */
+  const resetLbl = () => L('Заново', 'Qaytadan', 'Restart');
+  function chat(screen, head, steps) {
+    screen.innerHTML = `<div class="bar"><div class="ava">${head.icon}</div><div><b>${esc(head.name)}</b><small>${L('бот · демо', 'bot · demo', 'bot · demo')}</small></div>
+      <button class="reset" type="button">${resetLbl()}</button></div><div class="log" aria-live="polite"></div>`;
+    const log = screen.querySelector('.log'); const ctx = {}; let busy = false; let timers = [];
+    const later = (fn, ms) => timers.push(setTimeout(fn, ms));
+    function add(cls, html) { const b = document.createElement('div'); b.className = 'msg ' + cls; b.innerHTML = html; log.appendChild(b); log.scrollTop = log.scrollHeight; return b; }
+    function show(name) {
+      const s = steps[name](ctx);
+      const b = add('bot', s.text);
+      if (s.kb) {
+        const kb = document.createElement('div'); kb.className = 'kb';
+        s.kb.forEach(row => { const r = document.createElement('div'); r.className = 'kb-row';
+          row.forEach(btn => { const e = document.createElement('button'); e.type = 'button'; e.textContent = btn.t;
+            if (btn.off) { e.disabled = true; e.classList.add('off'); } else e.addEventListener('click', () => choose(btn, e, kb));
+            r.appendChild(e); }); kb.appendChild(r); });
+        b.appendChild(kb);
+      }
+      log.scrollTop = log.scrollHeight;
+      if (s.next) later(() => go(s.next), s.delay || 1600);
+    }
+    function go(name) { busy = true; const t = add('bot typing', '<span></span><span></span><span></span>');
+      later(() => { t.remove(); busy = false; show(name); }, 520); }
+    function choose(btn, el, kb) {
+      if (busy) return;
+      kb.querySelectorAll('button').forEach(x => x.disabled = true); el.classList.add('picked');
+      if (btn.set) Object.assign(ctx, btn.set);
+      add('me', esc(btn.t)); go(btn.go);
+    }
+    function reset() { timers.forEach(clearTimeout); timers = []; busy = false; log.innerHTML = ''; Object.keys(ctx).forEach(k => delete ctx[k]); go('start'); }
+    screen.querySelector('.reset').addEventListener('click', reset);
+    reset();
+    return () => { timers.forEach(clearTimeout); };
+  }
+  const shell = (icon, name, kind) => `<div class="bar"><div class="ava">${icon}</div><div><b>${esc(name)}</b><small>${kind} · ${L('демо', 'demo', 'demo')}</small></div><button class="reset" type="button">${resetLbl()}</button></div><div class="app"></div>`;
+  const backBtn = attr => `<button type="button" class="chip" ${attr}>${L('← Назад', '← Orqaga', '← Back')}</button>`;
+  const freeTime = () => L('Свободное время', 'Bo‘sh vaqt', 'Available times');
+  const pickTime = () => L('Выберите время', 'Vaqtni tanlang', 'Choose a time');
+  const bookAt = t => L('Записаться на ' + t, 'Soat ' + t + ' ga yozilish', 'Book for ' + t);
+  const youBooked = () => L('Вы записаны', 'Siz yozildingiz', 'You’re booked');
+
+  /* ---------- универсальный Mini App ---------- */
+  function slots(dayIdx) {
+    const out = []; const now = new Date();
+    for (let h = 10; h <= 21; h++) { const busy = ((h * 7 + dayIdx * 3) % 5 === 0) || (dayIdx === 0 && h <= now.getHours());
+      out.push({ t: pad(h) + ':00', busy }); }
+    return out;
+  }
+  const dayChips = sel => days().map(d => `<button type="button" class="chip${d.i === sel ? ' on' : ''}" data-day="${d.i}">${d.label}</button>`).join('');
+  const slotGrid = (di, time) => slots(di).map(s => `<button type="button" data-t="${s.t}" class="${s.t === time ? 'on' : ''}" ${s.busy ? 'disabled' : ''}>${s.t}</button>`).join('');
+  function pickApp(screen, cfg) {
+    let st;
+    screen.innerHTML = shell(cfg.icon, cfg.name, 'Mini App');
+    const app = screen.querySelector('.app');
+    const reset = () => { st = { i: 0, di: 0, time: null }; draw(); };
+    screen.querySelector('.reset').addEventListener('click', reset);
+    function draw() {
+      const step = cfg.steps[st.i];
+      if (!step) { app.innerHTML = `<div class="app-pad">${cfg.done(st)}<button type="button" class="btn" data-again>${cfg.again}</button></div>`; return; }
+      const bk = st.i ? backBtn('data-back') : '';
+      const title = typeof step.title === 'function' ? step.title(st) : step.title;
+      if (step.type === 'slots') {
+        app.innerHTML = `<div class="app-pad">${bk}<h3>${esc(title)}</h3><div class="chips">${dayChips(st.di)}</div>
+          <div class="card"><span class="eyebrow">${freeTime()}</span><div class="pay slots">${slotGrid(st.di, st.time)}</div></div>
+          </div><button type="button" class="cartbar" data-book ${st.time ? '' : 'disabled'}><span>${st.time ? bookAt(st.time) : pickTime()}</span><span>${step.right ? step.right(st) : ''}</span></button>`;
+      } else {
+        app.innerHTML = `<div class="app-pad">${bk}<h3>${esc(title)}</h3>${step.items(st).map((it, j) =>
+          `<button type="button" class="item pick" data-pick="${j}"><div class="pic">${it.e}</div><div><b>${esc(N(it))}</b><small>${esc(F(it, 'sub'))}</small></div><b>${esc(F(it, 'right'))}</b></button>`).join('')}</div>`;
+      }
+    }
+    app.addEventListener('click', e => {
+      const t = e.target.closest('button'); if (!t) return; const step = cfg.steps[st.i];
+      if ('back' in t.dataset) { st.i--; st.time = null; draw(); }
+      else if ('again' in t.dataset) reset();
+      else if (t.dataset.pick) { st[step.key] = step.items(st)[+t.dataset.pick]; st.i++; draw(); }
+      else if (t.dataset.day) { st.di = +t.dataset.day; st.time = null; draw(); }
+      else if (t.dataset.t) { st.time = t.dataset.t; draw(); }
+      else if ('book' in t.dataset) { st.day = days()[st.di].label; st.i++; cfg.onDone(st); draw(); }
+    });
+    reset();
+    return () => {};
+  }
+
+  /* ---------- 1. барбершоп ---------- */
+  const barberSvc = [{ n: 'Стрижка', uz: 'Soch olish', en: 'Haircut', p: 80000, min: 40 }, { n: 'Стрижка + борода', uz: 'Soch + soqol', en: 'Haircut + beard', p: 120000, min: 60 },
+    { n: 'Детская стрижка', uz: 'Bolalar uchun soch olish', en: 'Kids’ haircut', p: 60000, min: 30 }, { n: 'Королевское бритьё', uz: 'Ustara bilan soqol olish', en: 'Royal shave', p: 90000, min: 45 }];
+  const masters = [{ e: '🧔🏻', n: 'Азиз', uz: 'Aziz', en: 'Aziz', r: ['★ 4.9 · 6 лет опыта', '★ 4.9 · 6 yillik tajriba', '★ 4.9 · 6 years’ experience'] },
+    { e: '👨🏻', n: 'Тимур', uz: 'Timur', en: 'Timur', r: ['★ 4.8 · 4 года опыта', '★ 4.8 · 4 yillik tajriba', '★ 4.8 · 4 years’ experience'] },
+    { e: '✂️', n: 'Любой мастер', uz: 'Istalgan usta', en: 'Any barber', any: true, r: ['ближайшее свободное время', 'eng yaqin bo‘sh vaqt', 'earliest available time'] }];
+  const client = () => L('Клиент', 'Mijoz', 'Client');
+  const barber = {
+    mode: 'bot',
+    side: () => ({ kicker: L('Барбершоп · бот онлайн-записи', 'Barbershop · onlayn yozilish boti', 'Barbershop · online booking bot'),
+      title: L('Запись без звонков и переписки', 'Qo‘ng‘iroq va yozishmalarsiz yozilish', 'Bookings without calls or chats'),
+      lead: L('Клиент сам выбирает услугу, мастера и свободное время в любое время суток. Администратор получает готовую запись, а клиент — напоминание.', 'Mijoz xizmat, usta va bo‘sh vaqtni kechayu kunduz o‘zi tanlaydi. Administrator tayyor yozuvni, mijoz esa eslatmani oladi.', 'Clients pick the service, the barber and a free slot themselves, day or night. The admin gets a ready booking and the client gets a reminder.'),
+      feats: L(['Видно только свободное время, двойных записей нет', 'Напоминание за 2 часа: меньше клиентов не приходит', 'Перенос и отмена записи кнопкой', 'База клиентов для рассылок акций'],
+        ['Faqat bo‘sh vaqt ko‘rinadi, ikki marta yozilish bo‘lmaydi', '2 soat oldin eslatma: kelmay qoladiganlar kamayadi', 'Yozuvni tugma bilan ko‘chirish va bekor qilish', 'Aksiyalar tarqatish uchun mijozlar bazasi'],
+        ['Only free slots are shown, no double bookings', 'Reminder 2 hours before: fewer no-shows', 'Reschedule or cancel with one button', 'Client base for promo messages']),
+      feedTitle: L('Что получает администратор', 'Administrator nimani oladi', 'What the admin receives'),
+      feedEmpty: L('Запишитесь в демо слева, и здесь появится новая запись.', 'Chapdagi demoda yoziling, bu yerda yangi yozuv paydo bo‘ladi.', 'Book in the demo on the left and the new booking will appear here.'),
+      price: from('$270'), priceNote: supNote() }),
+    bot(screen) {
+      const mName = c => c.m.any ? L('мастер', 'usta', 'your barber') : N(c.m);
+      const signBtn = () => ({ t: L('✂️ Записаться', '✂️ Yozilish', '✂️ Book'), go: 'service' });
+      const dayKb = () => [days().map(d => ({ t: d.label, go: 'time', set: { day: d.label, di: d.i } }))];
+      return chat(screen, { icon: '💈', name: L('Барбершоп · запись', 'Barbershop · yozilish', 'Barbershop · booking') }, {
+        start: () => ({ text: L('Ассаламу алейкум! 👋<br>Это бот записи в <b>барбершоп</b>. Запишу вас к мастеру за минуту.', 'Assalomu alaykum! 👋<br>Bu <b>barbershop</b>ga yozilish boti. Sizni bir daqiqada ustaga yozib qo‘yaman.', 'Hello! 👋<br>This is the <b>barbershop</b> booking bot. I’ll book you with a barber in a minute.'),
+          kb: [[signBtn()], [{ t: L('💈 Цены', '💈 Narxlar', '💈 Prices'), go: 'prices' }, { t: L('📍 Адрес', '📍 Manzil', '📍 Address'), go: 'addr' }]] }),
+        prices: () => ({ text: `<b>${L('Цены', 'Narxlar', 'Prices')}</b><br>` + barberSvc.map(s => `${N(s)} — ${sum(s.p)}`).join('<br>'), kb: [[signBtn()]] }),
+        addr: () => ({ text: L('📍 Ташкент, Чиланзар, 9-й квартал<br>🕙 Ежедневно 10:00–22:00', '📍 Toshkent, Chilonzor, 9-kvartal<br>🕙 Har kuni 10:00–22:00', '📍 Tashkent, Chilanzar, block 9<br>🕙 Daily 10:00–22:00'), kb: [[signBtn()]] }),
+        service: () => ({ text: L('Выберите услугу:', 'Xizmatni tanlang:', 'Choose a service:'), kb: barberSvc.map(s => [{ t: `${N(s)} · ${sum(s.p)}`, go: 'master', set: { svc: s } }]) }),
+        master: () => ({ text: L('К кому записать?', 'Qaysi ustaga yozay?', 'Which barber?'), kb: [[{ t: N(masters[0]) + ' ★ 4.9', go: 'day', set: { m: masters[0] } }, { t: N(masters[1]) + ' ★ 4.8', go: 'day', set: { m: masters[1] } }], [{ t: L('Любой свободный', 'Istalgan bo‘sh usta', 'Any free barber'), go: 'day', set: { m: masters[2] } }]] }),
+        day: () => ({ text: L('Выберите день:', 'Kunni tanlang:', 'Choose a day:'), kb: dayKb() }),
+        time: c => { const sl = slots(c.di);
+          return sl.some(s => !s.busy) ? { text: L(`${c.day}. Зачёркнутое время уже занято:`, `${c.day}. Chizilgan vaqt band:`, `${c.day}. Crossed-out times are taken:`), kb: chunk(sl.map(s => ({ t: s.t, off: s.busy, go: 'confirm', set: { time: s.t } })), 4) }
+            : { text: L('На сегодня всё занято 😔 Посмотрите завтра:', 'Bugun hammasi band 😔 Ertangi kunni ko‘ring:', 'Fully booked today 😔 Try tomorrow:'), kb: [[{ t: L('Выбрать другой день', 'Boshqa kunni tanlash', 'Pick another day'), go: 'day' }]] }; },
+        confirm: c => ({ text: `${L('Проверьте запись:', 'Yozuvni tekshiring:', 'Check your booking:')}<br>✂️ ${N(c.svc)}<br>👤 ${N(c.m)}<br>📅 ${c.day}, ${c.time}<br>💵 ${sum(c.svc.p)}`,
+          kb: [[{ t: L('✅ Подтвердить', '✅ Tasdiqlash', '✅ Confirm'), go: 'done' }], [{ t: L('Изменить', 'O‘zgartirish', 'Change'), go: 'service' }]] }),
+        done: c => { feed(`<b>${L('Новая запись', 'Yangi yozuv', 'New booking')}</b>: ${esc(N(c.svc))}, ${esc(N(c.m))}, ${esc(atTime(c.day, c.time))}. ${client()}: ${phoneMask}`);
+          return { text: L('Готово, вы записаны! 🎉<br>Напомним о визите за 2 часа.', 'Tayyor, siz yozildingiz! 🎉<br>Tashrifdan 2 soat oldin eslatamiz.', 'Done, you’re booked! 🎉<br>We’ll remind you 2 hours before.'), next: 'remind', delay: 1800 }; },
+        remind: c => ({ text: L(`🔔 <b>Напоминание</b><br>Сегодня в ${c.time} вас ждёт ${mName(c)}. ${N(c.svc)}.<span class="hint">Так клиент получит напоминание за 2 часа до визита</span>`,
+          `🔔 <b>Eslatma</b><br>Bugun soat ${c.time} da sizni ${mName(c)} kutmoqda. ${N(c.svc)}.<span class="hint">Mijoz eslatmani tashrifdan 2 soat oldin shunday oladi</span>`,
+          `🔔 <b>Reminder</b><br>Today at ${c.time} ${mName(c)} is expecting you. ${N(c.svc)}.<span class="hint">This is how the client gets a reminder 2 hours before the visit</span>`),
+          kb: [[{ t: L('👍 Приду', '👍 Boraman', '👍 I’ll come'), go: 'ok' }, { t: L('🔁 Перенести', '🔁 Ko‘chirish', '🔁 Reschedule'), go: 'move' }]] }),
+        ok: () => { feed(L('Клиент <b>подтвердил</b> визит', 'Mijoz tashrifni <b>tasdiqladi</b>', 'Client <b>confirmed</b> the visit')); return { text: L('Отлично, ждём вас!', 'Ajoyib, sizni kutamiz!', 'Great, see you soon!'), kb: [[{ t: L('Записаться ещё раз', 'Yana yozilish', 'Book again'), go: 'service' }]] }; },
+        move: () => { feed(L('Клиент <b>переносит</b> запись, слот освобождён', 'Mijoz yozuvni <b>ko‘chirmoqda</b>, vaqt bo‘shadi', 'Client is <b>rescheduling</b>, the slot is free again')); return { text: L('Без проблем, выберите новый день:', 'Muammo yo‘q, yangi kunni tanlang:', 'No problem, pick a new day:'), kb: dayKb() }; },
+      });
+    },
+    app(screen) {
+      let st = { view: 'svc', di: 0 };
+      screen.innerHTML = shell('💈', L('Барбершоп · запись', 'Barbershop · yozilish', 'Barbershop · booking'), 'Mini App');
+      const app = screen.querySelector('.app');
+      screen.querySelector('.reset').addEventListener('click', () => { st = { view: 'svc', di: 0 }; draw(); });
+      function draw() {
+        if (st.view === 'svc') app.innerHTML = `<div class="app-pad"><h3>${L('Выберите услугу', 'Xizmatni tanlang', 'Choose a service')}</h3>${barberSvc.map((s, i) =>
+          `<button type="button" class="item pick" data-svc="${i}"><div class="pic">✂️</div><div><b>${N(s)}</b><small>${s.min} ${L('мин', 'daq', 'min')}</small></div><b>${sum(s.p)}</b></button>`).join('')}</div>`;
+        else if (st.view === 'master') app.innerHTML = `<div class="app-pad">${backBtn('data-go="svc"')}<h3>${L('Выберите мастера', 'Ustani tanlang', 'Choose a barber')}</h3>${masters.map((m, i) =>
+          `<button type="button" class="item pick" data-m="${i}"><div class="pic">${m.e}</div><div><b>${N(m)}</b><small>${L(...m.r)}</small></div><span></span></button>`).join('')}</div>`;
+        else if (st.view === 'time') {
+          app.innerHTML = `<div class="app-pad">${backBtn('data-go="master"')}<h3>${N(st.svc)} · ${N(st.m)}</h3><div class="chips">${dayChips(st.di)}</div>
+            <div class="card"><span class="eyebrow">${freeTime()}</span><div class="pay slots">${slotGrid(st.di, st.time)}</div></div>
+            </div><button type="button" class="cartbar" id="book" ${st.time ? '' : 'disabled'}><span>${st.time ? bookAt(st.time) : pickTime()}</span><span>${sum(st.svc.p)}</span></button>`;
+        } else {
+          app.innerHTML = `<div class="app-pad"><div class="card" style="text-align:center;justify-items:center"><span class="eyebrow">${youBooked()}</span><div class="big">${st.time}</div><span>${days()[st.di].label}</span></div>
+            <div class="card"><div class="row"><span>${L('Услуга', 'Xizmat', 'Service')}</span><span>${N(st.svc)}</span></div><div class="row"><span>${L('Мастер', 'Usta', 'Barber')}</span><span>${N(st.m)}</span></div><div class="row total"><span>${L('Стоимость', 'Narxi', 'Price')}</span><span>${sum(st.svc.p)}</span></div></div>
+            <div class="note">${L('🔔 Напомним о визите за 2 часа', '🔔 Tashrifdan 2 soat oldin eslatamiz', '🔔 We’ll remind you 2 hours before')}</div>
+            <button type="button" class="btn ghost" id="move">${L('Перенести', 'Ko‘chirish', 'Reschedule')}</button><button type="button" class="btn ghost" id="cancel">${L('Отменить запись', 'Yozuvni bekor qilish', 'Cancel booking')}</button><button type="button" class="btn" id="again">${L('Новая запись', 'Yangi yozilish', 'New booking')}</button></div>`;
+        }
+      }
+      app.addEventListener('click', e => {
+        const t = e.target.closest('button'); if (!t) return;
+        if (t.dataset.go) { st.view = t.dataset.go; draw(); }
+        else if (t.dataset.svc) { st.svc = barberSvc[+t.dataset.svc]; st.view = 'master'; draw(); }
+        else if (t.dataset.m) { st.m = masters[+t.dataset.m]; st.view = 'time'; st.time = null; draw(); }
+        else if (t.dataset.day) { st.di = +t.dataset.day; st.time = null; draw(); }
+        else if (t.dataset.t) { st.time = t.dataset.t; draw(); }
+        else if (t.id === 'book') { feed(`<b>${st.moving ? L('Перенос', 'Ko‘chirish', 'Rescheduled') : L('Новая запись', 'Yangi yozuv', 'New booking')}</b>: ${esc(N(st.svc))}, ${esc(N(st.m))}, ${esc(atTime(days()[st.di].label, st.time))}. ${client()}: ${phoneMask}`); st.moving = false; st.view = 'done'; draw(); }
+        else if (t.id === 'move') { st.moving = true; st.time = null; st.view = 'time'; draw(); }
+        else if (t.id === 'cancel') { feed(L('Клиент <b>отменил</b> запись, время снова свободно', 'Mijoz yozuvni <b>bekor qildi</b>, vaqt yana bo‘sh', 'Client <b>cancelled</b>, the slot is free again')); st = { view: 'svc', di: 0 }; draw(); }
+        else if (t.id === 'again') { st = { view: 'svc', di: 0 }; draw(); }
+      });
+      draw();
+      return () => {};
+    }
+  };
+
+  /* ---------- 2. компьютерный клуб ---------- */
+  const zones = { std: { n: 'Standard', pcs: 15, rate: 15000 }, vip: { n: 'VIP', pcs: 10, rate: 25000 }, ps: { n: 'PS5', pcs: 4, rate: 30000 } };
+  const seatBusy = (z, i) => (i * 5 + zones[z].pcs) % 3 === 0;
+  const H = () => L('ч', 'soat', 'h');
+  const hrs = h => L(h === 1 ? '1 час' : h + ' часа', h + ' soat', h === 1 ? '1 hour' : h + ' hours');
+  const seatW = () => L('место', 'joy', 'seat');
+  const club = {
+    mode: 'app',
+    side: () => ({ kicker: L('Компьютерный клуб · бронь ПК', 'Kompyuter klubi · PK bron qilish', 'Gaming club · PC booking'),
+      title: L('Бронь ПК и оплата до прихода', 'PK bron qilish va kelishdan oldin to‘lash', 'Book a PC and pay before arriving'),
+      lead: L('Игрок видит свободные места, бронирует и платит через Payme или Click. Администратор видит загрузку зала, а клиент сам продлевает время.', 'O‘yinchi bo‘sh joylarni ko‘radi, bron qiladi va Payme yoki Click orqali to‘laydi. Administrator zal bandligini ko‘radi, mijoz esa vaqtni o‘zi uzaytiradi.', 'Players see free seats, book and pay via Payme or Click. The admin sees how full the hall is, and players extend their time themselves.'),
+      feats: L(['Схема зала: свободные и занятые места', 'Оплата Payme / Click или с баланса до прихода', 'Таймер сеанса и продление в одно нажатие', 'Бонусы за часы: игроки возвращаются'],
+        ['Zal sxemasi: bo‘sh va band joylar', 'Kelishdan oldin Payme / Click yoki balansdan to‘lov', 'Seans taymeri va bir bosishda uzaytirish', 'Soatlar uchun bonuslar: o‘yinchilar qaytib keladi'],
+        ['Hall map: free and taken seats', 'Pay via Payme / Click or balance before arriving', 'Session timer and one-tap extension', 'Bonuses for hours played: players come back']),
+      feedTitle: L('Что видит администратор', 'Administrator nimani ko‘radi', 'What the admin sees'),
+      feedEmpty: L('Забронируйте ПК в демо слева.', 'Chapdagi demoda PK bron qiling.', 'Book a PC in the demo on the left.'),
+      price: L('$5 за ПК', 'PK uchun $5', '$5 per PC'), priceNote: L('клуб на 30 ПК — $150 · + поддержка $30/мес', '30 PK li klub — $150 · + qo‘llab-quvvatlash $30/oy', '30-PC club — $150 · + $30/mo support') }),
+    app(screen) {
+      const st = { z: 'std', seat: null, h: 2, pay: 'payme', view: 'map', bal: 45000, bonus: 1250, timers: [] };
+      const payName = p => p === 'bal' ? L('Баланс', 'Balans', 'Balance') : p === 'click' ? 'Click' : 'Payme';
+      screen.innerHTML = shell('🎮', L('Компьютерный клуб', 'Kompyuter klubi', 'Gaming club'), 'Mini App');
+      const app = screen.querySelector('.app');
+      const clear = () => { st.timers.forEach(clearTimeout); st.timers = []; };
+      screen.querySelector('.reset').addEventListener('click', () => { clear(); Object.assign(st, { z: 'std', seat: null, h: 2, view: 'map', bal: 45000, bonus: 1250 }); draw(); });
+      const price = () => zones[st.z].rate * st.h;
+      function times() { const q = 15 * 60000; const a = new Date(Math.ceil((Date.now() + q) / q) * q); const b = new Date(a.getTime() + st.h * 3600000); return [hm(a), hm(b)]; }
+      function draw() {
+        const z = zones[st.z];
+        if (st.view === 'map') {
+          app.innerHTML = `<div class="app-pad">
+            <div class="card"><div class="row"><span>${L('Баланс', 'Balans', 'Balance')}</span><b>${sum(st.bal)}</b></div><div class="row"><span>${L('Бонусы', 'Bonuslar', 'Bonuses')}</span><b>${st.bonus}</b></div></div>
+            <div class="chips">${Object.entries(zones).map(([k, v]) => `<button type="button" class="chip${k === st.z ? ' on' : ''}" data-z="${k}">${v.n} · ${v.rate / 1000}k/${H()}</button>`).join('')}</div>
+            <div class="card"><div class="screenline">${st.z === 'ps' ? L('телевизоры', 'televizorlar', 'TVs') : L('вход', 'kirish', 'entrance')}</div>
+              <div class="hall${st.z === 'ps' ? ' ps' : ''}">${Array.from({ length: z.pcs }, (_, i) => `<button type="button" class="seat${st.seat === i + 1 ? ' on' : ''}" data-seat="${i + 1}" ${seatBusy(st.z, i) ? 'disabled' : ''} aria-label="${cap(seatW())} ${i + 1}">${i + 1}</button>`).join('')}</div>
+              <div class="legend"><span><i style="background:var(--ok-soft);border:1px solid var(--ok)"></i>${L('свободно', 'bo‘sh', 'free')}</span><span><i style="background:var(--bg);border:1px solid var(--line)"></i>${L('занято', 'band', 'taken')}</span><span><i style="background:var(--accent)"></i>${L('ваш выбор', 'sizning tanlovingiz', 'your pick')}</span></div></div>
+            <div class="card"><span class="eyebrow">${L('Сколько играем', 'Qancha o‘ynaymiz', 'How long')}</span><div class="pay">${[1, 2, 3].map(h => `<button type="button" data-h="${h}" class="${h === st.h ? 'on' : ''}">${h} ${H()}</button>`).join('')}</div></div>
+            </div><button type="button" class="cartbar" id="next" ${st.seat ? '' : 'disabled'}><span>${st.seat ? `${cap(seatW())} ${st.seat} · ${st.h} ${H()}` : L('Выберите место', 'Joyni tanlang', 'Choose a seat')}</span><span>${sum(price())}</span></button>`;
+        } else if (st.view === 'pay') {
+          const [a, b] = times();
+          app.innerHTML = `<div class="app-pad"><button type="button" class="chip" id="back">${L('← Схема зала', '← Zal sxemasi', '← Hall map')}</button>
+            <div class="card"><div class="row"><span>${L('Зал', 'Zal', 'Hall')}</span><span>${z.n}</span></div><div class="row"><span>${cap(seatW())}</span><span>${st.seat}</span></div>
+              <div class="row"><span>${L('Время', 'Vaqt', 'Time')}</span><span>${a}–${b}</span></div><div class="row total"><span>${L('К оплате', 'To‘lovga', 'To pay')}</span><span>${sum(price())}</span></div></div>
+            <div class="card"><span class="eyebrow">${L('Оплата', 'To‘lov', 'Payment')}</span><div class="pay">${['payme', 'click', 'bal'].map(p => `<button type="button" data-pay="${p}" class="${p === st.pay ? 'on' : ''}">${payName(p)}</button>`).join('')}</div></div>
+            <button type="button" class="btn" id="book">${L('Оплатить и забронировать', 'To‘lash va bron qilish', 'Pay and book')}</button></div>`;
+        } else {
+          const pct = st.left / st.total * 100;
+          app.innerHTML = `<div class="app-pad">
+            <div class="card" style="text-align:center;justify-items:center"><span class="eyebrow">${L('Бронь активна', 'Bron faol', 'Booking active')} · ${z.n}</span><div class="big">№${st.seat}</div><span>${st.from}–${st.to}</span>
+              <div class="prog" style="width:100%;background:var(--line)"><div style="width:${pct}%;background:var(--ok)"></div></div>
+              <small class="empty">${L(`Осталось ${Math.floor(st.left / 60)} ч ${pad(st.left % 60)} мин`, `Qoldi ${Math.floor(st.left / 60)} soat ${pad(st.left % 60)} daq`, `${Math.floor(st.left / 60)} h ${pad(st.left % 60)} min left`)}</small></div>
+            ${st.left <= 15 ? `<div class="note">${L('⏰ Скоро конец сеанса. Продлить?', '⏰ Seans tugashiga oz qoldi. Uzaytirasizmi?', '⏰ Your session ends soon. Extend?')}</div>` : ''}
+            <button type="button" class="btn" id="ext">${L('Продлить +1 ч', '+1 soat uzaytirish', 'Extend +1 h')} · ${sum(z.rate)}</button>
+            <button type="button" class="btn ghost" id="new">${L('Новая бронь', 'Yangi bron', 'New booking')}</button>
+            <p class="empty" style="text-align:center">${L('В демо время идёт быстрее.', 'Demoda vaqt tezroq o‘tadi.', 'Time runs faster in the demo.')}</p></div>`;
+        }
+      }
+      function tick() { st.timers.push(setTimeout(() => { if (st.view !== 'active') return; st.left = Math.max(0, st.left - 15); draw();
+        if (st.left === 15) feed(L(`Место ${st.seat}: игроку отправлено напоминание о конце сеанса`, `Joy ${st.seat}: o‘yinchiga seans tugashi haqida eslatma yuborildi`, `Seat ${st.seat}: player notified that the session is ending`)); if (st.left > 0) tick(); }, 1500)); }
+      app.addEventListener('click', e => {
+        const t = e.target.closest('button'); if (!t) return;
+        if (t.dataset.z) { st.z = t.dataset.z; st.seat = null; draw(); }
+        else if (t.dataset.seat) { st.seat = +t.dataset.seat; draw(); }
+        else if (t.dataset.h) { st.h = +t.dataset.h; draw(); }
+        else if (t.id === 'next') { st.view = 'pay'; draw(); }
+        else if (t.id === 'back') { st.view = 'map'; draw(); }
+        else if (t.dataset.pay) { st.pay = t.dataset.pay; draw(); }
+        else if (t.id === 'book') {
+          if (st.pay === 'bal' && st.bal < price()) { st.pay = 'payme'; feed(L('Игроку не хватило баланса, предложена оплата Payme', 'O‘yinchiga balans yetmadi, Payme orqali to‘lash taklif qilindi', 'Not enough balance, Payme offered instead')); draw(); return; }
+          [st.from, st.to] = times(); if (st.pay === 'bal') st.bal -= price(); st.bonus += st.h * 100;
+          feed(`<b>${L('Бронь', 'Bron', 'Booking')}</b>: ${zones[st.z].n}, ${seatW()} ${st.seat}, ${st.from}–${st.to}. ${L('Оплачено', 'To‘landi', 'Paid')} (${st.pay === 'bal' ? L('с баланса', 'balansdan', 'from balance') : payName(st.pay)}): ${sum(price())}`);
+          st.view = 'active'; st.total = st.h * 60; st.left = st.total; draw(); tick();
+        }
+        else if (t.id === 'ext') { st.left += 60; st.total += 60; const [hh, mm] = st.to.split(':').map(Number); st.to = pad((hh + 1) % 24) + ':' + pad(mm);
+          feed(L(`Место ${st.seat}: <b>продление</b> на 1 час, +${sum(zones[st.z].rate)}`, `Joy ${st.seat}: 1 soatga <b>uzaytirildi</b>, +${sum(zones[st.z].rate)}`, `Seat ${st.seat}: <b>extended</b> by 1 hour, +${sum(zones[st.z].rate)}`)); clear(); draw(); tick(); }
+        else if (t.id === 'new') { clear(); st.seat = null; st.view = 'map'; draw(); }
+      });
+      draw();
+      return clear;
+    },
+    bot(screen) {
+      const bookBtn = () => ({ t: L('🖥 Забронировать', '🖥 Bron qilish', '🖥 Book a PC'), go: 'zone' });
+      const newBtn = () => [[{ t: L('Новая бронь', 'Yangi bron', 'New booking'), go: 'zone' }]];
+      return chat(screen, { icon: '🎮', name: L('Компьютерный клуб', 'Kompyuter klubi', 'Gaming club') }, {
+        start: () => ({ text: L('Привет! 🎮 Бронируй место в клубе без очереди.<br>Сейчас свободно <b>11 ПК</b>.', 'Salom! 🎮 Klubda navbatsiz joy bron qil.<br>Hozir <b>11 ta PK</b> bo‘sh.', 'Hi! 🎮 Book a seat at the club, no queue.<br><b>11 PCs</b> are free right now.'),
+          kb: [[bookBtn()], [{ t: L('💳 Тарифы', '💳 Tariflar', '💳 Rates'), go: 'tariffs' }, { t: L('🎁 Мои бонусы', '🎁 Bonuslarim', '🎁 My bonuses'), go: 'bonus' }]] }),
+        tariffs: () => ({ text: `<b>${L('Тарифы', 'Tariflar', 'Rates')}</b><br>` + Object.values(zones).map(z => `${z.n} — ${sum(z.rate)}/${L('час', 'soat', 'hour')}`).join('<br>') + L('<br>Ночь 22:00–08:00 (Standard) — 60 000 сум', '<br>Tun 22:00–08:00 (Standard) — 60 000 so‘m', '<br>Night 22:00–08:00 (Standard) — 60 000 UZS'), kb: [[bookBtn()]] }),
+        bonus: () => ({ text: L('🎁 У тебя <b>1 250 бонусов</b> = 1 250 сум скидки.<br>Каждый 10-й час — бесплатно. До бесплатного часа: 3 часа.', '🎁 Sizda <b>1 250 bonus</b> = 1 250 so‘m chegirma.<br>Har 10-soat — bepul. Bepul soatgacha: 3 soat.', '🎁 You have <b>1 250 bonus points</b> = 1 250 UZS off.<br>Every 10th hour is free. 3 hours to your free hour.'), kb: [[bookBtn()]] }),
+        zone: () => ({ text: L('Выбери зал:', 'Zalni tanla:', 'Choose a hall:'), kb: Object.entries(zones).map(([k, z]) => [{ t: `${z.n} · ${sum(z.rate)}/${H()}`, go: 'seat', set: { z: k } }]) }),
+        seat: c => { const z = zones[c.z]; return { text: L(`Зал <b>${z.n}</b>. Зачёркнутые места заняты:`, `Zal <b>${z.n}</b>. Chizilgan joylar band:`, `Hall <b>${z.n}</b>. Crossed-out seats are taken:`),
+          kb: chunk(Array.from({ length: z.pcs }, (_, i) => ({ t: (c.z === 'ps' ? 'PS ' : '№') + (i + 1), off: seatBusy(c.z, i), go: 'hours', set: { seat: i + 1 } })), c.z === 'ps' ? 4 : 5) }; },
+        hours: () => ({ text: L('На сколько?', 'Qancha vaqtga?', 'For how long?'), kb: [[1, 2, 3].map(h => ({ t: hrs(h), go: 'pay', set: { h } }))] }),
+        pay: c => { const z = zones[c.z]; const q = 15 * 60000; const s = new Date(Math.ceil((Date.now() + q) / q) * q);
+          const en = new Date(s.getTime() + c.h * 3600000); c.from = hm(s); c.to = hm(en); c.total = z.rate * c.h;
+          return { text: `${z.n}, ${seatW()} ${c.seat}<br>🕒 ${c.from}–${c.to}<br>💵 ${L('К оплате', 'To‘lovga', 'To pay')}: <b>${sum(c.total)}</b>`,
+            kb: [[{ t: 'Payme', go: 'paid', set: { via: 'Payme' } }, { t: 'Click', go: 'paid', set: { via: 'Click' } }], [{ t: L('Оплачу на месте', 'Joyida to‘layman', 'Pay at the club'), go: 'paid', set: { via: '' } }]] }; },
+        paid: c => { feed(`<b>${L('Бронь', 'Bron', 'Booking')}</b>: ${zones[c.z].n}, ${seatW()} ${c.seat}, ${c.from}–${c.to}. ${!c.via ? L('Оплата на месте', 'Joyida to‘lov', 'Pay at the club') : L('Оплачено через ' + c.via, c.via + ' orqali to‘landi', 'Paid via ' + c.via) + ': ' + sum(c.total)}`);
+          return { text: L(`✅ Место ${c.seat} твоё с ${c.from} до ${c.to}.`, `✅ ${c.seat}-joy ${c.from} dan ${c.to} gacha seniki.`, `✅ Seat ${c.seat} is yours from ${c.from} to ${c.to}.`)
+            + (c.via ? L(`<br>Оплачено через ${c.via} (демо).`, `<br>${c.via} orqali to‘landi (demo).`, `<br>Paid via ${c.via} (demo).`) : '') + `<br>+${c.h * 100} ${L('бонусов', 'bonus', 'bonus points')}`, next: 'end', delay: 2200 }; },
+        end: c => ({ text: L(`⏰ Через 15 минут (в ${c.to}) твоё время закончится. Продлить?<span class="hint">Так бот напомнит в конце сеанса</span>`, `⏰ 15 daqiqadan keyin (soat ${c.to} da) vaqting tugaydi. Uzaytirasanmi?<span class="hint">Bot seans oxirida shunday eslatadi</span>`, `⏰ Your time ends in 15 minutes (at ${c.to}). Extend?<span class="hint">This is how the bot reminds players at the end of a session</span>`),
+          kb: [[{ t: `+1 ${L('час', 'soat', 'hour')} · ${sum(zones[c.z].rate)}`, go: 'ext' }, { t: L('Не надо', 'Kerak emas', 'No thanks'), go: 'bye' }]] }),
+        ext: c => { feed(L(`Место ${c.seat}: <b>продление</b> на 1 час, +${sum(zones[c.z].rate)}`, `Joy ${c.seat}: 1 soatga <b>uzaytirildi</b>, +${sum(zones[c.z].rate)}`, `Seat ${c.seat}: <b>extended</b> by 1 hour, +${sum(zones[c.z].rate)}`)); return { text: L('Продлено на час ✅ Хорошей игры!', '1 soatga uzaytirildi ✅ Yaxshi o‘yin!', 'Extended by an hour ✅ Have a good game!'), kb: newBtn() }; },
+        bye: () => ({ text: L('Окей, ждём снова! 👋', 'Xo‘p, yana kutamiz! 👋', 'Okay, see you next time! 👋'), kb: newBtn() }),
+      });
+    }
+  };
+
+  /* ---------- 3. доставка ---------- */
+  const cats = [{ id: 'hot', n: 'Горячее', uz: 'Issiq taomlar', en: 'Mains' }, { id: 'bake', n: 'Выпечка', uz: 'Pishiriqlar', en: 'Bakery' }, { id: 'sal', n: 'Салаты', uz: 'Salatlar', en: 'Salads' }, { id: 'drk', n: 'Напитки', uz: 'Ichimliklar', en: 'Drinks' }];
+  const menu = [
+    { id: 1, cat: 'hot', n: 'Плов по-ташкентски', uz: 'Toshkentcha palov', en: 'Tashkent plov', p: 45000, e: '🍛' }, { id: 2, cat: 'hot', n: 'Лагман', uz: 'Lag‘mon', en: 'Lagman noodles', p: 38000, e: '🍜' },
+    { id: 3, cat: 'hot', n: 'Шашлык из баранины', uz: 'Qo‘y go‘shtidan shashlik', en: 'Lamb shashlik', p: 25000, e: '🍢' }, { id: 4, cat: 'hot', n: 'Манты, 5 шт.', uz: 'Manti, 5 dona', en: 'Manti, 5 pcs', p: 35000, e: '🥟' },
+    { id: 5, cat: 'bake', n: 'Самса с мясом', uz: 'Go‘shtli somsa', en: 'Meat samsa', p: 12000, e: '🥐' }, { id: 6, cat: 'bake', n: 'Лепёшка', uz: 'Non', en: 'Flatbread', p: 6000, e: '🫓' },
+    { id: 7, cat: 'sal', n: 'Салат «Ачичук»', uz: 'Achchiq-chuchuk salati', en: 'Achichuk salad', p: 15000, e: '🥗' }, { id: 8, cat: 'drk', n: 'Зелёный чай, чайник', uz: 'Ko‘k choy, choynak', en: 'Green tea, pot', p: 8000, e: '🫖' },
+    { id: 9, cat: 'drk', n: 'Компот', uz: 'Kompot', en: 'Fruit compote', p: 10000, e: '🥤' }];
+  const dish = id => menu.find(m => m.id == id);
+  const orderW = () => L('Заказ', 'Buyurtma', 'Order');
+  const cartW = () => L('Корзина', 'Savat', 'Cart');
+  const cashW = () => L('Наличными курьеру', 'Kuryerga naqd', 'Cash to courier');
+  const paidVia = v => L('Оплачено через ' + v, v + ' orqali to‘landi', 'Paid via ' + v);
+  const courierTook = () => L('Курьер <b>забрал</b> заказ №1047', 'Kuryer №1047 buyurtmani <b>olib ketdi</b>', 'Courier <b>picked up</b> order #1047');
+  const delivery = {
+    mode: 'app',
+    side: () => ({ kicker: L('Кафе · бот доставки', 'Kafe · yetkazib berish boti', 'Café · delivery bot'),
+      title: L('Заказ с фото, оплата и статус доставки', 'Rasmli buyurtma, to‘lov va yetkazish holati', 'Order from photos, pay, track delivery'),
+      lead: L('Клиент открывает меню внутри Telegram, собирает корзину, указывает адрес и платит. Кухня сразу получает заказ, а клиент видит, где его еда.', 'Mijoz Telegram ichida menyuni ochadi, savatni to‘ldiradi, manzilni ko‘rsatadi va to‘laydi. Oshxona buyurtmani darhol oladi, mijoz esa taomi qayerdaligini ko‘radi.', 'Customers open the menu inside Telegram, fill the cart, enter an address and pay. The kitchen gets the order at once, and the customer sees where the food is.'),
+      feats: L(['Меню с фото и ценами, без звонков', 'Оплата Payme / Click или наличными курьеру', 'Заказ сразу приходит на кухню', 'Клиент видит статус: готовится, в пути, доставлен'],
+        ['Rasm va narxli menyu, qo‘ng‘iroqsiz', 'Payme / Click yoki kuryerga naqd to‘lov', 'Buyurtma darhol oshxonaga keladi', 'Mijoz holatni ko‘radi: tayyorlanmoqda, yo‘lda, yetkazildi'],
+        ['Menu with photos and prices, no calls', 'Pay via Payme / Click or cash to courier', 'Orders go straight to the kitchen', 'Customers see the status: cooking, on the way, delivered']),
+      feedTitle: L('Что получает кухня', 'Oshxona nimani oladi', 'What the kitchen receives'),
+      feedEmpty: L('Соберите заказ в демо слева и оформите его.', 'Chapdagi demoda buyurtma yig‘ing va rasmiylashtiring.', 'Build an order in the demo on the left and place it.'),
+      price: from('$470'), priceNote: supNote() }),
+    app(screen) {
+      const st = { cart: {}, cat: 'hot', view: 'menu', pay: 'Payme', timers: [] };
+      const total = () => Object.entries(st.cart).reduce((s, [id, q]) => s + dish(id).p * q, 0);
+      const count = () => Object.values(st.cart).reduce((a, b) => a + b, 0);
+      const fee = () => total() >= 150000 ? 0 : 10000;
+      const payName = p => p === 'cash' ? L('Наличные', 'Naqd', 'Cash') : p;
+      screen.innerHTML = shell('🍛', L('Кафе · доставка', 'Kafe · yetkazib berish', 'Café · delivery'), 'Mini App');
+      const app = screen.querySelector('.app');
+      screen.querySelector('.reset').addEventListener('click', () => { st.timers.forEach(clearTimeout); st.cart = {}; st.view = 'menu'; draw(); });
+      function draw() {
+        if (st.view === 'menu') {
+          app.innerHTML = `<div class="app-pad"><div class="chips">${cats.map(c => `<button type="button" class="chip${c.id === st.cat ? ' on' : ''}" data-cat="${c.id}">${N(c)}</button>`).join('')}</div>
+            ${menu.filter(m => m.cat === st.cat).map(m => `<div class="item"><div class="pic">${m.e}</div><div><b>${N(m)}</b><small>${sum(m.p)}</small></div>
+              <div class="qty">${st.cart[m.id] ? `<button type="button" class="minus" data-dec="${m.id}" aria-label="${L('Убрать', 'Olib tashlash', 'Remove')}">−</button><span>${st.cart[m.id]}</span>` : ''}<button type="button" data-inc="${m.id}" aria-label="${L('Добавить', 'Qo‘shish', 'Add')}">+</button></div></div>`).join('')}
+            </div><button type="button" class="cartbar" id="toCart" ${count() ? '' : 'disabled'}><span>${cartW()} · ${count()}</span><span>${sum(total())}</span></button>`;
+        } else if (st.view === 'checkout') {
+          app.innerHTML = `<div class="app-pad"><button type="button" class="chip" id="back">${L('← Меню', '← Menyu', '← Menu')}</button>
+            <div class="card">${Object.entries(st.cart).map(([id, q]) => `<div class="row"><span>${N(dish(id))} × ${q}</span><span>${sum(dish(id).p * q)}</span></div>`).join('')}
+              <div class="row"><span>${L('Доставка', 'Yetkazib berish', 'Delivery')}${fee() ? L(' (бесплатно от 150 000)', ' (150 000 dan bepul)', ' (free from 150 000)') : ''}</span><span>${fee() ? sum(fee()) : L('бесплатно', 'bepul', 'free')}</span></div>
+              <div class="row total"><span>${L('Итого', 'Jami', 'Total')}</span><span>${sum(total() + fee())}</span></div></div>
+            <div class="card"><label class="field" for="addr">${L('Адрес', 'Manzil', 'Address')}<input id="addr" value="${L('Юнусабад, 4-й квартал, дом 12, кв. 31', 'Yunusobod, 4-kvartal, 12-uy, 31-xonadon', 'Yunusabad, block 4, bldg 12, apt 31')}"></label>
+              <label class="field" for="tel">${L('Телефон', 'Telefon', 'Phone')}<input id="tel" value="+998 90 123-45-67" inputmode="tel"></label></div>
+            <div class="card"><span class="eyebrow">${L('Оплата', 'To‘lov', 'Payment')}</span><div class="pay">${['Payme', 'Click', 'cash'].map(p => `<button type="button" data-pay="${p}" class="${p === st.pay ? 'on' : ''}">${payName(p)}</button>`).join('')}</div></div>
+            <button type="button" class="btn" id="order">${L('Оформить заказ', 'Buyurtma berish', 'Place order')} · ${sum(total() + fee())}</button></div>`;
+        } else {
+          const labels = L([['Заказ принят', 'кухня получила заказ'], ['Готовится', 'обычно 20–25 минут'], ['Курьер в пути', 'приедет через ~15 минут'], ['Доставлен', 'приятного аппетита!']],
+            [['Buyurtma qabul qilindi', 'oshxona buyurtmani oldi'], ['Tayyorlanmoqda', 'odatda 20–25 daqiqa'], ['Kuryer yo‘lda', '~15 daqiqada yetib keladi'], ['Yetkazildi', 'yoqimli ishtaha!']],
+            [['Order received', 'the kitchen has it'], ['Cooking', 'usually 20–25 minutes'], ['Courier on the way', 'arrives in ~15 minutes'], ['Delivered', 'enjoy your meal!']]);
+          app.innerHTML = `<div class="app-pad"><div class="card"><span class="eyebrow">${orderW()} №1047</span><div class="steps">${labels.map((l, i) =>
+            `<div class="st ${i < st.stage ? 'done' : i === st.stage ? 'now' : ''}"><i>${i < st.stage ? '✓' : i + 1}</i><div><b class="${i === st.stage && i < 3 ? 'pulse' : ''}">${l[0]}</b><small>${l[1]}</small></div></div>`).join('')}</div></div>
+            <p class="empty" style="text-align:center">${L('В демо статусы меняются за секунды, в жизни их переключает кухня и курьер.', 'Demoda holatlar soniyalarda o‘zgaradi, hayotda ularni oshxona va kuryer almashtiradi.', 'In the demo statuses change in seconds; in real life the kitchen and courier update them.')}</p>
+            ${st.stage >= 3 ? `<button type="button" class="btn ghost" id="again">${L('Заказать ещё', 'Yana buyurtma berish', 'Order again')}</button>` : ''}</div>`;
+        }
+      }
+      app.addEventListener('click', e => {
+        const t = e.target.closest('button'); if (!t) return;
+        if (t.dataset.cat) { st.cat = t.dataset.cat; draw(); }
+        else if (t.dataset.inc) { st.cart[t.dataset.inc] = (st.cart[t.dataset.inc] || 0) + 1; draw(); }
+        else if (t.dataset.dec) { const id = t.dataset.dec; st.cart[id]--; if (!st.cart[id]) delete st.cart[id]; draw(); }
+        else if (t.id === 'toCart') { st.view = 'checkout'; draw(); }
+        else if (t.id === 'back') { st.view = 'menu'; draw(); }
+        else if (t.dataset.pay) { st.pay = t.dataset.pay; draw(); }
+        else if (t.id === 'order') {
+          const addr = (app.querySelector('#addr') || {}).value || '';
+          const items = Object.entries(st.cart).map(([id, q]) => N(dish(id)) + ' × ' + q).join(', ');
+          feed(`<b>${orderW()} №1047</b>: ${esc(items)}. ${esc(addr)}. ${st.pay === 'cash' ? cashW() : paidVia(st.pay)}: ${sum(total() + fee())}`);
+          st.view = 'track'; st.stage = 0; draw();
+          [1, 2, 3].forEach(s => st.timers.push(setTimeout(() => { st.stage = s; draw(); if (s === 2) feed(courierTook()); }, s * 2600)));
+        }
+        else if (t.id === 'again') { st.cart = {}; st.view = 'menu'; draw(); }
+      });
+      draw();
+      return () => st.timers.forEach(clearTimeout);
+    },
+    bot(screen) {
+      const cnt = c => Object.values(c.cart || {}).reduce((a, b) => a + b, 0);
+      const tot = c => Object.entries(c.cart || {}).reduce((s, [id, q]) => s + dish(id).p * q, 0);
+      const cartBtn = c => ({ t: `🛒 ${cartW()} (${cnt(c)})`, go: 'cart' });
+      const menuBtn = () => ({ t: L('📋 Меню', '📋 Menyu', '📋 Menu'), go: 'cats' });
+      return chat(screen, { icon: '🍛', name: L('Кафе · доставка', 'Kafe · yetkazib berish', 'Café · delivery') }, {
+        start: c => { c.cart = {}; return { text: L('Ассаламу алейкум! 🍛 Доставляем по Ташкенту за 40–60 минут.<br>Доставка 10 000 сум, бесплатно от 150 000.', 'Assalomu alaykum! 🍛 Toshkent bo‘ylab 40–60 daqiqada yetkazamiz.<br>Yetkazib berish 10 000 so‘m, 150 000 dan bepul.', 'Hello! 🍛 We deliver across Tashkent in 40–60 minutes.<br>Delivery 10 000 UZS, free from 150 000.'), kb: [[menuBtn()], [{ t: '🛒 ' + cartW(), go: 'cart' }]] }; },
+        cats: () => ({ text: L('Выберите раздел:', 'Bo‘limni tanlang:', 'Choose a section:'), kb: chunk(cats.map(x => ({ t: N(x), go: 'list', set: { cat: x } })), 2) }),
+        list: c => ({ text: `<b>${N(c.cat)}</b><br>${L('Нажмите на блюдо, чтобы добавить его в корзину.', 'Savatga qo‘shish uchun taomni bosing.', 'Tap a dish to add it to your cart.')}`,
+          kb: [...menu.filter(m => m.cat === c.cat.id).map(m => [{ t: `${m.e} ${N(m)} · ${sum(m.p)}`, go: 'add', set: { item: m } }]), [{ t: L('⬅️ Разделы', '⬅️ Bo‘limlar', '⬅️ Sections'), go: 'cats' }, cartBtn(c)]] }),
+        add: c => { c.cart[c.item.id] = (c.cart[c.item.id] || 0) + 1;
+          return { text: L(`✅ ${N(c.item)} в корзине (${c.cart[c.item.id]} шт.)`, `✅ ${N(c.item)} savatda (${c.cart[c.item.id]} dona)`, `✅ ${N(c.item)} added (${c.cart[c.item.id]} pcs)`), kb: [[{ t: L('Добавить ещё', 'Yana qo‘shish', 'Add more'), go: 'list' }, cartBtn(c)]] }; },
+        cart: c => { if (!cnt(c)) return { text: L('Корзина пока пустая.', 'Savat hozircha bo‘sh.', 'Your cart is empty.'), kb: [[menuBtn()]] };
+          const t = tot(c), f = t >= 150000 ? 0 : 10000; c.total = t + f;
+          return { text: `<b>${cartW()}</b><br>` + Object.entries(c.cart).map(([id, q]) => `${N(dish(id))} × ${q} — ${sum(dish(id).p * q)}`).join('<br>') + `<br>${L('Доставка', 'Yetkazib berish', 'Delivery')}: ${f ? sum(f) : L('бесплатно', 'bepul', 'free')}<br><b>${L('Итого', 'Jami', 'Total')}: ${sum(t + f)}</b>`,
+            kb: [[{ t: L('✅ Оформить', '✅ Rasmiylashtirish', '✅ Checkout'), go: 'addr' }], [{ t: L('➕ Добавить', '➕ Qo‘shish', '➕ Add'), go: 'cats' }, { t: L('🗑 Очистить', '🗑 Tozalash', '🗑 Clear'), go: 'clear' }]] }; },
+        clear: c => { c.cart = {}; return { text: L('Корзина очищена.', 'Savat tozalandi.', 'Cart cleared.'), kb: [[menuBtn()]] }; },
+        addr: () => ({ text: L('Куда доставить? Отправьте геолокацию или выберите сохранённый адрес:', 'Qayerga yetkazay? Geolokatsiya yuboring yoki saqlangan manzilni tanlang:', 'Where to? Send your location or pick a saved address:'),
+          kb: [[{ t: L('📍 Отправить геолокацию', '📍 Geolokatsiya yuborish', '📍 Send location'), go: 'pay', set: { addr: L('Юнусабад, 4-й квартал (геолокация)', 'Yunusobod, 4-kvartal (geolokatsiya)', 'Yunusabad, block 4 (location)') } }],
+            [{ t: L('🏠 Юнусабад, 4-й кв., дом 12', '🏠 Yunusobod, 4-kv., 12-uy', '🏠 Yunusabad, block 4, bldg 12'), go: 'pay', set: { addr: L('Юнусабад, 4-й квартал, дом 12', 'Yunusobod, 4-kvartal, 12-uy', 'Yunusabad, block 4, bldg 12') } }]] }),
+        pay: c => ({ text: `📍 ${c.addr}<br>${L('К оплате', 'To‘lovga', 'To pay')}: <b>${sum(c.total)}</b><br>${L('Как оплатите?', 'Qanday to‘laysiz?', 'How will you pay?')}`,
+          kb: [[{ t: 'Payme', go: 'paid', set: { via: 'Payme' } }, { t: 'Click', go: 'paid', set: { via: 'Click' } }], [{ t: cashW(), go: 'paid', set: { via: '' } }]] }),
+        paid: c => { feed(`<b>${orderW()} №1047</b>: ${esc(Object.entries(c.cart).map(([id, q]) => N(dish(id)) + ' × ' + q).join(', '))}. ${esc(c.addr)}. ${!c.via ? cashW() : paidVia(c.via)}: ${sum(c.total)}`);
+          return { text: L(`✅ Заказ №1047 принят${c.via ? ', оплата через ' + c.via + ' прошла (демо)' : ''}. Кухня уже готовит.`, `✅ №1047 buyurtma qabul qilindi${c.via ? ', ' + c.via + ' orqali to‘lov o‘tdi (demo)' : ''}. Oshxona tayyorlamoqda.`, `✅ Order #1047 received${c.via ? ', ' + c.via + ' payment went through (demo)' : ''}. The kitchen is cooking.`), next: 's2', delay: 2400 }; },
+        s2: () => ({ text: L('👨‍🍳 Заказ готовится, это примерно 20 минут.<span class="hint">В демо статусы приходят за секунды</span>', '👨‍🍳 Buyurtma tayyorlanmoqda, taxminan 20 daqiqa.<span class="hint">Demoda holatlar soniyalarda keladi</span>', '👨‍🍳 Your order is cooking, about 20 minutes.<span class="hint">In the demo statuses arrive in seconds</span>'), next: 's3', delay: 2600 }),
+        s3: () => { feed(courierTook()); return { text: L('🛵 Курьер в пути, будет через ~15 минут.', '🛵 Kuryer yo‘lda, ~15 daqiqada yetib keladi.', '🛵 The courier is on the way, ~15 minutes.'), next: 's4', delay: 2600 }; },
+        s4: () => ({ text: L('📦 Заказ доставлен. Приятного аппетита! Оцените доставку:', '📦 Buyurtma yetkazildi. Yoqimli ishtaha! Yetkazishni baholang:', '📦 Delivered. Enjoy your meal! Rate the delivery:'), kb: [[5, 4, 3].map(r => ({ t: '⭐ ' + r, go: 'thx', set: { r } }))] }),
+        thx: c => { feed(L(`Клиент оценил доставку: <b>${c.r} ⭐</b>`, `Mijoz yetkazishni baholadi: <b>${c.r} ⭐</b>`, `Customer rated the delivery: <b>${c.r} ⭐</b>`)); c.cart = {}; return { text: L('Спасибо за оценку! Ждём новых заказов 🙌', 'Baho uchun rahmat! Yangi buyurtmalarni kutamiz 🙌', 'Thanks for the rating! See you next time 🙌'), kb: [[menuBtn()]] }; },
+      });
+    }
+  };
+
+  /* ---------- 4. учебный центр ---------- */
+  const courses = [
+    { e: '🇬🇧', n: 'Английский General', uz: 'Ingliz tili General', en: 'General English', sub: '3 раза в неделю по 90 минут', subUz: 'haftasiga 3 marta, 90 daqiqadan', subEn: '3 times a week, 90 minutes', p: 450000,
+      groups: [['Пн / Ср / Пт · 16:00', 'Du / Ch / Ju · 16:00', 'Mon / Wed / Fri · 16:00'], ['Вт / Чт / Сб · 18:30', 'Se / Pa / Sh · 18:30', 'Tue / Thu / Sat · 18:30']] },
+    { e: '🎯', n: 'IELTS 7+', uz: 'IELTS 7+', en: 'IELTS 7+', sub: 'подготовка к экзамену, 3 месяца', subUz: 'imtihonga tayyorgarlik, 3 oy', subEn: 'exam prep, 3 months', p: 700000,
+      groups: [['Пн / Ср / Пт · 19:00', 'Du / Ch / Ju · 19:00', 'Mon / Wed / Fri · 19:00'], ['Сб / Вс · 10:00', 'Sh / Ya · 10:00', 'Sat / Sun · 10:00']] },
+    { e: '📐', n: 'Математика для абитуриентов', uz: 'Abituriyentlar uchun matematika', en: 'Math for university applicants', sub: 'DTM и вступительные', subUz: 'DTM va kirish imtihonlari', subEn: 'DTM and entrance exams', p: 400000,
+      groups: [['Вт / Чт · 15:00', 'Se / Pa · 15:00', 'Tue / Thu · 15:00'], ['Сб · 14:00', 'Sh · 14:00', 'Sat · 14:00']] },
+    { e: '💻', n: 'IT для детей 10–14 лет', uz: '10–14 yoshli bolalar uchun IT', en: 'IT for kids aged 10–14', sub: 'Scratch, Python, сайты', subUz: 'Scratch, Python, saytlar', subEn: 'Scratch, Python, websites', p: 550000,
+      groups: [['Вт / Чт · 17:00', 'Se / Pa · 17:00', 'Tue / Thu · 17:00'], ['Сб / Вс · 12:00', 'Sh / Ya · 12:00', 'Sat / Sun · 12:00']] }];
+  const G = g => L(g[0], g[1], g[2]);
+  const MO = () => L('мес', 'oy', 'mo');
+  const trialW = () => L('Пробный урок', 'Sinov darsi', 'Trial lesson');
+  const studentW = kid => `${L('ученик', 'o‘quvchi', 'student')}: ${kid ? L('ребёнок', 'bola', 'child') : L('взрослый', 'kattalar', 'adult')}`;
+  const groupW = () => L('группа', 'guruh', 'group');
+  const edu = {
+    mode: 'bot',
+    side: () => ({ kicker: L('Учебный центр · бот записи и оплаты', 'O‘quv markazi · yozilish va to‘lov boti', 'Learning center · enrolment & payment bot'),
+      title: L('Пробные уроки и оплата курсов без звонков', 'Qo‘ng‘iroqsiz sinov darslari va kurs to‘lovi', 'Trial lessons and course payments without calls'),
+      lead: L('Родители и студенты сами выбирают курс и группу, записываются на пробный урок и платят за месяц. Бот напоминает о занятиях и об оплате.', 'Ota-onalar va talabalar kurs va guruhni o‘zlari tanlaydi, sinov darsiga yoziladi va oy uchun to‘laydi. Bot darslar va to‘lov haqida eslatadi.', 'Parents and students pick a course and group, sign up for a trial lesson and pay for the month. The bot reminds them about classes and payments.'),
+      feats: L(['Запись на бесплатный пробный урок', 'Расписание групп и свободные места', 'Оплата курса через Payme / Click', 'Напоминания о занятии и о дате оплаты'],
+        ['Bepul sinov darsiga yozilish', 'Guruhlar jadvali va bo‘sh joylar', 'Kurs uchun Payme / Click orqali to‘lov', 'Dars va to‘lov sanasi haqida eslatmalar'],
+        ['Sign-up for a free trial lesson', 'Group schedules and free places', 'Course payment via Payme / Click', 'Reminders about classes and payment dates']),
+      feedTitle: L('Что видит администратор', 'Administrator nimani ko‘radi', 'What the admin sees'),
+      feedEmpty: L('Запишитесь на пробный урок в демо слева.', 'Chapdagi demoda sinov darsiga yoziling.', 'Sign up for a trial lesson in the demo on the left.'),
+      price: from('$370'), priceNote: supNote() }),
+    bot(screen) {
+      const coursesBtn = () => ({ t: L('📚 Курсы', '📚 Kurslar', '📚 Courses'), go: 'courses' });
+      const payBtn = () => ({ t: L('💳 Оплатить курс', '💳 Kursni to‘lash', '💳 Pay for course'), go: 'pay' });
+      return chat(screen, { icon: '🎓', name: L('Учебный центр', 'O‘quv markazi', 'Learning center') }, {
+        start: () => ({ text: L('Ассаламу алейкум! 🎓 Это бот учебного центра.<br>Английский, IELTS, математика и IT для детей.', 'Assalomu alaykum! 🎓 Bu o‘quv markazi boti.<br>Ingliz tili, IELTS, matematika va bolalar uchun IT.', 'Hello! 🎓 This is the learning center bot.<br>English, IELTS, math and IT for kids.'),
+          kb: [[coursesBtn()], [{ t: L('🗓 Пробный урок', '🗓 Sinov darsi', '🗓 Trial lesson'), go: 'courses' }, payBtn()]] }),
+        courses: () => ({ text: L('Выберите курс:', 'Kursni tanlang:', 'Choose a course:'), kb: courses.map(c => [{ t: `${c.e} ${N(c)} · ${sum(c.p)}/${MO()}`, go: 'course', set: { c } }]) }),
+        course: c => ({ text: `<b>${N(c.c)}</b><br>${F(c.c, 'sub')}<br>${L('Стоимость', 'Narxi', 'Price')}: ${L(sum(c.c.p) + ' в месяц', 'oyiga ' + sum(c.c.p), sum(c.c.p) + ' per month')}<br><br>${L('Первый урок — бесплатно. Выберите группу:', 'Birinchi dars — bepul. Guruhni tanlang:', 'The first lesson is free. Choose a group:')}`, kb: c.c.groups.map(g => [{ t: G(g), go: 'trial', set: { g } }]) }),
+        trial: c => ({ text: `${L('Записываем на пробный урок:', 'Sinov darsiga yozamiz:', 'Booking a trial lesson:')}<br>📚 ${N(c.c)}<br>🗓 ${G(c.g)}<br><br>${L('Для кого урок?', 'Dars kim uchun?', 'Who is the lesson for?')}`,
+          kb: [[{ t: L('Для себя', 'O‘zim uchun', 'For me'), go: 'ok', set: { kid: false } }, { t: L('Для ребёнка', 'Farzandim uchun', 'For my child'), go: 'ok', set: { kid: true } }]] }),
+        ok: c => { feed(`<b>${trialW()}</b>: ${esc(N(c.c))}, ${groupW()} ${esc(G(c.g))}, ${studentW(c.kid)}. ${L('Тел.', 'Tel.', 'Phone')}: ${phoneMask}`);
+          return { text: L('✅ Готово! Вы записаны на бесплатный пробный урок. Накануне пришлём напоминание.', '✅ Tayyor! Siz bepul sinov darsiga yozildingiz. Bir kun oldin eslatma yuboramiz.', '✅ Done! You’re booked for a free trial lesson. We’ll send a reminder the day before.'), next: 'remind', delay: 1800 }; },
+        remind: c => { const t = G(c.g).split('·')[1].trim();
+          return { text: L(`🔔 <b>Напоминание</b><br>Завтра пробный урок: ${N(c.c)}, ${t}. Возьмите тетрадь и ручку.<span class="hint">Так бот напомнит за день</span>`, `🔔 <b>Eslatma</b><br>Ertaga sinov darsi: ${N(c.c)}, soat ${t}. Daftar va ruchka oling.<span class="hint">Bot bir kun oldin shunday eslatadi</span>`, `🔔 <b>Reminder</b><br>Trial lesson tomorrow: ${N(c.c)}, ${t}. Bring a notebook and a pen.<span class="hint">This is how the bot reminds the day before</span>`),
+            kb: [[{ t: L('👍 Приду', '👍 Boraman', '👍 I’ll come'), go: 'after' }, { t: L('🔁 Перенести', '🔁 Ko‘chirish', '🔁 Reschedule'), go: 'courses' }]] }; },
+        after: c => ({ text: L(`Ждём вас! После пробного урока можно сразу оплатить курс: ${sum(c.c.p)} за месяц.`, `Kutamiz! Sinov darsidan keyin kursni darhol to‘lash mumkin: oyiga ${sum(c.c.p)}.`, `See you there! After the trial you can pay for the course right away: ${sum(c.c.p)} per month.`), kb: [[payBtn()]] }),
+        pay: c => { c.c = c.c || courses[0]; return { text: `${L('💳 Оплата за месяц:', '💳 Oylik to‘lov:', '💳 Monthly payment:')}<br><b>${N(c.c)} — ${sum(c.c.p)}</b>`, kb: [[{ t: 'Payme', go: 'paid', set: { via: 'Payme' } }, { t: 'Click', go: 'paid', set: { via: 'Click' } }]] }; },
+        paid: c => { feed(`<b>${L('Оплата курса', 'Kurs to‘lovi', 'Course payment')}</b>: ${esc(N(c.c))}, ${sum(c.c.p)} (${c.via})`);
+          return { text: L('✅ Оплата прошла (демо). Спасибо!<br>Следующая оплата через месяц, напомним за 3 дня.', '✅ To‘lov o‘tdi (demo). Rahmat!<br>Keyingi to‘lov bir oydan keyin, 3 kun oldin eslatamiz.', '✅ Payment received (demo). Thank you!<br>Next payment in a month, we’ll remind you 3 days before.'), kb: [[coursesBtn()]] }; },
+      });
+    },
+    app(screen) { return pickApp(screen, { icon: '🎓', name: L('Учебный центр', 'O‘quv markazi', 'Learning center'), again: L('Записаться ещё', 'Yana yozilish', 'Book again'),
+      steps: [
+        { key: 'c', title: L('Выберите курс', 'Kursni tanlang', 'Choose a course'), items: () => courses.map(c => ({ ...c, right: (c.p / 1000) + 'k/' + MO() })) },
+        { key: 'g', title: st => N(st.c) + L(': группы', ': guruhlar', ': groups'), items: st => st.c.groups.map(g => ({ e: '🗓', n: G(g), sub: L('есть свободные места · пробный урок бесплатно', 'bo‘sh joylar bor · sinov darsi bepul', 'places available · trial lesson free') })) },
+        { key: 'who', title: L('Для кого урок?', 'Dars kim uchun?', 'Who is the lesson for?'), items: () => [{ e: '🧑', n: L('Для себя', 'O‘zim uchun', 'For me') }, { e: '🧒', n: L('Для ребёнка', 'Farzandim uchun', 'For my child'), kid: true }] }],
+      onDone: () => {},
+      done: st => { feed(`<b>${trialW()}</b>: ${esc(N(st.c))}, ${groupW()} ${esc(st.g.n)}, ${studentW(st.who.kid)}`);
+        return `<div class="card" style="text-align:center;justify-items:center"><span class="eyebrow">${youBooked()}</span><div class="big" style="font-size:26px">${trialW()}</div><span>${esc(N(st.c))}</span><span>${esc(st.g.n)}</span></div>
+          <div class="note">${L(`🔔 Напомним накануне. После урока курс можно оплатить здесь же: ${sum(st.c.p)}/мес через Payme или Click.`, `🔔 Bir kun oldin eslatamiz. Darsdan keyin kursni shu yerda to‘lash mumkin: oyiga ${sum(st.c.p)}, Payme yoki Click orqali.`, `🔔 We’ll remind you the day before. After the lesson you can pay right here: ${sum(st.c.p)}/mo via Payme or Click.`)}</div>`; } }); }
+  };
+
+  /* ---------- 5. стоматология ---------- */
+  const clinicSvc = [
+    { e: '🦷', n: 'Консультация', uz: 'Konsultatsiya', en: 'Consultation', sub: '30 мин', subUz: '30 daq', subEn: '30 min', right: 'бесплатно', rightUz: 'bepul', rightEn: 'free' },
+    { e: '✨', n: 'Профессиональная чистка', uz: 'Professional tozalash', en: 'Professional cleaning', sub: '60 мин', subUz: '60 daq', subEn: '60 min', right: '350 000', rightUz: '350 000', rightEn: '350 000' },
+    { e: '🩺', n: 'Лечение кариеса', uz: 'Kariyesni davolash', en: 'Cavity treatment', sub: 'от 60 мин', subUz: '60 daq dan', subEn: 'from 60 min', right: 'от 400 000', rightUz: '400 000 dan', rightEn: 'from 400 000' },
+    { e: '🔩', n: 'Консультация по имплантации', uz: 'Implantatsiya bo‘yicha konsultatsiya', en: 'Implant consultation', sub: '40 мин', subUz: '40 daq', subEn: '40 min', right: 'бесплатно', rightUz: 'bepul', rightEn: 'free' }];
+  const doctors = [{ e: '👩‍⚕️', n: 'Д-р Каримова', uz: 'Dr. Karimova', en: 'Dr. Karimova', sub: 'терапевт · 12 лет опыта', subUz: 'terapevt · 12 yillik tajriba', subEn: 'general dentist · 12 years’ experience' },
+    { e: '👨‍⚕️', n: 'Д-р Юсупов', uz: 'Dr. Yusupov', en: 'Dr. Yusupov', sub: 'хирург-имплантолог · 9 лет опыта', subUz: 'jarroh-implantolog · 9 yillik tajriba', subEn: 'implant surgeon · 9 years’ experience' }];
+  const patient = () => L('Пациент', 'Bemor', 'Patient');
+  const clinic = {
+    mode: 'bot',
+    side: () => ({ kicker: L('Стоматология и клиники · запись к врачу', 'Stomatologiya va klinikalar · shifokorga yozilish', 'Dental clinics · doctor appointments'),
+      title: L('Запись к врачу и меньше пропущенных приёмов', 'Shifokorga yozilish va kamroq o‘tkazib yuborilgan qabullar', 'Doctor bookings and fewer missed appointments'),
+      lead: L('Пациент выбирает услугу, врача и время. Клиника получает запись, пациент — напоминание накануне, а через полгода бот сам зовёт на профчистку.', 'Bemor xizmat, shifokor va vaqtni tanlaydi. Klinika yozuvni, bemor esa bir kun oldin eslatmani oladi, yarim yildan keyin esa bot o‘zi professional tozalashga taklif qiladi.', 'Patients pick a service, a doctor and a time. The clinic gets the booking, the patient gets a reminder the day before, and six months later the bot invites them back for a cleaning.'),
+      feats: L(['Запись к конкретному врачу на свободное время', 'Напоминание накануне с подтверждением', 'Повторные визиты: бот сам напоминает через 6 месяцев', 'Цены и подготовка к приёму в одном месте'],
+        ['Aniq shifokorga bo‘sh vaqtga yozilish', 'Bir kun oldin tasdiqlash bilan eslatma', 'Takroriy tashriflar: bot 6 oydan keyin o‘zi eslatadi', 'Narxlar va qabulga tayyorgarlik bir joyda'],
+        ['Book a specific doctor at a free time', 'Reminder the day before with confirmation', 'Repeat visits: the bot reminds after 6 months', 'Prices and visit preparation in one place']),
+      feedTitle: L('Что видит регистратура', 'Registratura nimani ko‘radi', 'What the front desk sees'),
+      feedEmpty: L('Запишитесь к врачу в демо слева.', 'Chapdagi demoda shifokorga yoziling.', 'Book a doctor in the demo on the left.'),
+      price: from('$270'), priceNote: supNote() }),
+    bot(screen) {
+      const signBtn = () => ({ t: L('🗓 Записаться', '🗓 Yozilish', '🗓 Book'), go: 'svc' });
+      return chat(screen, { icon: '🦷', name: L('Стоматология · запись', 'Stomatologiya · yozilish', 'Dental clinic · booking') }, {
+        start: () => ({ text: L('Здравствуйте! 🦷 Это бот записи в стоматологию.<br>Запишу к врачу за минуту.', 'Assalomu alaykum! 🦷 Bu stomatologiyaga yozilish boti.<br>Sizni bir daqiqada shifokorga yozaman.', 'Hello! 🦷 This is the dental clinic booking bot.<br>I’ll book you with a doctor in a minute.'),
+          kb: [[signBtn()], [{ t: L('💰 Цены', '💰 Narxlar', '💰 Prices'), go: 'prices' }, { t: L('📍 Адрес', '📍 Manzil', '📍 Address'), go: 'addr' }]] }),
+        prices: () => ({ text: `<b>${L('Цены', 'Narxlar', 'Prices')}</b><br>` + clinicSvc.map(s => `${N(s)} — ${F(s, 'right')}${/\d/.test(s.right) ? L(' сум', ' so‘m', ' UZS') : ''}`).join('<br>'), kb: [[signBtn()]] }),
+        addr: () => ({ text: L('📍 Ташкент, Мирзо-Улугбекский район<br>🕘 Пн–Сб 9:00–20:00', '📍 Toshkent, Mirzo Ulug‘bek tumani<br>🕘 Du–Sh 9:00–20:00', '📍 Tashkent, Mirzo Ulugbek district<br>🕘 Mon–Sat 9:00–20:00'), kb: [[signBtn()]] }),
+        svc: () => ({ text: L('Выберите услугу:', 'Xizmatni tanlang:', 'Choose a service:'), kb: clinicSvc.map(s => [{ t: `${s.e} ${N(s)} · ${F(s, 'right')}`, go: 'doc', set: { s } }]) }),
+        doc: () => ({ text: L('Выберите врача:', 'Shifokorni tanlang:', 'Choose a doctor:'), kb: doctors.map(d => [{ t: `${d.e} ${N(d)}`, go: 'day', set: { d } }]) }),
+        day: () => ({ text: L('Выберите день:', 'Kunni tanlang:', 'Choose a day:'), kb: [days().map(d => ({ t: d.label, go: 'time', set: { day: d.label, di: d.i } }))] }),
+        time: c => { const sl = slots(c.di); return sl.some(s => !s.busy) ? { text: L(`${c.day}. Зачёркнутое время занято:`, `${c.day}. Chizilgan vaqt band:`, `${c.day}. Crossed-out times are taken:`), kb: chunk(sl.map(s => ({ t: s.t, off: s.busy, go: 'confirm', set: { time: s.t } })), 4) }
+          : { text: L('На сегодня всё занято, выберите другой день:', 'Bugun hammasi band, boshqa kunni tanlang:', 'Fully booked today, pick another day:'), kb: [[{ t: L('Другой день', 'Boshqa kun', 'Another day'), go: 'day' }]] }; },
+        confirm: c => ({ text: `${L('Проверьте запись:', 'Yozuvni tekshiring:', 'Check your booking:')}<br>🦷 ${N(c.s)}<br>${c.d.e} ${N(c.d)}<br>📅 ${c.day}, ${c.time}`, kb: [[{ t: L('✅ Подтвердить', '✅ Tasdiqlash', '✅ Confirm'), go: 'done' }], [{ t: L('Изменить', 'O‘zgartirish', 'Change'), go: 'svc' }]] }),
+        done: c => { feed(`<b>${L('Новая запись', 'Yangi yozuv', 'New booking')}</b>: ${esc(N(c.s))}, ${esc(N(c.d))}, ${esc(atTime(c.day, c.time))}. ${patient()}: ${phoneMask}`);
+          return { text: L('✅ Вы записаны! Накануне пришлём напоминание.', '✅ Siz yozildingiz! Bir kun oldin eslatma yuboramiz.', '✅ You’re booked! We’ll send a reminder the day before.'), next: 'remind', delay: 1800 }; },
+        remind: c => ({ text: L(`🔔 <b>Напоминание</b><br>Завтра в ${c.time} приём: ${N(c.s)}, ${N(c.d)}.<br>Пожалуйста, не опаздывайте.<span class="hint">Так пациент получит напоминание накануне</span>`, `🔔 <b>Eslatma</b><br>Ertaga soat ${c.time} da qabul: ${N(c.s)}, ${N(c.d)}.<br>Iltimos, kechikmang.<span class="hint">Bemor eslatmani bir kun oldin shunday oladi</span>`, `🔔 <b>Reminder</b><br>Appointment tomorrow at ${c.time}: ${N(c.s)}, ${N(c.d)}.<br>Please don’t be late.<span class="hint">This is how the patient gets a reminder the day before</span>`),
+          kb: [[{ t: L('✅ Подтверждаю', '✅ Tasdiqlayman', '✅ Confirm'), go: 'conf' }, { t: L('🔁 Перенести', '🔁 Ko‘chirish', '🔁 Reschedule'), go: 'day' }]] }),
+        conf: () => { feed(L('Пациент <b>подтвердил</b> приём', 'Bemor qabulni <b>tasdiqladi</b>', 'Patient <b>confirmed</b> the appointment')); return { text: L('Спасибо, ждём вас!', 'Rahmat, sizni kutamiz!', 'Thank you, see you then!'), next: 'later', delay: 2200 }; },
+        later: () => ({ text: L('🗓 <b>Через 6 месяцев</b><br>Пора на профилактический осмотр и чистку. Записать вас?<span class="hint">Так бот возвращает пациентов на повторные визиты</span>', '🗓 <b>6 oydan keyin</b><br>Profilaktik ko‘rik va tozalash vaqti keldi. Sizni yozaymi?<span class="hint">Bot bemorlarni takroriy tashriflarga shunday qaytaradi</span>', '🗓 <b>6 months later</b><br>Time for a check-up and cleaning. Shall I book you?<span class="hint">This is how the bot brings patients back</span>'), kb: [[signBtn()]] }),
+      });
+    },
+    app(screen) { return pickApp(screen, { icon: '🦷', name: L('Стоматология', 'Stomatologiya', 'Dental clinic'), again: L('Новая запись', 'Yangi yozilish', 'New booking'),
+      steps: [
+        { key: 's', title: L('Выберите услугу', 'Xizmatni tanlang', 'Choose a service'), items: () => clinicSvc },
+        { key: 'd', title: L('Выберите врача', 'Shifokorni tanlang', 'Choose a doctor'), items: () => doctors },
+        { type: 'slots', title: st => `${N(st.s)} · ${N(st.d)}`, right: st => F(st.s, 'right') }],
+      onDone: st => feed(`<b>${L('Новая запись', 'Yangi yozuv', 'New booking')}</b>: ${esc(N(st.s))}, ${esc(N(st.d))}, ${esc(atTime(st.day, st.time))}. ${patient()}: ${phoneMask}`),
+      done: st => `<div class="card" style="text-align:center;justify-items:center"><span class="eyebrow">${youBooked()}</span><div class="big">${st.time}</div><span>${esc(st.day)}</span></div>
+        <div class="card"><div class="row"><span>${L('Услуга', 'Xizmat', 'Service')}</span><span>${esc(N(st.s))}</span></div><div class="row"><span>${L('Врач', 'Shifokor', 'Doctor')}</span><span>${esc(N(st.d))}</span></div><div class="row"><span>${L('Стоимость', 'Narxi', 'Price')}</span><span>${esc(F(st.s, 'right'))}</span></div></div>
+        <div class="note">${L('🔔 Напомним накануне, а через 6 месяцев позовём на осмотр', '🔔 Bir kun oldin eslatamiz, 6 oydan keyin esa ko‘rikka chaqiramiz', '🔔 We’ll remind you the day before and invite you for a check-up in 6 months')}</div>` }); }
+  };
+
+  /* ---------- 6. отель ---------- */
+  const rooms = [{ e: '🛏', n: 'Standard', sub: 'до 2 гостей · завтрак включён', subUz: '2 mehmongacha · nonushta kiritilgan', subEn: 'up to 2 guests · breakfast included', p: 550000, cap: 2 },
+    { e: '🛋', n: 'Deluxe', sub: 'до 2 гостей · вид на город', subUz: '2 mehmongacha · shaharga manzara', subEn: 'up to 2 guests · city view', p: 800000, cap: 2 },
+    { e: '👨‍👩‍👧', n: 'Family', sub: 'до 4 гостей · две комнаты', subUz: '4 mehmongacha · ikki xona', subEn: 'up to 4 guests · two rooms', p: 1100000, cap: 4 }];
+  const TRANSFER = 150000;
+  const dateLabel = offset => { const d = new Date(); d.setDate(d.getDate() + offset); return dmy(d); };
+  const nights = n => L(n + ' ' + (n === 1 ? 'ночь' : n < 5 ? 'ночи' : 'ночей'), n + ' kecha', n + (n === 1 ? ' night' : ' nights'));
+  const bookingW = () => L('Бронь', 'Bron', 'Booking');
+  const plusTr = () => L(', + трансфер', ', + transfer', ', + transfer');
+  const hotel = {
+    mode: 'app',
+    side: () => ({ kicker: L('Отели и хостелы · бронирование', 'Mehmonxona va xostellar · bron qilish', 'Hotels & hostels · booking'),
+      title: L('Бронь номеров напрямую, без комиссий агрегаторов', 'Agregator komissiyasisiz to‘g‘ridan-to‘g‘ri xona bron qilish', 'Direct room bookings, no aggregator fees'),
+      lead: L('Гость выбирает даты, номер и сразу платит. Отель получает бронь, а бот предлагает трансфер из аэропорта и отвечает на частые вопросы.', 'Mehmon sanalar va xonani tanlaydi va darhol to‘laydi. Mehmonxona bronni oladi, bot esa aeroportdan transfer taklif qiladi va ko‘p beriladigan savollarga javob beradi.', 'Guests choose dates and a room and pay right away. The hotel gets the booking, and the bot offers an airport transfer and answers common questions.'),
+      feats: L(['Даты, номер и число гостей в пару нажатий', 'Предоплата через Payme / Click', 'Допродажа: трансфер, ранний заезд, завтрак', 'Ответы на вопросы о заезде, Wi-Fi и парковке'],
+        ['Sana, xona va mehmonlar soni bir-ikki bosishda', 'Payme / Click orqali oldindan to‘lov', 'Qo‘shimcha sotuv: transfer, erta kirish, nonushta', 'Kirish, Wi-Fi va avtoturargoh haqidagi savollarga javoblar'],
+        ['Dates, room and guests in a couple of taps', 'Prepayment via Payme / Click', 'Upsells: transfer, early check-in, breakfast', 'Answers about check-in, Wi-Fi and parking']),
+      feedTitle: L('Что видит ресепшен', 'Resepshn nimani ko‘radi', 'What reception sees'),
+      feedEmpty: L('Забронируйте номер в демо слева.', 'Chapdagi demoda xona bron qiling.', 'Book a room in the demo on the left.'),
+      price: from('$570'), priceNote: supNote() }),
+    bot(screen) {
+      const bookBtn = () => ({ t: L('🛏 Забронировать', '🛏 Bron qilish', '🛏 Book a room'), go: 'in' });
+      const faqBtn = () => ({ t: L('❓ Вопросы', '❓ Savollar', '❓ Questions'), go: 'faq' });
+      return chat(screen, { icon: '🏨', name: L('Отель · бронирование', 'Mehmonxona · bron', 'Hotel · booking') }, {
+        start: () => ({ text: L('Ассаламу алейкум! 🏨 Бронирование номеров в центре Ташкента.', 'Assalomu alaykum! 🏨 Toshkent markazida xona bron qilish.', 'Welcome! 🏨 Book a room in central Tashkent.'), kb: [[bookBtn()], [{ t: L('🚕 Трансфер', '🚕 Transfer', '🚕 Transfer'), go: 'tr' }, faqBtn()]] }),
+        faq: () => ({ text: L('🕑 Заезд с 14:00, выезд до 12:00<br>🍳 Завтрак включён<br>📶 Бесплатный Wi-Fi<br>🅿️ Парковка во дворе', '🕑 Kirish 14:00 dan, chiqish 12:00 gacha<br>🍳 Nonushta kiritilgan<br>📶 Bepul Wi-Fi<br>🅿️ Hovlida avtoturargoh', '🕑 Check-in from 14:00, check-out by 12:00<br>🍳 Breakfast included<br>📶 Free Wi-Fi<br>🅿️ Courtyard parking'), kb: [[bookBtn()]] }),
+        tr: () => ({ text: L(`🚕 Трансфер из аэропорта: ${sum(TRANSFER)}. Добавим к брони после выбора номера.`, `🚕 Aeroportdan transfer: ${sum(TRANSFER)}. Xonani tanlagandan keyin bronga qo‘shamiz.`, `🚕 Airport transfer: ${sum(TRANSFER)}. We’ll add it after you choose a room.`), kb: [[bookBtn()]] }),
+        in: () => ({ text: L('Дата заезда:', 'Kirish sanasi:', 'Check-in date:'), kb: [days().map(d => ({ t: d.label, go: 'n', set: { di: d.i, day: d.label } }))] }),
+        n: () => ({ text: L('Сколько ночей?', 'Necha kecha?', 'How many nights?'), kb: [[1, 2, 3, 5].map(n => ({ t: nights(n), go: 'room', set: { n } }))] }),
+        room: () => ({ text: L('Выберите номер:', 'Xonani tanlang:', 'Choose a room:'), kb: rooms.map(r => [{ t: `${r.e} ${r.n} · ${sum(r.p)}/${L('ночь', 'kecha', 'night')}`, go: 'sum', set: { r } }]) }),
+        sum: c => { c.total = c.r.p * c.n; return { text: `🏨 ${c.r.n}<br>📅 ${c.day} → ${dateLabel(c.di + c.n)}, ${nights(c.n)}<br>💵 ${L('Итого', 'Jami', 'Total')}: <b>${sum(c.total)}</b><br><br>${L(`Добавить трансфер из аэропорта за ${sum(TRANSFER)}?`, `Aeroportdan transferni ${sum(TRANSFER)} ga qo‘shaymi?`, `Add an airport transfer for ${sum(TRANSFER)}?`)}`,
+          kb: [[{ t: L('🚕 Да, добавить', '🚕 Ha, qo‘shing', '🚕 Yes, add it'), go: 'pay', set: { tr: true } }, { t: L('Нет, спасибо', 'Yo‘q, rahmat', 'No, thanks'), go: 'pay', set: { tr: false } }]] }; },
+        pay: c => { c.grand = c.total + (c.tr ? TRANSFER : 0); return { text: `${L('К оплате', 'To‘lovga', 'To pay')}: <b>${sum(c.grand)}</b>${c.tr ? L(' (с трансфером)', ' (transfer bilan)', ' (with transfer)') : ''}`,
+          kb: [[{ t: 'Payme', go: 'paid', set: { via: 'Payme' } }, { t: 'Click', go: 'paid', set: { via: 'Click' } }], [{ t: L('Оплачу при заселении', 'Joylashganda to‘layman', 'Pay at check-in'), go: 'paid', set: { via: '' } }]] }; },
+        paid: c => { feed(`<b>${bookingW()}</b>: ${c.r.n}, ${esc(c.day)} → ${dateLabel(c.di + c.n)}, ${nights(c.n)}${c.tr ? plusTr() : ''}. ${!c.via ? L('Оплата при заселении', 'Joylashganda to‘lov', 'Pay at check-in') : paidVia(c.via)}: ${sum(c.grand)}`);
+          return { text: L(`✅ Номер забронирован! Ждём вас ${c.day} с 14:00.`, `✅ Xona bron qilindi! Sizni ${c.day} kuni soat 14:00 dan kutamiz.`, `✅ Room booked! We’ll expect you ${c.day} from 14:00.`) + (c.tr ? L('<br>🚕 Водитель встретит вас в аэропорту с табличкой.', '<br>🚕 Haydovchi sizni aeroportda lavha bilan kutib oladi.', '<br>🚕 A driver will meet you at the airport with a sign.') : ''),
+            kb: [[faqBtn(), { t: L('🛏 Ещё бронь', '🛏 Yana bron', '🛏 Another booking'), go: 'in' }]] }; },
+      });
+    },
+    app(screen) {
+      let st;
+      screen.innerHTML = shell('🏨', L('Отель · бронирование', 'Mehmonxona · bron', 'Hotel · booking'), 'Mini App');
+      const app = screen.querySelector('.app');
+      const reset = () => { st = { di: 0, n: 2, g: 2, r: null, tr: false, view: 'pick' }; draw(); };
+      screen.querySelector('.reset').addEventListener('click', reset);
+      const total = () => (st.r ? st.r.p * st.n : 0) + (st.tr ? TRANSFER : 0);
+      const guestsW = () => L('Гостей', 'Mehmonlar', 'Guests');
+      function draw() {
+        if (st.view === 'pick') {
+          app.innerHTML = `<div class="app-pad">
+            <div class="card"><span class="eyebrow">${L('Заезд', 'Kirish', 'Check-in')}</span><div class="chips">${dayChips(st.di)}</div>
+              <span class="eyebrow">${L('Ночей', 'Kechalar', 'Nights')}</span><div class="chips">${[1, 2, 3, 5].map(n => `<button type="button" class="chip${n === st.n ? ' on' : ''}" data-n="${n}">${n}</button>`).join('')}</div>
+              <span class="eyebrow">${guestsW()}</span><div class="chips">${[1, 2, 3, 4].map(g => `<button type="button" class="chip${g === st.g ? ' on' : ''}" data-g="${g}">${g}</button>`).join('')}</div></div>
+            ${rooms.map((r, j) => `<button type="button" class="item pick${st.r === r ? ' sel' : ''}" data-r="${j}" ${r.cap < st.g ? 'disabled style="opacity:.45"' : ''}><div class="pic">${r.e}</div><div><b>${r.n}</b><small>${r.cap < st.g ? L('не подходит по числу гостей', 'mehmonlar soniga mos emas', 'too small for your group') : F(r, 'sub')}</small></div><b>${r.p / 1000}k</b></button>`).join('')}
+            <button type="button" class="item pick${st.tr ? ' sel' : ''}" data-tr><div class="pic">🚕</div><div><b>${L('Трансфер из аэропорта', 'Aeroportdan transfer', 'Airport transfer')}</b><small>${st.tr ? L('добавлен', 'qo‘shildi', 'added') : L('нажмите, чтобы добавить', 'qo‘shish uchun bosing', 'tap to add')}</small></div><b>${TRANSFER / 1000}k</b></button>
+            </div><button type="button" class="cartbar" data-book ${st.r ? '' : 'disabled'}><span>${st.r ? `${st.r.n} · ${nights(st.n)}` : L('Выберите номер', 'Xonani tanlang', 'Choose a room')}</span><span>${sum(total())}</span></button>`;
+        } else {
+          app.innerHTML = `<div class="app-pad"><div class="card" style="text-align:center;justify-items:center"><span class="eyebrow">${L('Бронь подтверждена', 'Bron tasdiqlandi', 'Booking confirmed')}</span><div class="big" style="font-size:28px">${st.r.n}</div><span>${days()[st.di].label} → ${dateLabel(st.di + st.n)}</span></div>
+            <div class="card"><div class="row"><span>${guestsW()}</span><span>${st.g}</span></div><div class="row"><span>${nights(st.n)} × ${sum(st.r.p)}</span><span>${sum(st.r.p * st.n)}</span></div>
+              ${st.tr ? `<div class="row"><span>${L('Трансфер', 'Transfer', 'Transfer')}</span><span>${sum(TRANSFER)}</span></div>` : ''}<div class="row total"><span>${L('Оплачено (Payme, демо)', 'To‘landi (Payme, demo)', 'Paid (Payme, demo)')}</span><span>${sum(total())}</span></div></div>
+            <div class="note">${L('🕑 Заезд с 14:00. ', '🕑 Kirish 14:00 dan. ', '🕑 Check-in from 14:00. ')}${st.tr ? L('Водитель встретит вас в аэропорту.', 'Haydovchi sizni aeroportda kutib oladi.', 'A driver will meet you at the airport.') : L('Трансфер можно добавить позже в боте.', 'Transferni keyinroq botda qo‘shish mumkin.', 'You can add a transfer later in the bot.')}</div>
+            <button type="button" class="btn" data-again>${L('Новая бронь', 'Yangi bron', 'New booking')}</button></div>`;
+        }
+      }
+      app.addEventListener('click', e => {
+        const t = e.target.closest('button'); if (!t || t.disabled) return;
+        if (t.dataset.day) st.di = +t.dataset.day;
+        else if (t.dataset.n) st.n = +t.dataset.n;
+        else if (t.dataset.g) { st.g = +t.dataset.g; if (st.r && st.r.cap < st.g) st.r = null; }
+        else if (t.dataset.r) st.r = rooms[+t.dataset.r];
+        else if ('tr' in t.dataset) st.tr = !st.tr;
+        else if ('book' in t.dataset) { feed(`<b>${bookingW()}</b>: ${st.r.n}, ${days()[st.di].label} → ${dateLabel(st.di + st.n)}, ${guestsW().toLowerCase()}: ${st.g}${st.tr ? plusTr() : ''}. ${paidVia('Payme')}: ${sum(total())}`); st.view = 'done'; }
+        else if ('again' in t.dataset) { reset(); return; }
+        draw();
+      });
+      reset();
+      return () => {};
+    }
+  };
+
+  /* ---------- 7. лояльность ---------- */
+  const LEVELS = [{ n: 'Bronze', from: 0, cb: 3 }, { n: 'Silver', from: 2000, cb: 5 }, { n: 'Gold', from: 5000, cb: 10 }];
+  const lvl = p => [...LEVELS].reverse().find(l => p >= l.from);
+  const bonusFeed = (add, nl, before) => L(`Гость купил на ${sum(60000)}, начислено <b>${add}</b> бонусов`, `Mehmon ${sum(60000)} ga xarid qildi, <b>${add}</b> bonus yozildi`, `Guest spent ${sum(60000)}, <b>${add}</b> points added`)
+    + (nl.n !== before ? L(`. Новый уровень: <b>${nl.n}</b>`, `. Yangi daraja: <b>${nl.n}</b>`, `. New level: <b>${nl.n}</b>`) : '');
+  const toNext = (nx, pts) => L(`До ${nx.n}: ${nx.from - pts} бонусов`, `${nx.n} gacha: ${nx.from - pts} bonus`, `${nx.from - pts} points to ${nx.n}`);
+  const loyalty = {
+    mode: 'app',
+    side: () => ({ kicker: L('Кофейня, салон, магазин · Mini App лояльности', 'Qahvaxona, salon, do‘kon · sodiqlik Mini App', 'Coffee shop, salon, store · loyalty Mini App'),
+      title: L('Бонусная карта в телефоне клиента', 'Mijoz telefonidagi bonus karta', 'A loyalty card in the customer’s phone'),
+      lead: L('Вместо пластиковых карт и печатей: клиент показывает QR-код, кассир начисляет бонусы, а уровни мотивируют приходить снова.', 'Plastik karta va muhrlar o‘rniga: mijoz QR-kodni ko‘rsatadi, kassir bonus yozadi, darajalar esa qayta kelishga undaydi.', 'Instead of plastic cards and stamps: the customer shows a QR code, the cashier adds points, and levels bring people back.'),
+      feats: L(['QR-код клиента вместо пластиковой карты', 'Кэшбэк бонусами и уровни Bronze, Silver, Gold', 'История покупок у клиента и у вас', 'Рассылка акций всем владельцам карты'],
+        ['Plastik karta o‘rniga mijozning QR-kodi', 'Bonusli keshbek va Bronze, Silver, Gold darajalari', 'Xaridlar tarixi mijozda ham, sizda ham', 'Barcha karta egalariga aksiyalar tarqatish'],
+        ['Customer QR code instead of a plastic card', 'Cashback points and Bronze, Silver, Gold levels', 'Purchase history for the customer and for you', 'Promo messages to every card holder']),
+      feedTitle: L('Что видит владелец', 'Egasi nimani ko‘radi', 'What the owner sees'),
+      feedEmpty: L('Нажмите «Демо-покупка» в карте слева.', 'Chapdagi kartada «Demo-xarid» tugmasini bosing.', 'Tap “Demo purchase” on the card on the left.'),
+      price: from('$570'), priceNote: supNote() }),
+    app(screen) {
+      const st = { pts: 1840, hist: [[['Капучино и круассан', 'Kapuchino va kruassan', 'Cappuccino & croissant'], 42000, 1260], [['Латте', 'Latte', 'Latte'], 28000, 840]] };
+      screen.innerHTML = shell('☕', L('Кофейня · карта гостя', 'Qahvaxona · mehmon kartasi', 'Coffee shop · guest card'), 'Mini App');
+      const box = screen.querySelector('.app'); box.innerHTML = '<div class="app-pad"></div>';
+      const pad2 = box.firstElementChild;
+      screen.querySelector('.reset').addEventListener('click', () => { st.pts = 1840; st.hist = st.hist.slice(0, 2); draw(); });
+      function qr(canvas) { const n = 25, c = canvas.getContext('2d'); canvas.width = n; canvas.height = n; c.fillStyle = '#FFFFFF'; c.fillRect(0, 0, n, n); c.fillStyle = '#0F1B2D';
+        let s = 7; const rnd = () => (s = (s * 9301 + 49297) % 233280) / 233280;
+        for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) if (rnd() > .52) c.fillRect(x, y, 1, 1);
+        [[0, 0], [n - 7, 0], [0, n - 7]].forEach(([x, y]) => { c.fillStyle = '#0F1B2D'; c.fillRect(x, y, 7, 7); c.fillStyle = '#FFFFFF'; c.fillRect(x + 1, y + 1, 5, 5); c.fillStyle = '#0F1B2D'; c.fillRect(x + 2, y + 2, 3, 3); }); }
+      function draw() {
+        const lv = lvl(st.pts); const nx = LEVELS[LEVELS.indexOf(lv) + 1];
+        const pct = nx ? Math.min(100, (st.pts - lv.from) / (nx.from - lv.from) * 100) : 100;
+        pad2.innerHTML = `<div class="loy"><div class="row" style="font-size:13px"><span>${L('Уровень', 'Daraja', 'Level')} <b>${lv.n}</b> · ${L('кэшбэк', 'keshbek', 'cashback')} ${lv.cb}%</span><span>${L('Гость', 'Mehmon', 'Guest')}</span></div>
+            <div class="pts">${fmt(st.pts)}</div><small>${L('бонусов · 1 бонус = 1 сум', 'bonus · 1 bonus = 1 so‘m', 'points · 1 point = 1 UZS')}</small>
+            <div class="prog"><div style="width:${pct}%"></div></div><small>${nx ? toNext(nx, st.pts) : L('Максимальный уровень', 'Eng yuqori daraja', 'Top level')}</small></div>
+          <div class="qr"><canvas aria-label="${L('QR-код клиента (пример)', 'Mijoz QR-kodi (namuna)', 'Customer QR code (sample)')}"></canvas><small>${L('Покажите кассиру', 'Kassirga ko‘rsating', 'Show to the cashier')}</small></div>
+          <button type="button" class="btn" id="buy">${L('Демо-покупка на 60 000 сум', '60 000 so‘mlik demo-xarid', 'Demo purchase, 60 000 UZS')}</button>
+          <div class="card"><span class="eyebrow">${L('История', 'Tarix', 'History')}</span>${st.hist.slice().reverse().map(h => `<div class="row"><span>${L(...h[0])} · ${sum(h[1])}</span><span style="color:var(--ok)">+${h[2]}</span></div>`).join('')}</div>`;
+        qr(pad2.querySelector('canvas'));
+        pad2.querySelector('#buy').addEventListener('click', () => { const add = 60000 * lv.cb / 100; const before = lv.n;
+          st.pts += add; st.hist.push([['Покупка', 'Xarid', 'Purchase'], 60000, add]);
+          feed(bonusFeed(add, lvl(st.pts), before)); draw(); });
+      }
+      draw();
+      return () => {};
+    },
+    bot(screen) {
+      const card = c => { const lv = lvl(c.pts); const nx = LEVELS[LEVELS.indexOf(lv) + 1];
+        return L(`💳 Бонусов: <b>${fmt(c.pts)}</b> (1 бонус = 1 сум)<br>Уровень: <b>${lv.n}</b>, кэшбэк ${lv.cb}%`, `💳 Bonuslar: <b>${fmt(c.pts)}</b> (1 bonus = 1 so‘m)<br>Daraja: <b>${lv.n}</b>, keshbek ${lv.cb}%`, `💳 Points: <b>${fmt(c.pts)}</b> (1 point = 1 UZS)<br>Level: <b>${lv.n}</b>, cashback ${lv.cb}%`) + (nx ? '<br>' + toNext(nx, c.pts) : ''); };
+      const main = () => [[{ t: L('🔳 Мой код', '🔳 Mening kodim', '🔳 My code'), go: 'code' }, { t: L('🧾 Демо-покупка', '🧾 Demo-xarid', '🧾 Demo purchase'), go: 'buy' }], [{ t: L('📜 История', '📜 Tarix', '📜 History'), go: 'hist' }, { t: L('🎁 Акции', '🎁 Aksiyalar', '🎁 Offers'), go: 'promo' }]];
+      return chat(screen, { icon: '☕', name: L('Кофейня · бонусы', 'Qahvaxona · bonuslar', 'Coffee shop · rewards') }, {
+        start: c => { c.pts = 1840; c.hist = [L('Латте · 28 000 сум · +840', 'Latte · 28 000 so‘m · +840', 'Latte · 28 000 UZS · +840'), L('Капучино и круассан · 42 000 сум · +1 260', 'Kapuchino va kruassan · 42 000 so‘m · +1 260', 'Cappuccino & croissant · 42 000 UZS · +1 260')];
+          return { text: L('Ассаламу алейкум! ☕ Это ваша бонусная карта.<br>', 'Assalomu alaykum! ☕ Bu sizning bonus kartangiz.<br>', 'Hello! ☕ This is your loyalty card.<br>') + card(c), kb: main() }; },
+        code: () => ({ text: L('Покажите кассиру код:', 'Kassirga kodni ko‘rsating:', 'Show this code to the cashier:') + '<br><span class="codebig">4821 7730</span>' + `<span class="hint">${L('В Mini App вместо цифр показывается QR-код', 'Mini App’da raqamlar o‘rniga QR-kod ko‘rsatiladi', 'In the Mini App a QR code is shown instead')}</span>`, kb: main() }),
+        buy: c => { const lv = lvl(c.pts); const add = 60000 * lv.cb / 100; c.pts += add; c.hist.unshift(L(`Покупка · 60 000 сум · +${add}`, `Xarid · 60 000 so‘m · +${add}`, `Purchase · 60 000 UZS · +${add}`)); const nl = lvl(c.pts);
+          feed(bonusFeed(add, nl, lv.n));
+          return { text: L(`🧾 Покупка на 60 000 сум.<br>Начислено <b>+${add}</b> бонусов.`, `🧾 60 000 so‘mlik xarid.<br><b>+${add}</b> bonus yozildi.`, `🧾 Purchase of 60 000 UZS.<br><b>+${add}</b> points added.`)
+            + (nl.n !== lv.n ? L(`<br>🎉 Новый уровень: <b>${nl.n}</b>, кэшбэк теперь ${nl.cb}%!`, `<br>🎉 Yangi daraja: <b>${nl.n}</b>, endi keshbek ${nl.cb}%!`, `<br>🎉 New level: <b>${nl.n}</b>, cashback is now ${nl.cb}%!`) : '') + '<br><br>' + card(c), kb: main() }; },
+        hist: c => ({ text: `<b>${L('История', 'Tarix', 'History')}</b><br>` + c.hist.join('<br>'), kb: main() }),
+        promo: () => ({ text: L('🎁 <b>Акции</b><br>Каждый 6-й кофе бесплатно<br>В день рождения скидка 20%<br>Приведи друга — +5 000 бонусов', '🎁 <b>Aksiyalar</b><br>Har 6-qahva bepul<br>Tug‘ilgan kuningizda 20% chegirma<br>Do‘stingizni olib keling — +5 000 bonus', '🎁 <b>Offers</b><br>Every 6th coffee is free<br>20% off on your birthday<br>Bring a friend — +5 000 points'), kb: main() }),
+      });
+    }
+  };
+
+  /* ---------- 8. отчёты владельцу ---------- */
+  const report = () => L('Выручка: 7 900 000 сум (+18% к прошлой субботе)<br>Заказов: 64 · средний чек 123 000<br>Новых клиентов: 11 · не пришли: 2<br>Наличные 2,1 млн · Payme 3,9 млн · Click 1,9 млн',
+    'Tushum: 7 900 000 so‘m (o‘tgan shanbaga nisbatan +18%)<br>Buyurtmalar: 64 · o‘rtacha chek 123 000<br>Yangi mijozlar: 11 · kelmaganlar: 2<br>Naqd 2,1 mln · Payme 3,9 mln · Click 1,9 mln',
+    'Revenue: 7 900 000 UZS (+18% vs last Saturday)<br>Orders: 64 · average check 123 000<br>New clients: 11 · no-shows: 2<br>Cash 2.1M · Payme 3.9M · Click 1.9M');
+  const week = [3.1, 4.2, 3.8, 5.0, 6.4, 7.9, 5.6];
+  const wdays = () => L(['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'], ['Du', 'Se', 'Ch', 'Pa', 'Ju', 'Sh', 'Ya'], ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']);
+  const mln = v => LANG === 'en' ? String(v) + 'M' : String(v).replace('.', ',') + ' ' + L('млн', 'mln', '');
+  const dayReport = () => L('Отчёт за день', 'Kunlik hisobot', 'Daily report');
+  const owner = {
+    mode: 'app',
+    side: () => ({ kicker: L('Любой бизнес · Mini App учёта и автоотчёты', 'Har qanday biznes · hisob Mini App va avtohisobotlar', 'Any business · accounting Mini App & auto-reports'),
+      title: L('Вся выручка в телефоне владельца', 'Barcha tushum egasining telefonida', 'All your revenue in your phone'),
+      lead: L('Заказы, клиенты, оплаты и расходы в одном месте. Каждый вечер в Telegram приходит отчёт за день, даже если вас не было на месте.', 'Buyurtmalar, mijozlar, to‘lovlar va xarajatlar bir joyda. Har kuni kechqurun Telegram’ga kunlik hisobot keladi, siz joyida bo‘lmasangiz ham.', 'Orders, clients, payments and expenses in one place. Every evening a daily report arrives in Telegram, even if you weren’t on site.'),
+      feats: L(['Выручка, заказы и средний чек за день, неделю, месяц', 'Какие услуги и товары приносят больше всего', 'Отчёт в Telegram каждый вечер в 21:00', 'Учёт расходов и склада'],
+        ['Kun, hafta, oy bo‘yicha tushum, buyurtmalar va o‘rtacha chek', 'Qaysi xizmat va tovarlar ko‘proq daromad keltiradi', 'Har kuni soat 21:00 da Telegram’ga hisobot', 'Xarajatlar va ombor hisobi'],
+        ['Revenue, orders and average check by day, week, month', 'Which services and products earn the most', 'A Telegram report every evening at 21:00', 'Expense and stock tracking']),
+      feedTitle: L('Отчёт в Telegram', 'Telegram’dagi hisobot', 'Report in Telegram'),
+      feedEmpty: L('Нажмите «Прислать отчёт» в демо слева.', 'Chapdagi demoda «Hisobot yuborish» tugmasini bosing.', 'Tap “Send report” in the demo on the left.'),
+      price: from('$970'), priceNote: L('только автоотчёт — от $70 · + поддержка $30/мес', 'faqat avtohisobot — $70 dan · + qo‘llab-quvvatlash $30/oy', 'auto-report only — from $70 · + $30/mo support') }),
+    app(screen) {
+      const dn = wdays();
+      const W = 320, Ht = 150, pl = 28, pb = 22, max = 8; const bw = (W - pl) / 7;
+      const bars = week.map((v, i) => { const h = v / max * (Ht - pb - 8); const x = pl + i * bw + 6; const y = Ht - pb - h;
+        return `<rect x="${x}" y="${y}" width="${bw - 12}" height="${h}" rx="4" fill="${i === 5 ? 'var(--accent)' : 'var(--accent-soft)'}"></rect>
+          <text x="${x + (bw - 12) / 2}" y="${Ht - 6}" text-anchor="middle" font-size="10" fill="var(--muted)">${dn[i]}</text>`; }).join('');
+      const grid = [0, 4, 8].map(v => { const y = Ht - pb - v / max * (Ht - pb - 8); return `<line x1="${pl}" x2="${W}" y1="${y}" y2="${y}" stroke="var(--line)" stroke-width="1"></line><text x="${pl - 6}" y="${y + 3}" text-anchor="end" font-size="10" fill="var(--muted)">${v}</text>`; }).join('');
+      screen.innerHTML = `<div class="bar"><div class="ava">📊</div><div><b>${L('Учёт · ваш бизнес', 'Hisob · biznesingiz', 'Accounting · your business')}</b><small>${L('Mini App · демо-данные', 'Mini App · demo ma’lumotlar', 'Mini App · demo data')}</small></div></div>
+        <div class="app"><div class="app-pad">
+          <div class="kpis">
+            <div class="kpi"><small>${L('Выручка сегодня', 'Bugungi tushum', 'Revenue today')}</small><b>${mln(7.9)}</b> <em>+18%</em></div>
+            <div class="kpi"><small>${L('Заказов', 'Buyurtmalar', 'Orders')}</small><b>64</b> <em>+9</em></div>
+            <div class="kpi"><small>${L('Средний чек', 'O‘rtacha chek', 'Average check')}</small><b>123 000</b></div>
+            <div class="kpi"><small>${L('Новых клиентов', 'Yangi mijozlar', 'New clients')}</small><b>11</b></div></div>
+          <div class="card chart"><span class="eyebrow">${L('Выручка за неделю, млн сум', 'Haftalik tushum, mln so‘m', 'Weekly revenue, M UZS')}</span>
+            <svg viewBox="0 0 ${W} ${Ht}" role="img" aria-label="${L('Выручка по дням недели, пик в субботу 7,9 млн сум', 'Hafta kunlari bo‘yicha tushum, eng ko‘p shanbada 7,9 mln so‘m', 'Revenue by weekday, peak on Saturday at 7.9M UZS')}">${grid}${bars}</svg></div>
+          <div class="card"><span class="eyebrow">${L('Топ за неделю', 'Hafta topi', 'Top this week')}</span>
+            <div class="row"><span>${N(barberSvc[1])}</span><span>${mln(9.6)}</span></div>
+            <div class="row"><span>${N(barberSvc[0])}</span><span>${mln(8.2)}</span></div>
+            <div class="row"><span>${N(barberSvc[3])}</span><span>${mln(4.1)}</span></div></div>
+          <button type="button" class="btn" id="rep">${L('Прислать отчёт за день', 'Kunlik hisobotni yuborish', 'Send daily report')}</button>
+        </div></div>`;
+      screen.querySelector('#rep').addEventListener('click', () => feed(`📊 <b>${dayReport()}</b><br>` + report()));
+      return () => {};
+    },
+    bot(screen) {
+      const main = () => [[{ t: L('📊 Сегодня', '📊 Bugun', '📊 Today'), go: 'today' }, { t: L('📅 Неделя', '📅 Hafta', '📅 Week'), go: 'week' }], [{ t: L('💸 Расходы', '💸 Xarajatlar', '💸 Expenses'), go: 'exp' }, { t: L('⏰ Автоотчёт', '⏰ Avtohisobot', '⏰ Auto-report'), go: 'auto' }]];
+      return chat(screen, { icon: '📊', name: L('Отчёты · ваш бизнес', 'Hisobotlar · biznesingiz', 'Reports · your business') }, {
+        start: () => ({ text: L('Здравствуйте! 📊 Я присылаю отчёты по вашему бизнесу. Что показать?', 'Assalomu alaykum! 📊 Men biznesingiz bo‘yicha hisobot yuboraman. Nimani ko‘rsatay?', 'Hello! 📊 I send reports about your business. What should I show?') + `<span class="hint">${L('Цифры придуманы для примера', 'Raqamlar misol uchun o‘ylab topilgan', 'The numbers are made up for this example')}</span>`, kb: main() }),
+        today: () => ({ text: `<b>${L('Сегодня', 'Bugun', 'Today')}</b><br>` + report(), kb: main() }),
+        week: () => ({ text: `<b>${L('Выручка за неделю', 'Haftalik tushum', 'Weekly revenue')}</b><br>` + week.map((v, i) => `${wdays()[i]} ${'▇'.repeat(Math.round(v))} ${mln(v)}`).join('<br>') + `<br><b>${L('Итого: 36 млн сум', 'Jami: 36 mln so‘m', 'Total: 36M UZS')}</b>`, kb: main() }),
+        exp: () => ({ text: L('<b>Расходы за месяц</b><br>Аренда — 8 000 000<br>Зарплаты — 21 000 000<br>Материалы — 4 300 000<br><b>Прибыль: 31 600 000 сум</b>', '<b>Oylik xarajatlar</b><br>Ijara — 8 000 000<br>Ish haqi — 21 000 000<br>Materiallar — 4 300 000<br><b>Foyda: 31 600 000 so‘m</b>', '<b>Monthly expenses</b><br>Rent — 8 000 000<br>Salaries — 21 000 000<br>Supplies — 4 300 000<br><b>Profit: 31 600 000 UZS</b>'), kb: main() }),
+        auto: () => ({ text: L('✅ Автоотчёт включён. Каждый день в 21:00 пришлю итоги дня.', '✅ Avtohisobot yoqildi. Har kuni soat 21:00 da kun yakunlarini yuboraman.', '✅ Auto-report is on. Every day at 21:00 I’ll send the day’s results.'), next: 'rep', delay: 1800 }),
+        rep: () => { feed(L('Отчёт за день <b>отправлен владельцу</b> в 21:00', 'Kunlik hisobot soat 21:00 da <b>egasiga yuborildi</b>', 'Daily report <b>sent to the owner</b> at 21:00'));
+          return { text: `🕘 <b>21:00 · ${dayReport()}</b><br>` + report() + `<span class="hint">${L('Так отчёт приходит каждый вечер', 'Hisobot har kuni kechqurun shunday keladi', 'This is how the report arrives every evening')}</span>`, kb: main() }; },
+      });
+    }
+  };
+
+  /* ---------- отрасли ---------- */
+  const industries = () => [
+    ['💈', L('Барбершопы и салоны красоты', 'Barbershop va go‘zallik salonlari', 'Barbershops & beauty salons'), L('Онлайн-запись, напоминания, база клиентов и рассылки акций.', 'Onlayn yozilish, eslatmalar, mijozlar bazasi va aksiyalar tarqatish.', 'Online booking, reminders, client base and promo messages.'), from('$270'), 'barber'],
+    ['🎮', L('Компьютерные клубы', 'Kompyuter klublari', 'Gaming clubs'), L('Бронь ПК со схемой зала, оплата до прихода, бонусы за часы.', 'Zal sxemasi bilan PK bron qilish, oldindan to‘lov, soatlar uchun bonuslar.', 'PC booking with a hall map, prepayment, bonuses for hours.'), L('$5 за ПК', 'PK uchun $5', '$5 per PC'), 'club'],
+    ['🍛', L('Кафе, рестораны, фастфуд', 'Kafe, restoran, fastfud', 'Cafés, restaurants, fast food'), L('Меню с фото, доставка и самовывоз, оплата Payme / Click.', 'Rasmli menyu, yetkazib berish va olib ketish, Payme / Click orqali to‘lov.', 'Photo menu, delivery and pickup, Payme / Click payments.'), from('$470'), 'delivery'],
+    ['🎓', L('Учебные центры', 'O‘quv markazlari', 'Learning centers'), L('Пробные уроки, расписание групп, оплата и напоминания.', 'Sinov darslari, guruhlar jadvali, to‘lov va eslatmalar.', 'Trial lessons, group schedules, payments and reminders.'), from('$370'), 'edu'],
+    ['🦷', L('Клиники и стоматологии', 'Klinika va stomatologiyalar', 'Clinics & dentists'), L('Запись к врачу, напоминания и повторные визиты.', 'Shifokorga yozilish, eslatmalar va takroriy tashriflar.', 'Doctor bookings, reminders and repeat visits.'), from('$270'), 'clinic'],
+    ['🏨', L('Отели и хостелы', 'Mehmonxona va xostellar', 'Hotels & hostels'), L('Бронь номеров без комиссий агрегаторов, трансфер.', 'Agregator komissiyasisiz xona bron qilish, transfer.', 'Room bookings with no aggregator fees, transfers.'), from('$570'), 'hotel'],
+    ['🏋️', L('Фитнес-клубы', 'Fitnes-klublar', 'Fitness clubs'), L('Запись на тренировки, абонементы, бонусы за посещения.', 'Mashg‘ulotlarga yozilish, abonementlar, tashriflar uchun bonuslar.', 'Class bookings, memberships, rewards for visits.'), from('$270'), 'loyalty'],
+    ['🛍', L('Магазины', 'Do‘konlar', 'Stores'), L('Каталог в Telegram, корзина, оплата и доставка.', 'Telegram’da katalog, savat, to‘lov va yetkazib berish.', 'Catalog in Telegram, cart, payment and delivery.'), from('$370'), 'delivery'],
+    ['🔧', L('Автосервисы', 'Avtoservislar', 'Car services'), L('Запись на ремонт и напоминания о ТО.', 'Ta’mirga yozilish va texnik xizmat haqida eslatmalar.', 'Repair bookings and service reminders.'), from('$270'), 'clinic'],
+    ['🛋', L('Мебель', 'Mebel', 'Furniture'), L('Каталог с фото и ценами, заявки на замер, сайт.', 'Rasm va narxli katalog, o‘lchovga buyurtmalar, sayt.', 'Catalog with photos and prices, measurement requests, website.'), from('$370'), 'delivery'],
+    ['☕', L('Кофейни', 'Qahvaxonalar', 'Coffee shops'), L('Бонусная карта в телефоне вместо пластиковой.', 'Plastik o‘rniga telefondagi bonus karta.', 'A loyalty card in the phone instead of plastic.'), from('$570'), 'loyalty'],
+    ['📊', L('Любой бизнес', 'Har qanday biznes', 'Any business'), L('Учёт заказов и выручки, отчёт владельцу каждый вечер.', 'Buyurtmalar va tushum hisobi, har kechqurun egasiga hisobot.', 'Order and revenue tracking, a report to the owner every evening.'), from('$70'), 'owner']];
+  function renderIndustries() {
+    document.getElementById('indGrid').innerHTML = industries().map(([e, n, d, p, k]) =>
+      `<div class="indc"><div class="ic">${e}</div><h3>${n}</h3><p>${d}</p><div class="foot2"><b>${p}</b><a href="#${k}">${L('Смотреть демо →', 'Demoni ko‘rish →', 'See demo →')}</a></div></div>`).join('');
+  }
+
+  /* ---------- калькулятор ---------- */
+  const CALC = [
+    [['Telegram: боты и Mini Apps', 'Telegram: botlar va Mini Apps', 'Telegram: bots & Mini Apps'], [
+      ['vis', ['Бот-визитка', 'Bot-vizitka', 'Business card bot'], 70, 1], ['book', ['Бот онлайн-записи', 'Onlayn yozilish boti', 'Online booking bot'], 270, 1],
+      ['shop', ['Бот-магазин', 'Bot-do‘kon', 'Shop bot'], 370, 1], ['ai', ['ИИ-консультант', 'Sun’iy intellekt maslahatchisi', 'AI assistant'], 370, 1],
+      ['edu', ['Бот для учебного центра', 'O‘quv markazi uchun bot', 'Learning center bot'], 370, 1], ['del', ['Бот приёма заказов и доставки', 'Buyurtma va yetkazib berish boti', 'Ordering & delivery bot'], 470, 1],
+      ['mshop', ['Mini App магазин / каталог', 'Mini App do‘kon / katalog', 'Store / catalog Mini App'], 470, 1], ['mbook', ['Mini App онлайн-записи', 'Mini App onlayn yozilish', 'Booking Mini App'], 570, 1],
+      ['loy', ['Mini App программа лояльности', 'Mini App sodiqlik dasturi', 'Loyalty program Mini App'], 570, 1], ['acc', ['Mini App учёта для бизнеса', 'Biznes uchun hisob Mini App', 'Business accounting Mini App'], 970, 1],
+      ['club', ['Бот или Mini App для компьютерного клуба', 'Kompyuter klubi uchun bot yoki Mini App', 'Gaming club bot or Mini App'], 5, 1, 'pc'], ['contest', ['Бот для конкурсов и розыгрышей', 'Konkurs va o‘yinlar boti', 'Giveaway bot'], 120, 0]]],
+    [['Сайты и системы', 'Saytlar va tizimlar', 'Websites & systems'], [
+      ['land', ['Лендинг', 'Lending', 'Landing page'], 170, 1], ['site', ['Сайт компании', 'Kompaniya sayti', 'Company website'], 370, 1], ['siteb', ['Сайт с онлайн-записью', 'Onlayn yozilishli sayt', 'Website with online booking'], 470, 1],
+      ['store', ['Интернет-магазин', 'Internet-do‘kon', 'Online store'], 770, 1], ['lang', ['Второй язык (сайт или бот)', 'Ikkinchi til (sayt yoki bot)', 'Second language (site or bot)'], 40, 0],
+      ['cab', ['Личный кабинет клиента', 'Mijozning shaxsiy kabineti', 'Client account area'], 770, 1], ['crm', ['CRM / админ-панель', 'CRM / admin-panel', 'CRM / admin panel'], 1170, 1],
+      ['mob', ['Мобильное приложение iOS / Android', 'iOS / Android mobil ilovasi', 'iOS / Android mobile app'], 2470, 1]]],
+    [['Автоматизация', 'Avtomatlashtirish', 'Automation'], [
+      ['rep', ['Автоотчёты владельцу', 'Egasiga avtohisobotlar', 'Auto-reports for the owner'], 70, 1], ['rem', ['Напоминания клиентам', 'Mijozlarga eslatmalar', 'Client reminders'], 70, 1],
+      ['pay', ['Подключение Payme / Click / Uzum', 'Payme / Click / Uzum ulash', 'Payme / Click / Uzum integration'], 80, 0], ['gs', ['Интеграция с Google Таблицами', 'Google Sheets bilan integratsiya', 'Google Sheets integration'], 40, 0],
+      ['amo', ['Интеграция с amoCRM / Bitrix24', 'amoCRM / Bitrix24 bilan integratsiya', 'amoCRM / Bitrix24 integration'], 120, 0], ['pars', ['Сбор данных (парсинг)', 'Ma’lumot yig‘ish (parsing)', 'Data scraping'], 80, 0]]],
+    [['Видео и дизайн', 'Video va dizayn', 'Video & design'], [
+      ['reel', ['Ролик для Reels / TikTok', 'Reels / TikTok uchun rolik', 'Reels / TikTok video'], 25, 0, 'qty'], ['r3d', ['3D-ролик товара', 'Tovarning 3D-roligi', '3D product video'], 50, 0, 'qty'],
+      ['expl', ['Ролик-объяснение, 1–2 мин', 'Tushuntiruvchi rolik, 1–2 daq', 'Explainer video, 1–2 min'], 130, 0], ['pack', ['Пакет: 8 роликов в месяц', 'Paket: oyiga 8 ta rolik', 'Package: 8 videos a month'], 190, 0, 'month'],
+      ['plan', ['Контент-план и тексты постов', 'Kontent-reja va post matnlari', 'Content plan & post copy'], 130, 0, 'month'], ['logo', ['Логотип и фирменный стиль', 'Logotip va firma uslubi', 'Logo & brand identity'], 85, 0],
+      ['smm', ['Оформление соцсетей', 'Ijtimoiy tarmoqlarni bezash', 'Social media design'], 50, 0], ['pres', ['Презентация / КП', 'Taqdimot / tijorat taklifi', 'Presentation / proposal'], 70, 0]]]];
+  const cs = { on: {}, qty: { reel: 4, r3d: 2 }, pcs: 30 };
+  const calcList = document.getElementById('calcList'), calcSum = document.getElementById('calcSum');
+  const money = v => '$' + fmt(v);
+  const flat = CALC.flatMap(([, items]) => items);
+  const PCW = () => L('ПК', 'PK', 'PCs');
+  const perMo = () => L('/мес', '/oy', '/mo');
+  function renderCalcList() {
+    calcList.innerHTML = CALC.map(([g, items]) => `<div class="cgroup"><h3>${L(...g)}</h3>${items.map(it => { const [id, nm, p, sup, kind] = it;
+      const extra = kind === 'pc' ? `<small>${L('$5 за каждый ПК', 'har bir PK uchun $5', '$5 per PC')}</small><input class="qtyin" type="number" min="1" max="500" id="c_pcs" value="${cs.pcs}" aria-label="${L('Количество ПК', 'PK soni', 'Number of PCs')}"> ${PCW()}`
+        : kind === 'qty' ? `<small>${L('$' + p + ' за штуку', 'donasi $' + p, '$' + p + ' each')}</small><input class="qtyin" type="number" min="1" max="100" id="q_${id}" data-q="${id}" value="${cs.qty[id]}" aria-label="${L('Количество', 'Soni', 'Quantity')}"> ${L('шт.', 'dona', 'pcs')}`
+        : sup ? `<small>${L('+ поддержка $30/мес', '+ qo‘llab-quvvatlash $30/oy', '+ $30/mo support')}</small>` : '';
+      const pr = kind === 'pc' ? '$5 × ' + PCW() : kind === 'month' ? '$' + p + perMo() : money(p);
+      return `<label class="citem" for="c_${id}"><input type="checkbox" id="c_${id}" data-id="${id}" ${cs.on[id] ? 'checked' : ''}><span>${L(...nm)}${extra}</span><span class="pr">${pr}</span></label>`; }).join('')}</div>`).join('');
+  }
+  function calcData() {
+    let once = 0, monthly = 0, sup = false; const lines = [];
+    flat.forEach(([id, nm, p, s, kind]) => { if (!cs.on[id]) return; const n = L(...nm);
+      if (kind === 'month') { monthly += p; lines.push(`${n} — $${p}${perMo()}`); return; }
+      const v = kind === 'pc' ? p * cs.pcs : kind === 'qty' ? p * cs.qty[id] : p;
+      once += v; if (s) sup = true;
+      lines.push(kind === 'pc' ? `${n}: ${cs.pcs} ${PCW()} — ${money(v)}` : kind === 'qty' ? `${n} × ${cs.qty[id]} — ${money(v)}` : `${n} — ${money(v)}`); });
+    if (sup) monthly += 30;
+    return { once, monthly, sup, lines };
+  }
+  const onceW = () => L('Разово', 'Bir martalik', 'One-time');
+  const monthlyW = () => L('Ежемесячно', 'Har oy', 'Monthly');
+  function calcText() { const d = calcData(); return d.lines.join('\n') + `\n\n${onceW()}: ${money(d.once)}` + (d.monthly ? `\n${monthlyW()}: ${money(d.monthly)}${d.sup ? L(' (включая поддержку $30)', ' ($30 qo‘llab-quvvatlash bilan)', ' (incl. $30 support)') : ''}` : ''); }
+  function renderSum() {
+    const d = calcData(); const head = `<h3>${L('Ваш расчёт', 'Sizning hisob-kitobingiz', 'Your estimate')}</h3>`;
+    if (!d.lines.length) { calcSum.innerHTML = head + `<p class="muted">${L('Отметьте услуги слева, и здесь появится стоимость.', 'Xizmatlarni belgilang, bu yerda narx paydo bo‘ladi.', 'Tick the services you need and the price will appear here.')}</p>`; return; }
+    calcSum.innerHTML = head + `<ul>${d.lines.map(l => `<li>${esc(l)}</li>`).join('')}</ul>
+      <div><span class="muted">${onceW()}</span><div class="total">${money(d.once)}</div></div>
+      ${d.monthly ? `<div class="row"><span>${monthlyW()}</span><b>${money(d.monthly)}</b></div>${d.sup ? `<p class="muted">${L('Поддержка $30/мес одна на проект: сервер, копии, исправления.', 'Qo‘llab-quvvatlash $30/oy — loyiha uchun bitta: server, zaxira nusxalar, tuzatishlar.', 'One $30/mo support plan per project: server, backups, fixes.')}</p>` : ''}` : ''}
+      ${d.once ? `<div class="row"><span>${L('Предоплата 50%', '50% oldindan to‘lov', '50% prepayment')}</span><b>${money(Math.round(d.once / 2))}</b></div>` : ''}
+      <p class="muted">${L('Оплата в сумах по курсу ЦБ. Точная цена — после брифа.', 'To‘lov MB kursi bo‘yicha so‘mda. Aniq narx — brifdan keyin.', 'Paid in UZS at the Central Bank rate. Final price after a short brief.')}</p>
+      <button type="button" class="btn" id="calcToLead">${L('Отправить расчёт в заявку', 'Hisob-kitobni arizaga yuborish', 'Add estimate to request')}</button>
+      <button type="button" class="btn ghost" id="calcCopy">${L('Скопировать расчёт', 'Hisob-kitobni nusxalash', 'Copy estimate')}</button>`;
+  }
+  calcList.addEventListener('change', e => { const t = e.target;
+    if (t.dataset.id) cs.on[t.dataset.id] = t.checked;
+    else if (t.id === 'c_pcs') { cs.pcs = Math.max(1, Math.min(500, +t.value || 1)); cs.on.club = true; document.getElementById('c_club').checked = true; }
+    else if (t.dataset.q) { cs.qty[t.dataset.q] = Math.max(1, Math.min(100, +t.value || 1)); cs.on[t.dataset.q] = true; document.getElementById('c_' + t.dataset.q).checked = true; }
+    renderSum(); });
+  async function copyText(text, btn) {
+    const old = btn.textContent;
+    try { await navigator.clipboard.writeText(text); btn.textContent = L('Скопировано ✓', 'Nusxalandi ✓', 'Copied ✓'); }
+    catch (err) { btn.textContent = L('Выделите текст и скопируйте вручную', 'Matnni belgilab, qo‘lda nusxalang', 'Select the text and copy it manually'); }
+    setTimeout(() => { btn.textContent = old; }, 2200);
+  }
+  calcSum.addEventListener('click', e => {
+    if (e.target.id === 'calcCopy') copyText(L('Расчёт Todas.Studio', 'Todas.Studio hisob-kitobi', 'Todas.Studio estimate') + '\n' + calcText(), e.target);
+    if (e.target.id === 'calcToLead') { document.getElementById('lfNeed').value = calcText(); document.getElementById('lead').scrollIntoView(); document.getElementById('lfName').focus({ preventScroll: true }); }
+  });
+
+  /* ---------- заявка ---------- */
+  const CONTACT = { telegram: '' }; // например 'todas_studio' — тогда появится кнопка «Открыть Telegram»
+  let lastLead = null;
+  function renderBizOptions() {
+    const sel = document.getElementById('lfBiz'); const idx = sel.selectedIndex;
+    sel.innerHTML = [L('Выберите сферу', 'Sohani tanlang', 'Choose your industry')].concat(industries().map(i => i[1])).concat([L('Другое', 'Boshqa', 'Other')]).map((n, i) => `<option${i ? '' : ' value=""'}>${n}</option>`).join('');
+    if (idx > 0) sel.selectedIndex = idx;
+  }
+  function renderLeadOut() {
+    if (!lastLead) return;
+    const v = lastLead;
+    const text = L(`Заявка Todas.Studio\nИмя: ${v.name}\nКонтакт: ${v.phone}\nБизнес: ${v.biz || 'не указан'}\nКогда звонить: ${v.time}\n\nЧто нужно:\n${v.need || 'обсудим на звонке'}`,
+      `Todas.Studio arizasi\nIsm: ${v.name}\nAloqa: ${v.phone}\nBiznes: ${v.biz || 'ko‘rsatilmagan'}\nQo‘ng‘iroq vaqti: ${v.time}\n\nNima kerak:\n${v.need || 'qo‘ng‘iroqda muhokama qilamiz'}`,
+      `Todas.Studio request\nName: ${v.name}\nContact: ${v.phone}\nBusiness: ${v.biz || 'not specified'}\nBest time to call: ${v.time}\n\nWhat’s needed:\n${v.need || 'let’s discuss on a call'}`);
+    const out = document.getElementById('leadOut');
+    out.innerHTML = `<h3>${L('Заявка готова ✓', 'Ariza tayyor ✓', 'Request ready ✓')}</h3><p class="lead-muted">${CONTACT.telegram ? L('Скопируйте текст и отправьте нам в Telegram.', 'Matnni nusxalab, bizga Telegram’da yuboring.', 'Copy the text and send it to us on Telegram.') : L('Скопируйте текст и отправьте менеджеру, который прислал вам эту ссылку.', 'Matnni nusxalab, sizga ushbu havolani yuborgan menejerga yuboring.', 'Copy the text and send it to the manager who shared this link with you.')}</p><pre id="leadText"></pre>
+      <button type="button" class="btn" id="leadCopy">${L('Скопировать заявку', 'Arizani nusxalash', 'Copy request')}</button>${CONTACT.telegram ? `<a class="btn ghost" href="https://t.me/${encodeURIComponent(CONTACT.telegram)}" target="_blank" rel="noopener">${L('Открыть Telegram', 'Telegram’ni ochish', 'Open Telegram')}</a>` : ''}`;
+    document.getElementById('leadText').textContent = text;
+    document.getElementById('leadCopy').addEventListener('click', ev => { copyText(text, ev.target);
+      const r = document.createRange(); r.selectNodeContents(document.getElementById('leadText')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); });
+  }
+  document.getElementById('leadForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const v = id => document.getElementById(id).value.trim();
+    const err = document.getElementById('lfErr');
+    if (!v('lfName') || !v('lfPhone')) { err.hidden = false; return; }
+    err.hidden = true;
+    lastLead = { name: v('lfName'), phone: v('lfPhone'), biz: v('lfBiz'), time: v('lfTime'), need: v('lfNeed') };
+    renderLeadOut();
+  });
+
+  /* ---------- перевод статичного текста (словари в window.__I18N) ---------- */
+  const DICT = window.__I18N || {};
+  const SKIP = '#screen, #side, #indGrid, #calcList, #calcSum, #tabs, #modes, #lfBiz, script, style';
+  const textNodes = [];
+  (function collect(root) {
+    const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, { acceptNode: n => (!n.nodeValue.trim() || n.parentElement.closest(SKIP)) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT });
+    let n; while ((n = w.nextNode())) textNodes.push({ n, ru: n.nodeValue });
+  })(document.body);
+  const attrEls = [...document.querySelectorAll('[placeholder], [aria-label]')].filter(el => !el.closest(SKIP))
+    .map(el => ({ el, ph: el.getAttribute('placeholder'), al: el.getAttribute('aria-label') }));
+  const ruTitle = document.title;
+  const tr = s => { if (LANG === 'ru' || s == null) return s; const d = DICT[LANG] || {}; const k = s.trim(); if (!(k in d)) return s; const i = s.indexOf(k); return s.slice(0, i) + d[k] + s.slice(i + k.length); };
+  function applyStatic() {
+    textNodes.forEach(o => { o.n.nodeValue = tr(o.ru); });
+    attrEls.forEach(o => { if (o.ph != null) o.el.setAttribute('placeholder', tr(o.ph)); if (o.al != null) o.el.setAttribute('aria-label', tr(o.al)); });
+    document.title = tr(ruTitle);
+    document.documentElement.lang = LANG;
+    document.querySelectorAll('[data-lang]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === LANG)));
+  }
+
+  /* ---------- tabs / routing ---------- */
+  const demos = { barber: ['💈', ['Барбершоп', 'Barbershop', 'Barbershop'], barber], club: ['🎮', ['Компьютерный клуб', 'Kompyuter klubi', 'Gaming club'], club],
+    delivery: ['🍛', ['Доставка', 'Yetkazib berish', 'Delivery'], delivery], edu: ['🎓', ['Учебный центр', 'O‘quv markazi', 'Learning center'], edu],
+    clinic: ['🦷', ['Стоматология', 'Stomatologiya', 'Dental clinic'], clinic], hotel: ['🏨', ['Отель', 'Mehmonxona', 'Hotel'], hotel],
+    loyalty: ['☕', ['Бонусная карта', 'Bonus karta', 'Loyalty card'], loyalty], owner: ['📊', ['Отчёты владельцу', 'Egasiga hisobotlar', 'Owner reports'], owner] };
+  const tabs = document.getElementById('tabs'); const screen = document.getElementById('screen'); let cleanup = null; let current = 'barber';
+  Object.keys(demos).forEach(k => { const b = document.createElement('button'); b.type = 'button'; b.className = 'tab'; b.setAttribute('role', 'tab'); b.dataset.k = k;
+    b.addEventListener('click', () => { open(k); try { history.replaceState(null, '', '#' + k); } catch (e) {} }); tabs.appendChild(b); });
+  function renderTabs() { tabs.querySelectorAll('.tab').forEach(b => { const d = demos[b.dataset.k]; b.textContent = d[0] + ' ' + L(...d[1]); b.setAttribute('aria-selected', String(b.dataset.k === current)); }); }
+  function open(k) {
+    if (!demos[k]) k = 'barber';
+    current = k;
+    if (cleanup) cleanup();
+    renderTabs();
+    const d = demos[k][2];
+    renderSide(d.side());
+    const modes = document.getElementById('modes');
+    modes.hidden = false; modes.innerHTML = '';
+    [['bot', L('🤖 Бот', '🤖 Bot', '🤖 Bot')], ['app', '📱 Mini App']].forEach(([m, label]) => { const b = document.createElement('button'); b.type = 'button'; b.textContent = label;
+      b.setAttribute('aria-pressed', String(d.mode === m));
+      b.addEventListener('click', () => { if (d.mode === m) return; d.mode = m; if (cleanup) cleanup();
+        modes.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+        cleanup = d[d.mode](screen); });
+      modes.appendChild(b); });
+    cleanup = d[d.mode](screen);
+  }
+  const demoSec = document.getElementById('demo');
+  function route(initial) {
+    const k = location.hash.slice(1);
+    if (demos[k]) { open(k); const r = demoSec.getBoundingClientRect(); if (initial || r.top < -60 || r.top > innerHeight * 0.4) demoSec.scrollIntoView(); }
+    else if (initial) open('barber');
+  }
+  document.querySelectorAll('[data-lang]').forEach(b => b.addEventListener('click', () => {
+    if (LANG === b.dataset.lang) return; LANG = b.dataset.lang;
+    try { localStorage.setItem('todas-lang', LANG); } catch (e) {}
+    applyStatic(); renderIndustries(); renderCalcList(); renderSum(); renderBizOptions(); renderLeadOut(); open(current);
+  }));
+  window.addEventListener('hashchange', () => route(false));
+  applyStatic(); renderIndustries(); renderCalcList(); renderSum(); renderBizOptions();
+  route(true);
+})();
+</script>
+
+</body>
+</html>
