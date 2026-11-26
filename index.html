@@ -1677,7 +1677,7 @@ en: {
     loyalty: ['☕', ['Бонусная карта', 'Bonus karta', 'Loyalty card'], loyalty], owner: ['📊', ['Отчёты владельцу', 'Egasiga hisobotlar', 'Owner reports'], owner] };
   const tabs = document.getElementById('tabs'); const screen = document.getElementById('screen'); let cleanup = null; let current = 'barber';
   Object.keys(demos).forEach(k => { const b = document.createElement('button'); b.type = 'button'; b.className = 'tab'; b.setAttribute('role', 'tab'); b.dataset.k = k;
-    b.addEventListener('click', () => { open(k); try { history.replaceState(null, '', '#' + k); } catch (e) {} }); tabs.appendChild(b); });
+    b.addEventListener('click', () => open(k)); tabs.appendChild(b); });
   function renderTabs() { tabs.querySelectorAll('.tab').forEach(b => { const d = demos[b.dataset.k]; b.textContent = d[0] + ' ' + L(...d[1]); b.setAttribute('aria-selected', String(b.dataset.k === current)); }); }
   function open(k) {
     if (!demos[k]) k = 'barber';
@@ -1699,7 +1699,8 @@ en: {
   const demoSec = document.getElementById('demo');
   function route(initial) {
     const k = location.hash.slice(1);
-    if (demos[k]) { open(k); const r = demoSec.getBoundingClientRect(); if (initial || r.top < -60 || r.top > innerHeight * 0.4) demoSec.scrollIntoView(); }
+    if (demos[k]) { open(k); if (initial) { try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {} return; }
+      const r = demoSec.getBoundingClientRect(); if (r.top < -60 || r.top > innerHeight * 0.4) demoSec.scrollIntoView(); }
     else if (initial) open('barber');
   }
   document.querySelectorAll('[data-lang]').forEach(b => b.addEventListener('click', () => {
@@ -1709,7 +1710,11 @@ en: {
   }));
   window.addEventListener('hashchange', () => route(false));
   applyStatic(); renderIndustries(); renderCalcList(); renderSum(); renderBizOptions();
+  /* при заходе всегда начинаем с самого верха */
+  try { history.scrollRestoration = 'manual'; } catch (e) {}
   route(true);
+  if (location.hash) { try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {} }
+  scrollTo(0, 0); addEventListener('load', () => { if (scrollY < innerHeight * 3) scrollTo(0, 0); }, { once: true });
 })();
 </script>
 
