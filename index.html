@@ -107,7 +107,7 @@ p { margin: 0 }
 .kb button.picked { background: var(--accent); color: var(--surface); opacity: 1 }
 @keyframes pop { from { transform: translateY(4px); opacity: .4 } to { transform: none; opacity: 1 } }
 @keyframes blink { 50% { opacity: .25 } }
-@media (prefers-reduced-motion: reduce) { .msg, .msg.typing span, .pulse { animation: none } }
+@media (prefers-reduced-motion: reduce) and (max-width: 0px) { .msg, .msg.typing span, .pulse { animation: none } }
 
 /* mini app screens */
 .app { flex: 1; overflow-y: auto; background: var(--bg); display: flex; flex-direction: column }
@@ -210,7 +210,7 @@ p { margin: 0 }
 
 /* nav */
 html { scroll-behavior: smooth }
-@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto } }
+@media (prefers-reduced-motion: reduce) and (max-width: 0px) { html { scroll-behavior: auto } }
 .section, .hero { scroll-margin-top: 80px }
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--surface) }
 .topnav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; margin-inline: calc(-1 * max(16px, env(safe-area-inset-left, 0px))) calc(-1 * max(16px, env(safe-area-inset-right, 0px)));
@@ -317,7 +317,7 @@ h2 { font-size: clamp(24px, 3.3vw, 36px); line-height: 1.14 }
 .on-r small { color: var(--muted); font-size: 12px }
 .on.in { animation: notein .55s cubic-bezier(.2, .8, .2, 1) }
 @keyframes notein { from { transform: translateY(-12px) scale(.97); opacity: .25 } to { transform: none; opacity: 1 } }
-@media (prefers-reduced-motion: reduce) { .on.in { animation: none } }
+@media (prefers-reduced-motion: reduce) and (max-width: 0px) { .on.in { animation: none } }
 .owner-sum { display: flex; flex-wrap: wrap; gap: 4px 14px; align-items: baseline; border-top: 1px dashed var(--line); padding-top: 12px; font-variant-numeric: tabular-nums }
 .owner-sum span { color: var(--muted); font-size: 13px; margin-right: auto }
 .owner-sum b { font-family: var(--display); font-weight: 600; font-size: 16px }
@@ -405,7 +405,7 @@ h1, h2 { background: linear-gradient(180deg, #FFFFFF 35%, #C4B5FD 100%); -webkit
 /* появление при прокрутке: элементы видны и до анимации */
 .rv.in { animation: rise .8s cubic-bezier(.2, .8, .2, 1) both }
 @keyframes rise { from { transform: translateY(28px) scale(.985); opacity: .35 } to { transform: none; opacity: 1 } }
-@media (prefers-reduced-motion: reduce) { .rv.in, .aurora::before, .aurora::after { animation: none } .btn:hover, .indc:hover { transform: none } }
+@media (prefers-reduced-motion: reduce) and (max-width: 0px) { .rv.in, .aurora::before, .aurora::after { animation: none } .btn:hover, .indc:hover { transform: none } }
 
 /* ---------- v4: больше 3D и движения ---------- */
 html, body { overflow-x: clip }
@@ -434,7 +434,7 @@ html, body { overflow-x: clip }
 .marq-in i { font-style: normal; color: var(--cyan) }
 .marq.a .marq-in i { color: #FFFFFF; opacity: .7 }
 @keyframes marq { to { transform: translateX(calc(-100% / 3)) } }
-@media (prefers-reduced-motion: reduce) { .hero-text > *, .hero h1, .hero-vis .owner, .marq-in { animation: none } }
+@media (prefers-reduced-motion: reduce) and (max-width: 0px) { .hero-text > *, .hero h1, .hero-vis .owner, .marq-in { animation: none } }
 
 /* ---------- v5: объёмное название вместо планеты ---------- */
 .hero { padding-block: 8px 0; gap: 28px }
@@ -1642,7 +1642,7 @@ en: {
       <div class="owner-sum"><span>${L('Сегодня', 'Bugun', 'Today')}</span><b>${hs.count} ${L(plural(hs.count, 'заявка', 'заявки', 'заявок'), 'ta ariza', 'requests')}</b><b>${som(hs.total)}</b></div>`;
   }
   renderHero();
-  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) setInterval(() => {
+  setInterval(() => {
     if (document.hidden) return;
     const ix = hs.i % HERO().length; hs.i++;
     hs.shown.unshift([ix, clock(new Date())]); hs.shown.length = 4;
@@ -1718,7 +1718,7 @@ en: {
 <script>
 /* ---------- 3D-фон: объёмное название, самолётики Telegram со шлейфами, звёзды, фигуры; наклон карточек, ленты ---------- */
 (function () {
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const reduce = false; /* анимации всегда включены, по решению владельца */
   const LG = () => document.documentElement.lang || 'ru';
   const T = (ru, uz, en) => LG() === 'uz' ? uz : LG() === 'en' ? en : ru;
 
