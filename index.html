@@ -712,6 +712,44 @@ body.menu-open .navlinks a.nl:hover { transition-delay: 0s }
 .indc .ic { width: 64px; height: 64px; border-radius: 20px }
 .indc .ic img { width: 46px; height: 46px; display: block; filter: drop-shadow(0 8px 12px rgba(0,0,0,.45)); transition: transform .35s cubic-bezier(.2, .8, .2, 1) }
 .indc:hover .ic img { transform: translateY(-4px) scale(1.12) rotate(-6deg) }
+
+/* заявка: отправка на сервер */
+.leadform .hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; pointer-events: none }
+.leadform { position: relative }
+#lfSend[disabled] { opacity: .7; cursor: progress }
+.leadout.sent h3 { color: var(--ok, #3ddc97) }
+
+/* ===== свои палитры у разделов ===== */
+.section { --h1: 139,92,246; --h2: 34,211,238; --hl: #C4B5FD; --hl2: #67E8F9;
+  --glass-line: rgba(var(--h1), .24); --glow: rgba(var(--h1), .5); --accent: rgb(var(--h1)); --accent-soft: rgba(var(--h1), .18);
+  --grad: linear-gradient(135deg, rgb(var(--h1)) 0%, rgb(var(--h2)) 100%);
+  position: relative; isolation: isolate }
+#demo       { --h1: 59,130,246;  --h2: 34,211,238;  --hl: #93C5FD; --hl2: #67E8F9 }  /* Telegram-синий */
+#industries { --h1: 16,185,129;  --h2: 163,230,53;  --hl: #6EE7B7; --hl2: #D9F99D }  /* изумруд */
+#reels      { --h1: 236,72,153;  --h2: 251,113,133; --hl: #F9A8D4; --hl2: #FDA4AF }  /* розовый */
+#prices     { --h1: 245,158,11;  --h2: 249,115,22;  --hl: #FCD34D; --hl2: #FDBA74 }  /* янтарь */
+#process    { --h1: 139,92,246;  --h2: 217,70,239;  --hl: #C4B5FD; --hl2: #F0ABFC }  /* фирменный фиолетовый */
+#faq        { --h1: 6,182,212;   --h2: 99,102,241;  --hl: #67E8F9; --hl2: #A5B4FC }  /* бирюза */
+#lead       { --h1: 34,197,94;   --h2: 20,184,166;  --hl: #86EFAC; --hl2: #5EEAD4 }  /* зелёный */
+/* мягкое цветное свечение за каждым разделом */
+.section::before { content: ""; position: absolute; z-index: -1; inset: -70px -8vw; pointer-events: none;
+  background: radial-gradient(60% 50% at 15% 20%, rgba(var(--h1), .16), transparent 70%), radial-gradient(50% 45% at 90% 85%, rgba(var(--h2), .11), transparent 70%) }
+.section > .eyebrow { color: var(--hl) }
+.section h2 { background: linear-gradient(180deg, #FFFFFF 30%, var(--hl) 100%); -webkit-background-clip: text; background-clip: text; color: transparent }
+.section :is(.svc, .indc, .cgroup, .faq details, .leadform, .leadout, .feed) {
+  background: radial-gradient(420px circle at var(--mx, -500px) var(--my, -500px), rgba(var(--h1), .2), transparent 60%),
+    linear-gradient(160deg, rgba(var(--h1), .1), rgba(var(--h2), .04) 60%, transparent), var(--glass);
+  border-color: rgba(var(--h1), .26) }
+.section .indc:hover, .section .faq details[open] { border-color: rgba(var(--h1), .55) }
+.section .indc .ic { background: linear-gradient(135deg, rgba(var(--h1), .32), rgba(var(--h2), .2)) }
+.section .faq summary::after { border-color: var(--hl) }
+.section .faq summary:hover { color: var(--hl) }
+.section .phone { box-shadow: 0 0 0 1px rgba(var(--h1), .3), 0 50px 120px -30px var(--glow) }
+.section .ct { box-shadow: inset 0 0 0 1px rgba(var(--h1), .26) }
+.section .ct:hover { box-shadow: inset 0 0 0 1px rgba(var(--h1), .55), 0 24px 50px -24px var(--glow) }
+.section .ct-head b { background: linear-gradient(180deg, #FFFFFF 35%, var(--hl)); -webkit-background-clip: text; background-clip: text; color: transparent }
+/* «Условия» — отдельная бирюзово-синяя плашка */
+.terms { background: linear-gradient(140deg, #0F766E 0%, #0E7490 50%, #1E40AF 100%); box-shadow: 0 40px 100px -40px rgba(14,116,144,.7) }
 </style>
 
 <canvas id="bg3d" aria-hidden="true"></canvas><div class="aurora" aria-hidden="true"></div>
@@ -827,7 +865,7 @@ body.menu-open .navlinks a.nl:hover { transition-delay: 0s }
     </div>
   </section>
 
-  <section class="section">
+  <section class="section" id="process">
     <div class="eyebrow">Как работаем</div>
     <h2>От звонка до запуска — до 14 рабочих дней</h2>
     <div class="process">
@@ -875,7 +913,8 @@ body.menu-open .navlinks a.nl:hover { transition-delay: 0s }
         <label class="field" for="lfNeed">Что нужно<textarea id="lfNeed" rows="4" placeholder="Например: бот записи и напоминания клиентам"></textarea></label>
         <label class="field" for="lfTime">Когда удобно созвониться<select id="lfTime"><option>В любое время</option><option>Утром, 10:00–12:00</option><option>Днём, 12:00–15:00</option><option>Вечером, 15:00–18:00</option></select></label>
         <p class="formerr" id="lfErr" hidden>Укажите имя и телефон или Telegram, чтобы мы могли с вами связаться.</p>
-        <button type="submit" class="btn">Подготовить заявку</button>
+        <input class="hp" id="lfWeb" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <button type="submit" class="btn" id="lfSend">Подготовить заявку</button>
       </form>
       <div class="leadout" id="leadOut">
         <h3>Как это работает</h3>
@@ -1866,33 +1905,63 @@ en: {
 
   /* ---------- заявка ---------- */
   const CONTACT = { telegram: '' }; // например 'todas_studio' — тогда появится кнопка «Открыть Telegram»
-  let lastLead = null;
+  const LEAD_API = ''; // адрес сервера заявок, например 'https://api.todas.uz/lead'; пусто — форма только собирает текст
+  let lastLead = null, leadState = null, leadBusy = false; // leadState: 'sent' | 'copy' | 'failed'
   function renderBizOptions() {
     const sel = document.getElementById('lfBiz'); const idx = sel.selectedIndex;
     sel.innerHTML = [L('Выберите сферу', 'Sohani tanlang', 'Choose your industry')].concat(industries().map(i => i[1])).concat([L('Другое', 'Boshqa', 'Other')]).map((n, i) => `<option${i ? '' : ' value=""'}>${n}</option>`).join('');
     if (idx > 0) sel.selectedIndex = idx;
   }
   function renderLeadOut() {
-    if (!lastLead) return;
+    const out = document.getElementById('leadOut'), btn = document.getElementById('lfSend');
+    if (LEAD_API) {
+      btn.textContent = leadBusy ? L('Отправляем…', 'Yuborilmoqda…', 'Sending…') : L('Отправить заявку', 'Arizani yuborish', 'Send request');
+      btn.disabled = leadBusy;
+    }
+    out.classList.toggle('sent', leadState === 'sent');
+    if (!lastLead) {
+      if (LEAD_API) out.innerHTML = `<h3>${L('Как это работает', 'Bu qanday ishlaydi', 'How it works')}</h3><p class="lead-muted">${L('Оставьте имя и телефон, и заявка сразу придёт нам в Telegram. Перезвоним в удобное для вас время.', 'Ism va telefoningizni qoldiring, ariza darhol bizga Telegram’da keladi. Sizga qulay vaqtda qo‘ng‘iroq qilamiz.', 'Leave your name and phone and the request comes straight to our Telegram. We’ll call you back at a time that suits you.')}</p>`;
+      return;
+    }
+    if (leadState === 'sent') {
+      out.innerHTML = `<h3>${L('Заявка отправлена ✓', 'Ariza yuborildi ✓', 'Request sent ✓')}</h3><p class="lead-muted">${L('Спасибо! Мы получили вашу заявку и перезвоним в удобное для вас время. Если вопрос срочный, позвоните нам по номерам ниже.', 'Rahmat! Arizangizni oldik va sizga qulay vaqtda qo‘ng‘iroq qilamiz. Savol shoshilinch bo‘lsa, quyidagi raqamlarga qo‘ng‘iroq qiling.', 'Thank you! We’ve received your request and will call you back at a time that suits you. If it’s urgent, call us at the numbers below.')}</p>`;
+      return;
+    }
     const v = lastLead;
     const text = L(`Заявка Todas.Studio\nИмя: ${v.name}\nКонтакт: ${v.phone}\nБизнес: ${v.biz || 'не указан'}\nКогда звонить: ${v.time}\n\nЧто нужно:\n${v.need || 'обсудим на звонке'}`,
       `Todas.Studio arizasi\nIsm: ${v.name}\nAloqa: ${v.phone}\nBiznes: ${v.biz || 'ko‘rsatilmagan'}\nQo‘ng‘iroq vaqti: ${v.time}\n\nNima kerak:\n${v.need || 'qo‘ng‘iroqda muhokama qilamiz'}`,
       `Todas.Studio request\nName: ${v.name}\nContact: ${v.phone}\nBusiness: ${v.biz || 'not specified'}\nBest time to call: ${v.time}\n\nWhat’s needed:\n${v.need || 'let’s discuss on a call'}`);
-    const out = document.getElementById('leadOut');
-    out.innerHTML = `<h3>${L('Заявка готова ✓', 'Ariza tayyor ✓', 'Request ready ✓')}</h3><p class="lead-muted">${CONTACT.telegram ? L('Скопируйте текст и отправьте нам в Telegram.', 'Matnni nusxalab, bizga Telegram’da yuboring.', 'Copy the text and send it to us on Telegram.') : L('Скопируйте текст и отправьте менеджеру, который прислал вам эту ссылку.', 'Matnni nusxalab, sizga ushbu havolani yuborgan menejerga yuboring.', 'Copy the text and send it to the manager who shared this link with you.')}</p><pre id="leadText"></pre>
+    const failed = leadState === 'failed';
+    const head = failed ? L('Не получилось отправить', 'Yuborib bo‘lmadi', 'Couldn’t send') : L('Заявка готова ✓', 'Ariza tayyor ✓', 'Request ready ✓');
+    const hint = failed ? L('Связь с сервером не удалась. Позвоните нам по номерам ниже или скопируйте текст заявки и отправьте менеджеру.', 'Server bilan aloqa bo‘lmadi. Quyidagi raqamlarga qo‘ng‘iroq qiling yoki ariza matnini nusxalab, menejerga yuboring.', 'We couldn’t reach the server. Call us at the numbers below, or copy the request and send it to your manager.')
+      : CONTACT.telegram ? L('Скопируйте текст и отправьте нам в Telegram.', 'Matnni nusxalab, bizga Telegram’da yuboring.', 'Copy the text and send it to us on Telegram.') : L('Скопируйте текст и отправьте менеджеру, который прислал вам эту ссылку.', 'Matnni nusxalab, sizga ushbu havolani yuborgan menejerga yuboring.', 'Copy the text and send it to the manager who shared this link with you.');
+    out.innerHTML = `<h3>${head}</h3><p class="lead-muted">${hint}</p><pre id="leadText"></pre>
       <button type="button" class="btn" id="leadCopy">${L('Скопировать заявку', 'Arizani nusxalash', 'Copy request')}</button>${CONTACT.telegram ? `<a class="btn ghost" href="https://t.me/${encodeURIComponent(CONTACT.telegram)}" target="_blank" rel="noopener">${L('Открыть Telegram', 'Telegram’ni ochish', 'Open Telegram')}</a>` : ''}`;
     document.getElementById('leadText').textContent = text;
     document.getElementById('leadCopy').addEventListener('click', ev => { copyText(text, ev.target);
       const r = document.createRange(); r.selectNodeContents(document.getElementById('leadText')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); });
   }
-  document.getElementById('leadForm').addEventListener('submit', e => {
+  document.getElementById('leadForm').addEventListener('submit', async e => {
     e.preventDefault();
+    if (leadBusy) return;
     const v = id => document.getElementById(id).value.trim();
     const err = document.getElementById('lfErr');
     if (!v('lfName') || !v('lfPhone')) { err.hidden = false; return; }
     err.hidden = true;
     lastLead = { name: v('lfName'), phone: v('lfPhone'), biz: v('lfBiz'), time: v('lfTime'), need: v('lfNeed') };
+    if (!LEAD_API) { leadState = 'copy'; renderLeadOut(); return; }
+    leadBusy = true; renderLeadOut();
+    try {
+      const ctl = new AbortController(), tm = setTimeout(() => ctl.abort(), 12000);
+      const r = await fetch(LEAD_API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, signal: ctl.signal,
+        body: JSON.stringify({ ...lastLead, lang: LANG, page: location.href.slice(0, 200), website: v('lfWeb') }) });
+      clearTimeout(tm);
+      leadState = r.ok ? 'sent' : 'failed';
+    } catch (ex) { leadState = 'failed'; }
+    leadBusy = false;
+    if (leadState === 'sent') { e.target.reset(); renderBizOptions(); }
     renderLeadOut();
+    document.getElementById('leadOut').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   });
 
   /* ---------- первый экран: телефон владельца ---------- */
@@ -2005,7 +2074,7 @@ en: {
     applyStatic(); renderIndustries(); renderCalcList(); renderSum(); renderBizOptions(); renderLeadOut(); renderHero(); open(current);
   }));
   window.addEventListener('hashchange', () => route(false));
-  applyStatic(); renderIndustries(); renderCalcList(); renderSum(); renderBizOptions();
+  applyStatic(); renderIndustries(); renderCalcList(); renderSum(); renderBizOptions(); renderLeadOut();
   /* при заходе всегда начинаем с самого верха */
   try { history.scrollRestoration = 'manual'; } catch (e) {}
   route(true);
