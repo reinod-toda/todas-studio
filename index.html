@@ -1823,10 +1823,10 @@ en: {
     ['🎓', L('Учебные центры', 'O‘quv markazlari', 'Learning centers'), L('Пробные уроки, расписание групп, оплата и напоминания.', 'Sinov darslari, guruhlar jadvali, to‘lov va eslatmalar.', 'Trial lessons, group schedules, payments and reminders.'), from('$370'), 'edu'],
     ['🦷', L('Клиники и стоматологии', 'Klinika va stomatologiyalar', 'Clinics & dentists'), L('Запись к врачу, напоминания и повторные визиты.', 'Shifokorga yozilish, eslatmalar va takroriy tashriflar.', 'Doctor bookings, reminders and repeat visits.'), from('$270'), 'clinic'],
     ['🏨', L('Отели и хостелы', 'Mehmonxona va xostellar', 'Hotels & hostels'), L('Бронь номеров без комиссий агрегаторов, трансфер.', 'Agregator komissiyasisiz xona bron qilish, transfer.', 'Room bookings with no aggregator fees, transfers.'), from('$570'), 'hotel'],
-    ['🏋️', L('Фитнес-клубы', 'Fitnes-klublar', 'Fitness clubs'), L('Запись на тренировки, абонементы, бонусы за посещения.', 'Mashg‘ulotlarga yozilish, abonementlar, tashriflar uchun bonuslar.', 'Class bookings, memberships, rewards for visits.'), from('$270'), 'loyalty'],
-    ['🛍', L('Магазины', 'Do‘konlar', 'Stores'), L('Каталог в Telegram, корзина, оплата и доставка.', 'Telegram’da katalog, savat, to‘lov va yetkazib berish.', 'Catalog in Telegram, cart, payment and delivery.'), from('$370'), 'delivery'],
-    ['🔧', L('Автосервисы', 'Avtoservislar', 'Car services'), L('Запись на ремонт и напоминания о ТО.', 'Ta’mirga yozilish va texnik xizmat haqida eslatmalar.', 'Repair bookings and service reminders.'), from('$270'), 'clinic'],
-    ['🛋', L('Мебель', 'Mebel', 'Furniture'), L('Каталог с фото и ценами, заявки на замер, сайт.', 'Rasm va narxli katalog, o‘lchovga buyurtmalar, sayt.', 'Catalog with photos and prices, measurement requests, website.'), from('$370'), 'delivery'],
+    ['🏋️', L('Фитнес-клубы', 'Fitnes-klublar', 'Fitness clubs'), L('Запись на тренировки, абонементы, бонусы за посещения.', 'Mashg‘ulotlarga yozilish, abonementlar, tashriflar uchun bonuslar.', 'Class bookings, memberships, rewards for visits.'), from('$270'), 'fitness'],
+    ['🛍', L('Магазины', 'Do‘konlar', 'Stores'), L('Каталог в Telegram, корзина, оплата и доставка.', 'Telegram’da katalog, savat, to‘lov va yetkazib berish.', 'Catalog in Telegram, cart, payment and delivery.'), from('$370'), 'shop'],
+    ['🔧', L('Автосервисы', 'Avtoservislar', 'Car services'), L('Запись на ремонт и напоминания о ТО.', 'Ta’mirga yozilish va texnik xizmat haqida eslatmalar.', 'Repair bookings and service reminders.'), from('$270'), 'auto'],
+    ['🛋', L('Мебель', 'Mebel', 'Furniture'), L('Каталог с фото и ценами, заявки на замер, сайт.', 'Rasm va narxli katalog, o‘lchovga buyurtmalar, sayt.', 'Catalog with photos and prices, measurement requests, website.'), from('$370'), 'furniture'],
     ['☕', L('Кофейни', 'Qahvaxonalar', 'Coffee shops'), L('Бонусная карта в телефоне вместо пластиковой.', 'Plastik o‘rniga telefondagi bonus karta.', 'A loyalty card in the phone instead of plastic.'), from('$570'), 'loyalty'],
     ['📊', L('Любой бизнес', 'Har qanday biznes', 'Any business'), L('Учёт заказов и выручки, отчёт владельцу каждый вечер.', 'Buyurtmalar va tushum hisobi, har kechqurun egasiga hisobot.', 'Order and revenue tracking, a report to the owner every evening.'), from('$70'), 'owner']];
   /* объёмные иконки Microsoft Fluent Emoji 3D (MIT), файлы в icons/ */
@@ -2046,9 +2046,314 @@ en: {
   }
 
   /* ---------- tabs / routing ---------- */
+  /* ---------- 9. фитнес-клуб ---------- */
+  const classes = [
+    { e: '🔥', n: 'Функциональный тренинг', uz: 'Funksional mashg‘ulot', en: 'Functional training', sub: 'группа до 12 человек · 55 мин', subUz: '12 kishigacha guruh · 55 daq', subEn: 'group of up to 12 · 55 min', right: 'по абонементу', rightUz: 'abonement bilan', rightEn: 'with membership' },
+    { e: '🧘', n: 'Йога', uz: 'Yoga', en: 'Yoga', sub: 'для всех уровней · 60 мин', subUz: 'barcha darajalar uchun · 60 daq', subEn: 'all levels · 60 min', right: 'по абонементу', rightUz: 'abonement bilan', rightEn: 'with membership' },
+    { e: '🥊', n: 'Бокс', uz: 'Boks', en: 'Boxing', sub: 'перчатки выдаём · 60 мин', subUz: 'qo‘lqopni beramiz · 60 daq', subEn: 'gloves provided · 60 min', right: 'по абонементу', rightUz: 'abonement bilan', rightEn: 'with membership' },
+    { e: '🏋️', n: 'Персональная тренировка', uz: 'Shaxsiy mashg‘ulot', en: 'Personal training', sub: 'один на один с тренером · 60 мин', subUz: 'murabbiy bilan yakkama-yakka · 60 daq', subEn: 'one-on-one with a coach · 60 min', right: '150 000', rightUz: '150 000', rightEn: '150 000' }];
+  const passes = [
+    { e: '🎫', n: '8 занятий', uz: '8 ta mashg‘ulot', en: '8 sessions', sub: 'действует 1 месяц', subUz: '1 oy amal qiladi', subEn: 'valid for 1 month', p: 400000 },
+    { e: '♾️', n: 'Безлимит на месяц', uz: 'Bir oylik cheksiz', en: 'Unlimited, 1 month', sub: 'тренажёрный зал и все группы', subUz: 'trenajyor zali va barcha guruhlar', subEn: 'gym and all group classes', p: 600000 },
+    { e: '🏆', n: 'Безлимит на 3 месяца', uz: '3 oylik cheksiz', en: 'Unlimited, 3 months', sub: 'выгода 300 000 сум', subUz: '300 000 so‘m tejaysiz', subEn: 'save 300 000 UZS', p: 1500000 }];
+  const memberW = () => L('Клиент', 'Mijoz', 'Member');
+  const classBooked = () => L('Запись на тренировку', 'Mashg‘ulotga yozilish', 'Class booking');
+  const payKb = next => [[{ t: 'Payme', go: next, set: { via: 'Payme' } }, { t: 'Click', go: next, set: { via: 'Click' } }]];
+  const dayStep = () => ({ text: L('Выберите день:', 'Kunni tanlang:', 'Choose a day:'), kb: [days().map(d => ({ t: d.label, go: 'time', set: { day: d.label, di: d.i } }))] });
+  const timeStep = c => { const sl = slots(c.di); return sl.some(s => !s.busy) ? { text: L(`${c.day}. Зачёркнутое время занято:`, `${c.day}. Chizilgan vaqt band:`, `${c.day}. Crossed-out times are taken:`), kb: chunk(sl.map(s => ({ t: s.t, off: s.busy, go: 'confirm', set: { time: s.t } })), 4) }
+    : { text: L('На сегодня всё занято, выберите другой день:', 'Bugun hammasi band, boshqa kunni tanlang:', 'Fully booked today, pick another day:'), kb: [[{ t: L('Другой день', 'Boshqa kun', 'Another day'), go: 'day' }]] }; };
+  const fitness = {
+    mode: 'bot',
+    side: () => ({ kicker: L('Фитнес-клуб · бот записи и абонементов', 'Fitnes-klub · yozilish va abonement boti', 'Fitness club · booking & membership bot'),
+      title: L('Тренировки, абонементы и бонусы в Telegram', 'Telegram’da mashg‘ulotlar, abonementlar va bonuslar', 'Classes, memberships and points in Telegram'),
+      lead: L('Клиент сам записывается на групповые и персональные тренировки, покупает абонемент через Payme или Click и копит бонусы за посещения. Администратор видит, кто придёт, и не пишет каждому вручную.', 'Mijoz guruh va shaxsiy mashg‘ulotlarga o‘zi yoziladi, Payme yoki Click orqali abonement sotib oladi va tashriflar uchun bonus to‘playdi. Administrator kim kelishini ko‘radi va har biriga qo‘lda yozmaydi.', 'Members book group and personal classes themselves, buy a membership via Payme or Click and earn points for visits. The admin sees who is coming without messaging everyone by hand.'),
+      feats: L(['Расписание и запись на тренировку в пару нажатий', 'Покупка и продление абонемента онлайн', 'Напоминания о тренировке и о конце абонемента', 'Бонусы за посещения: клиенты ходят чаще'],
+        ['Jadval va bir necha bosishda mashg‘ulotga yozilish', 'Abonementni onlayn sotib olish va uzaytirish', 'Mashg‘ulot va abonement tugashi haqida eslatmalar', 'Tashriflar uchun bonuslar: mijozlar tez-tez keladi'],
+        ['Schedule and booking in a couple of taps', 'Buy and renew memberships online', 'Reminders about classes and membership expiry', 'Points for visits: members come more often']),
+      feedTitle: L('Что видит администратор', 'Administrator nimani ko‘radi', 'What the admin sees'),
+      feedEmpty: L('Запишитесь на тренировку в демо слева.', 'Chapdagi demoda mashg‘ulotga yoziling.', 'Book a class in the demo on the left.'),
+      price: from('$270'), priceNote: supNote() }),
+    bot(screen) {
+      const signBtn = () => ({ t: L('🏋️ Записаться', '🏋️ Yozilish', '🏋️ Book a class'), go: 'cls' });
+      const passBtn = () => ({ t: L('🎫 Абонементы', '🎫 Abonementlar', '🎫 Memberships'), go: 'passes' });
+      return chat(screen, { icon: '🏋️', name: L('Фитнес-клуб', 'Fitnes-klub', 'Fitness club') }, {
+        start: c => { c.pts = 350; return { text: L('Привет! 💪 Это бот фитнес-клуба.<br>Запишу на тренировку, продлю абонемент и покажу ваши бонусы.', 'Salom! 💪 Bu fitnes-klub boti.<br>Mashg‘ulotga yozaman, abonementni uzaytiraman va bonuslaringizni ko‘rsataman.', 'Hi! 💪 This is the fitness club bot.<br>I’ll book a class, renew your membership and show your points.'),
+          kb: [[signBtn()], [passBtn(), { t: L('🎁 Мои бонусы', '🎁 Bonuslarim', '🎁 My points'), go: 'pts' }]] }; },
+        cls: () => ({ text: L('Выберите тренировку:', 'Mashg‘ulotni tanlang:', 'Choose a class:'), kb: classes.map(k => [{ t: `${k.e} ${N(k)}`, go: 'day', set: { k } }]) }),
+        day: dayStep,
+        time: timeStep,
+        confirm: c => ({ text: `${L('Проверьте запись:', 'Yozuvni tekshiring:', 'Check your booking:')}<br>${c.k.e} ${N(c.k)}<br>📅 ${c.day}, ${c.time}<br>🎫 ${F(c.k, 'right')}`,
+          kb: [[{ t: L('✅ Подтвердить', '✅ Tasdiqlash', '✅ Confirm'), go: 'done' }], [{ t: L('Изменить', 'O‘zgartirish', 'Change'), go: 'cls' }]] }),
+        done: c => { feed(`<b>${classBooked()}</b>: ${esc(N(c.k))}, ${esc(atTime(c.day, c.time))}. ${memberW()}: ${phoneMask}`);
+          return { text: L('✅ Вы записаны! За 2 часа пришлём напоминание.', '✅ Siz yozildingiz! 2 soat oldin eslatma yuboramiz.', '✅ You’re booked! We’ll remind you 2 hours before.'), next: 'remind', delay: 1800 }; },
+        remind: c => ({ text: L(`🔔 <b>Напоминание</b><br>Сегодня в ${c.time}: ${N(c.k)}. Не забудьте воду и полотенце 💧<span class="hint">Так клиент получит напоминание за 2 часа</span>`, `🔔 <b>Eslatma</b><br>Bugun soat ${c.time} da: ${N(c.k)}. Suv va sochiqni unutmang 💧<span class="hint">Mijoz eslatmani 2 soat oldin shunday oladi</span>`, `🔔 <b>Reminder</b><br>Today at ${c.time}: ${N(c.k)}. Don’t forget water and a towel 💧<span class="hint">This is how the member gets a reminder 2 hours before</span>`),
+          kb: [[{ t: L('👍 Приду', '👍 Boraman', '👍 I’ll come'), go: 'came' }, { t: L('❌ Отменить', '❌ Bekor qilish', '❌ Cancel'), go: 'cancel' }]] }),
+        came: c => { c.pts += 50; feed(L('Клиент <b>пришёл</b> на тренировку, +50 бонусов', 'Mijoz mashg‘ulotga <b>keldi</b>, +50 bonus', 'Member <b>checked in</b>, +50 points'));
+          return { text: L(`🎉 Отличная тренировка! +50 бонусов, теперь у вас ${c.pts}.<br>500 бонусов = бесплатная персональная тренировка.`, `🎉 Zo‘r mashg‘ulot! +50 bonus, endi sizda ${c.pts}.<br>500 bonus = bepul shaxsiy mashg‘ulot.`, `🎉 Great workout! +50 points, you now have ${c.pts}.<br>500 points = a free personal session.`), next: 'expire', delay: 2400 }; },
+        cancel: () => { feed(L('Клиент <b>отменил</b> запись, место освободилось', 'Mijoz yozuvni <b>bekor qildi</b>, joy bo‘shadi', 'Member <b>cancelled</b>, the spot is free again'));
+          return { text: L('Запись отменена, место отдадим другому. Записать на другое время?', 'Yozuv bekor qilindi, joyni boshqaga beramiz. Boshqa vaqtga yozaymi?', 'Booking cancelled, the spot goes to someone else. Book another time?'), kb: [[signBtn()]] }; },
+        expire: () => ({ text: L('⏳ <b>Абонемент заканчивается через 3 дня</b><br>Продлить сейчас, чтобы не прерывать тренировки?<span class="hint">Так бот сам напоминает о продлении</span>', '⏳ <b>Abonement 3 kundan keyin tugaydi</b><br>Mashg‘ulotlar to‘xtamasligi uchun hozir uzaytirasizmi?<span class="hint">Bot uzaytirish haqida o‘zi shunday eslatadi</span>', '⏳ <b>Your membership ends in 3 days</b><br>Renew now so your training doesn’t stop?<span class="hint">This is how the bot reminds about renewals</span>'), kb: [[passBtn()]] }),
+        passes: () => ({ text: L('Выберите абонемент:', 'Abonementni tanlang:', 'Choose a membership:'), kb: passes.map(p => [{ t: `${p.e} ${N(p)} · ${sum(p.p)}`, go: 'pay', set: { pass: p } }]) }),
+        pay: c => ({ text: `<b>${N(c.pass)}</b><br>${F(c.pass, 'sub')}<br>${L('К оплате', 'To‘lovga', 'To pay')}: <b>${sum(c.pass.p)}</b>`, kb: payKb('paid') }),
+        paid: c => { feed(`<b>${L('Абонемент оплачен', 'Abonement to‘landi', 'Membership paid')}</b>: ${esc(N(c.pass))}, ${sum(c.pass.p)} (${c.via})`);
+          return { text: L('✅ Оплата прошла (демо). Абонемент активен: на ресепшене покажите QR-код из бота.', '✅ To‘lov o‘tdi (demo). Abonement faol: resepshnda botdagi QR-kodni ko‘rsating.', '✅ Payment received (demo). Your membership is active: show the QR code from the bot at reception.'), kb: [[signBtn()]] }; },
+        pts: c => ({ text: L(`🎁 У вас <b>${c.pts} бонусов</b>.<br>+50 за каждое посещение. 500 бонусов = бесплатная персональная тренировка.`, `🎁 Sizda <b>${c.pts} bonus</b> bor.<br>Har bir tashrif uchun +50. 500 bonus = bepul shaxsiy mashg‘ulot.`, `🎁 You have <b>${c.pts} points</b>.<br>+50 for every visit. 500 points = a free personal session.`), kb: [[signBtn()]] }),
+      });
+    },
+    app(screen) { return pickApp(screen, { icon: '🏋️', name: L('Фитнес-клуб', 'Fitnes-klub', 'Fitness club'), again: L('Записаться ещё', 'Yana yozilish', 'Book again'),
+      steps: [
+        { key: 'k', title: L('Выберите тренировку', 'Mashg‘ulotni tanlang', 'Choose a class'), items: () => classes },
+        { type: 'slots', title: st => N(st.k), right: st => F(st.k, 'right') }],
+      onDone: st => feed(`<b>${classBooked()}</b>: ${esc(N(st.k))}, ${esc(atTime(st.day, st.time))}. ${memberW()}: ${phoneMask}`),
+      done: st => `<div class="card" style="text-align:center;justify-items:center"><span class="eyebrow">${youBooked()}</span><div class="big">${st.time}</div><span>${esc(st.day)}</span></div>
+        <div class="card"><div class="row"><span>${L('Тренировка', 'Mashg‘ulot', 'Class')}</span><span>${esc(N(st.k))}</span></div><div class="row"><span>${L('Оплата', 'To‘lov', 'Payment')}</span><span>${esc(F(st.k, 'right'))}</span></div></div>
+        <div class="note">${L('🔔 Напомним за 2 часа. За каждое посещение +50 бонусов', '🔔 2 soat oldin eslatamiz. Har bir tashrif uchun +50 bonus', '🔔 We’ll remind you 2 hours before. +50 points for every visit')}</div>` }); }
+  };
+
+  /* ---------- 10. магазин одежды ---------- */
+  const goodCats = [{ id: 'top', n: 'Верх', uz: 'Ustki kiyim', en: 'Tops' }, { id: 'bottom', n: 'Низ', uz: 'Shim va shortik', en: 'Bottoms' }, { id: 'shoes', n: 'Обувь', uz: 'Poyabzal', en: 'Shoes' }, { id: 'acc', n: 'Аксессуары', uz: 'Aksessuarlar', en: 'Accessories' }];
+  const goods = [
+    { id: 1, e: '🧥', n: 'Худи оверсайз', uz: 'Oversize xudi', en: 'Oversized hoodie', p: 320000, cat: 'top' },
+    { id: 2, e: '👕', n: 'Футболка базовая', uz: 'Oddiy futbolka', en: 'Basic T-shirt', p: 150000, cat: 'top' },
+    { id: 3, e: '👖', n: 'Джинсы прямые', uz: 'To‘g‘ri jinsi shim', en: 'Straight jeans', p: 380000, cat: 'bottom' },
+    { id: 4, e: '🩳', n: 'Шорты карго', uz: 'Kargo shortik', en: 'Cargo shorts', p: 210000, cat: 'bottom' },
+    { id: 5, e: '👟', n: 'Кроссовки белые', uz: 'Oq krossovka', en: 'White sneakers', p: 650000, cat: 'shoes', sizes: ['40', '41', '42', '43', '44'] },
+    { id: 6, e: '🥾', n: 'Ботинки демисезонные', uz: 'Mavsumiy botinka', en: 'Ankle boots', p: 720000, cat: 'shoes', sizes: ['40', '41', '42', '43', '44'] },
+    { id: 7, e: '🧢', n: 'Кепка', uz: 'Kepka', en: 'Cap', p: 120000, cat: 'acc', sizes: [] },
+    { id: 8, e: '🎒', n: 'Рюкзак городской', uz: 'Shahar ryukzagi', en: 'City backpack', p: 290000, cat: 'acc', sizes: [] }];
+  const sizesOf = g => g.sizes || ['S', 'M', 'L', 'XL'];
+  const SHIP = 25000;
+  const sizeW = () => L('Размер', 'O‘lcham', 'Size');
+  const lineName = x => N(x.g) + (x.size ? ', ' + x.size : '');
+  const shopOrder = () => L('Заказ №3108', '№3108 buyurtma', 'Order #3108');
+  const shipName = s => s === 'pick' ? L('Самовывоз из магазина', 'Do‘kondan olib ketish', 'Store pickup') : L('Доставка по Ташкенту', 'Toshkent bo‘ylab yetkazish', 'Delivery in Tashkent');
+  const shop = {
+    mode: 'app',
+    side: () => ({ kicker: L('Магазин · каталог и заказы в Telegram', 'Do‘kon · Telegram’da katalog va buyurtmalar', 'Store · catalog and orders in Telegram'),
+      title: L('Каталог, корзина и оплата без переписки', 'Yozishmalarsiz katalog, savat va to‘lov', 'Catalog, cart and payment without back-and-forth'),
+      lead: L('Покупатель листает каталог с ценами и размерами, собирает корзину, выбирает доставку или самовывоз и платит. Продавцу не нужно отвечать «сколько стоит» и «есть ли размер»: заказ приходит готовым.', 'Xaridor narx va o‘lchamli katalogni ko‘radi, savatni to‘ldiradi, yetkazish yoki olib ketishni tanlaydi va to‘laydi. Sotuvchi «qancha turadi» va «o‘lcham bormi» degan savollarga javob bermaydi: buyurtma tayyor holda keladi.', 'Shoppers browse a catalog with prices and sizes, fill a cart, choose delivery or pickup and pay. The seller no longer answers “how much” or “is my size in stock”: the order arrives ready.'),
+      feats: L(['Каталог с ценами и наличием размеров', 'Корзина, доставка или самовывоз', 'Оплата Payme / Click или наличными курьеру', 'Статус заказа и обмен размера в боте'],
+        ['Narxlar va o‘lchamlar mavjudligi bilan katalog', 'Savat, yetkazish yoki olib ketish', 'Payme / Click yoki kuryerga naqd to‘lov', 'Buyurtma holati va botda o‘lchamni almashtirish'],
+        ['Catalog with prices and sizes in stock', 'Cart, delivery or pickup', 'Pay via Payme / Click or cash to courier', 'Order status and size exchange in the bot']),
+      feedTitle: L('Что получает продавец', 'Sotuvchi nimani oladi', 'What the seller receives'),
+      feedEmpty: L('Соберите заказ в демо слева и оформите его.', 'Chapdagi demoda buyurtma yig‘ing va rasmiylashtiring.', 'Build an order in the demo on the left and place it.'),
+      price: from('$370'), priceNote: supNote() }),
+    app(screen) {
+      const st = { cart: [], cat: 'top', view: 'list', ship: 'del', pay: 'Payme', timers: [] };
+      const total = () => st.cart.reduce((s, x) => s + x.g.p, 0);
+      const fee = () => st.ship === 'pick' ? 0 : SHIP;
+      const payName = p => p === 'cash' ? L('Наличные', 'Naqd', 'Cash') : p;
+      screen.innerHTML = shell('🛍', L('Магазин одежды', 'Kiyim do‘koni', 'Clothing store'), 'Mini App');
+      const app = screen.querySelector('.app');
+      const reset = () => { st.timers.forEach(clearTimeout); st.timers = []; Object.assign(st, { cart: [], cat: 'top', view: 'list', ship: 'del', pay: 'Payme' }); draw(); };
+      screen.querySelector('.reset').addEventListener('click', reset);
+      function draw() {
+        if (st.view === 'list') {
+          app.innerHTML = `<div class="app-pad"><div class="chips">${goodCats.map(c => `<button type="button" class="chip${c.id === st.cat ? ' on' : ''}" data-cat="${c.id}">${N(c)}</button>`).join('')}</div>
+            ${goods.filter(g => g.cat === st.cat).map(g => `<button type="button" class="item pick" data-g="${g.id}"><div class="pic">${g.e}</div><div><b>${N(g)}</b><small>${sizesOf(g).length ? sizeW() + ': ' + sizesOf(g).join(' · ') : L('один размер', 'bitta o‘lcham', 'one size')}</small></div><b>${fmt(g.p)}</b></button>`).join('')}
+            </div><button type="button" class="cartbar" id="toCart" ${st.cart.length ? '' : 'disabled'}><span>${cartW()} · ${st.cart.length}</span><span>${sum(total())}</span></button>`;
+        } else if (st.view === 'item') {
+          const g = st.g, sz = sizesOf(g);
+          app.innerHTML = `<div class="app-pad"><button type="button" class="chip" id="back">${L('← Каталог', '← Katalog', '← Catalog')}</button>
+            <div class="card" style="text-align:center;justify-items:center"><div class="pic" style="width:96px;height:96px;font-size:54px">${g.e}</div><b>${N(g)}</b><span>${sum(g.p)}</span></div>
+            ${sz.length ? `<div class="card"><span class="eyebrow">${sizeW()}</span><div class="pay">${sz.map(s => `<button type="button" data-size="${s}" class="${s === st.size ? 'on' : ''}">${s}</button>`).join('')}</div></div>` : ''}
+            <button type="button" class="btn" id="add" ${sz.length && !st.size ? 'disabled' : ''}>${sz.length && !st.size ? L('Выберите размер', 'O‘lchamni tanlang', 'Choose a size') : L('В корзину', 'Savatga', 'Add to cart') + ' · ' + sum(g.p)}</button></div>`;
+        } else if (st.view === 'checkout') {
+          app.innerHTML = `<div class="app-pad"><button type="button" class="chip" id="back">${L('← Каталог', '← Katalog', '← Catalog')}</button>
+            <div class="card">${st.cart.map(x => `<div class="row"><span>${esc(lineName(x))}</span><span>${sum(x.g.p)}</span></div>`).join('')}
+              <div class="row"><span>${shipName(st.ship)}</span><span>${fee() ? sum(fee()) : L('бесплатно', 'bepul', 'free')}</span></div>
+              <div class="row total"><span>${L('Итого', 'Jami', 'Total')}</span><span>${sum(total() + fee())}</span></div></div>
+            <div class="card"><span class="eyebrow">${L('Получение', 'Olish', 'Getting it')}</span><div class="pay">${['del', 'pick'].map(s => `<button type="button" data-ship="${s}" class="${s === st.ship ? 'on' : ''}">${s === 'del' ? L('Доставка', 'Yetkazish', 'Delivery') : L('Самовывоз', 'Olib ketish', 'Pickup')}</button>`).join('')}</div></div>
+            <div class="card"><span class="eyebrow">${L('Оплата', 'To‘lov', 'Payment')}</span><div class="pay">${['Payme', 'Click', 'cash'].map(p => `<button type="button" data-pay="${p}" class="${p === st.pay ? 'on' : ''}">${payName(p)}</button>`).join('')}</div></div>
+            <button type="button" class="btn" id="order">${L('Оформить заказ', 'Buyurtma berish', 'Place order')} · ${sum(total() + fee())}</button></div>`;
+        } else {
+          const labels = st.ship === 'pick'
+            ? L([['Заказ принят', 'продавец получил заказ'], ['Собираем', 'проверяем размеры'], ['Готов к выдаче', 'ТЦ Samarqand Darvoza, 2 этаж'], ['Выдан', 'спасибо за покупку!']], [['Buyurtma qabul qilindi', 'sotuvchi buyurtmani oldi'], ['Yig‘moqdamiz', 'o‘lchamlarni tekshiramiz'], ['Olib ketishga tayyor', 'Samarqand Darvoza SM, 2-qavat'], ['Berildi', 'xaridingiz uchun rahmat!']], [['Order received', 'the seller has it'], ['Packing', 'checking sizes'], ['Ready for pickup', 'Samarqand Darvoza mall, 2nd floor'], ['Picked up', 'thanks for shopping!']])
+            : L([['Заказ принят', 'продавец получил заказ'], ['Собираем', 'проверяем размеры'], ['Курьер в пути', 'сегодня до 20:00'], ['Доставлен', 'не подошёл размер — обменяем за 14 дней']], [['Buyurtma qabul qilindi', 'sotuvchi buyurtmani oldi'], ['Yig‘moqdamiz', 'o‘lchamlarni tekshiramiz'], ['Kuryer yo‘lda', 'bugun 20:00 gacha'], ['Yetkazildi', 'o‘lcham to‘g‘ri kelmasa — 14 kun ichida almashtiramiz']], [['Order received', 'the seller has it'], ['Packing', 'checking sizes'], ['Courier on the way', 'today before 20:00'], ['Delivered', 'wrong size? exchange within 14 days']]);
+          app.innerHTML = `<div class="app-pad"><div class="card"><span class="eyebrow">${shopOrder()}</span><div class="steps">${labels.map((l, i) =>
+            `<div class="st ${i < st.stage ? 'done' : i === st.stage ? 'now' : ''}"><i>${i < st.stage ? '✓' : i + 1}</i><div><b class="${i === st.stage && i < 3 ? 'pulse' : ''}">${l[0]}</b><small>${l[1]}</small></div></div>`).join('')}</div></div>
+            <p class="empty" style="text-align:center">${L('В демо статусы меняются за секунды, в жизни их переключает продавец.', 'Demoda holatlar soniyalarda o‘zgaradi, hayotda ularni sotuvchi almashtiradi.', 'In the demo statuses change in seconds; in real life the seller updates them.')}</p>
+            ${st.stage >= 3 ? `<button type="button" class="btn ghost" id="again">${L('Новый заказ', 'Yangi buyurtma', 'New order')}</button>` : ''}</div>`;
+        }
+      }
+      app.addEventListener('click', e => {
+        const t = e.target.closest('button'); if (!t) return;
+        if (t.dataset.cat) { st.cat = t.dataset.cat; draw(); }
+        else if (t.dataset.g) { st.g = goods.find(g => g.id == t.dataset.g); st.size = null; st.view = 'item'; draw(); }
+        else if (t.dataset.size) { st.size = t.dataset.size; draw(); }
+        else if (t.id === 'add') { st.cart.push({ g: st.g, size: st.size }); st.view = 'list'; draw(); }
+        else if (t.id === 'back') { st.view = 'list'; draw(); }
+        else if (t.id === 'toCart') { st.view = 'checkout'; draw(); }
+        else if (t.dataset.ship) { st.ship = t.dataset.ship; draw(); }
+        else if (t.dataset.pay) { st.pay = t.dataset.pay; draw(); }
+        else if (t.id === 'order') {
+          feed(`<b>${shopOrder()}</b>: ${esc(st.cart.map(lineName).join('; '))}. ${shipName(st.ship)}. ${st.pay === 'cash' ? cashW() : paidVia(st.pay)}: ${sum(total() + fee())}`);
+          st.view = 'track'; st.stage = 0; draw();
+          [1, 2, 3].forEach(s => st.timers.push(setTimeout(() => { st.stage = s; draw(); if (s === 2) feed(st.ship === 'pick' ? L('Заказ №3108 <b>готов к выдаче</b>, клиенту отправлено уведомление', '№3108 buyurtma <b>olib ketishga tayyor</b>, mijozga xabar yuborildi', 'Order #3108 is <b>ready for pickup</b>, the customer was notified') : L('Курьер <b>забрал</b> заказ №3108', 'Kuryer №3108 buyurtmani <b>olib ketdi</b>', 'Courier <b>picked up</b> order #3108')); }, s * 2600)));
+        }
+        else if (t.id === 'again') reset();
+      });
+      draw();
+      return () => st.timers.forEach(clearTimeout);
+    },
+    bot(screen) {
+      const catBtn = () => ({ t: L('🛍 Каталог', '🛍 Katalog', '🛍 Catalog'), go: 'cats' });
+      const cartBtn = c => ({ t: `🛒 ${cartW()} (${(c.cart || []).length})`, go: 'cart' });
+      const tot = c => c.cart.reduce((s, x) => s + x.g.p, 0);
+      return chat(screen, { icon: '🛍', name: L('Магазин одежды', 'Kiyim do‘koni', 'Clothing store') }, {
+        start: c => { c.cart = []; return { text: L('Ассаламу алейкум! 🛍 Это бот магазина одежды.<br>Доставка по Ташкенту 25 000 сум, самовывоз бесплатно. Обмен размера за 14 дней.', 'Assalomu alaykum! 🛍 Bu kiyim do‘koni boti.<br>Toshkent bo‘ylab yetkazish 25 000 so‘m, olib ketish bepul. O‘lchamni 14 kun ichida almashtirish mumkin.', 'Hello! 🛍 This is the clothing store bot.<br>Delivery in Tashkent 25 000 UZS, pickup is free. Size exchange within 14 days.'), kb: [[catBtn()], [cartBtn(c)]] }; },
+        cats: () => ({ text: L('Выберите раздел:', 'Bo‘limni tanlang:', 'Choose a section:'), kb: chunk(goodCats.map(x => ({ t: N(x), go: 'list', set: { cat: x } })), 2) }),
+        list: c => ({ text: `<b>${N(c.cat)}</b><br>${L('Нажмите на товар:', 'Mahsulotni bosing:', 'Tap an item:')}`, kb: [...goods.filter(g => g.cat === c.cat.id).map(g => [{ t: `${g.e} ${N(g)} · ${sum(g.p)}`, go: 'item', set: { g } }]), [{ t: L('⬅️ Разделы', '⬅️ Bo‘limlar', '⬅️ Sections'), go: 'cats' }, cartBtn(c)]] }),
+        item: c => { const sz = sizesOf(c.g);
+          return sz.length ? { text: `${c.g.e} <b>${N(c.g)}</b> — ${sum(c.g.p)}<br>${L('Выберите размер. Перечёркнутых нет в наличии:', 'O‘lchamni tanlang. Chizilganlari mavjud emas:', 'Choose a size. Crossed-out ones are out of stock:')}`, kb: [sz.map((s, i) => ({ t: s, off: (c.g.id + i) % 4 === 0, go: 'add', set: { size: s } }))] }
+            : { text: `${c.g.e} <b>${N(c.g)}</b> — ${sum(c.g.p)}`, kb: [[{ t: L('➕ В корзину', '➕ Savatga', '➕ Add to cart'), go: 'add', set: { size: '' } }]] }; },
+        add: c => { c.cart.push({ g: c.g, size: c.size }); return { text: L(`✅ ${lineName({ g: c.g, size: c.size })} в корзине.`, `✅ ${lineName({ g: c.g, size: c.size })} savatda.`, `✅ ${lineName({ g: c.g, size: c.size })} added.`), kb: [[{ t: L('Ещё товары', 'Yana mahsulotlar', 'More items'), go: 'cats' }, cartBtn(c)]] }; },
+        cart: c => { if (!c.cart.length) return { text: L('Корзина пока пустая.', 'Savat hozircha bo‘sh.', 'Your cart is empty.'), kb: [[catBtn()]] };
+          return { text: `<b>${cartW()}</b><br>` + c.cart.map(x => `${esc(lineName(x))} — ${sum(x.g.p)}`).join('<br>') + `<br><b>${L('Товары', 'Mahsulotlar', 'Items')}: ${sum(tot(c))}</b><br><br>${L('Как получить заказ?', 'Buyurtmani qanday olasiz?', 'How do you want to get it?')}`,
+            kb: [[{ t: L('🚚 Доставка · 25 000', '🚚 Yetkazish · 25 000', '🚚 Delivery · 25 000'), go: 'pay', set: { ship: 'del' } }], [{ t: L('🏬 Самовывоз · бесплатно', '🏬 Olib ketish · bepul', '🏬 Pickup · free'), go: 'pay', set: { ship: 'pick' } }]] }; },
+        pay: c => { c.total = tot(c) + (c.ship === 'pick' ? 0 : SHIP);
+          return { text: `${shipName(c.ship)}<br>${L('К оплате', 'To‘lovga', 'To pay')}: <b>${sum(c.total)}</b><br>${L('Как оплатите?', 'Qanday to‘laysiz?', 'How will you pay?')}`, kb: [[{ t: 'Payme', go: 'paid', set: { via: 'Payme' } }, { t: 'Click', go: 'paid', set: { via: 'Click' } }], [{ t: c.ship === 'pick' ? L('Оплачу в магазине', 'Do‘konda to‘layman', 'Pay in store') : cashW(), go: 'paid', set: { via: '' } }]] }; },
+        paid: c => { feed(`<b>${shopOrder()}</b>: ${esc(c.cart.map(lineName).join('; '))}. ${shipName(c.ship)}. ${c.via ? paidVia(c.via) : L('Оплата при получении', 'Olishda to‘lov', 'Pay on receipt')}: ${sum(c.total)}`);
+          return { text: L(`✅ Заказ №3108 принят${c.via ? ', оплата через ' + c.via + ' прошла (демо)' : ''}. Собираем!`, `✅ №3108 buyurtma qabul qilindi${c.via ? ', ' + c.via + ' orqali to‘lov o‘tdi (demo)' : ''}. Yig‘yapmiz!`, `✅ Order #3108 received${c.via ? ', ' + c.via + ' payment went through (demo)' : ''}. Packing it now!`), next: 'ready', delay: 2400 }; },
+        ready: c => { feed(c.ship === 'pick' ? L('Заказ №3108 <b>готов к выдаче</b>', '№3108 buyurtma <b>olib ketishga tayyor</b>', 'Order #3108 is <b>ready for pickup</b>') : L('Курьер <b>забрал</b> заказ №3108', 'Kuryer №3108 buyurtmani <b>olib ketdi</b>', 'Courier <b>picked up</b> order #3108'));
+          return { text: c.ship === 'pick' ? L('📦 Заказ готов к выдаче: ТЦ Samarqand Darvoza, 2 этаж. Ждём вас до 21:00.<span class="hint">В демо статусы приходят за секунды</span>', '📦 Buyurtma olib ketishga tayyor: Samarqand Darvoza SM, 2-qavat. 21:00 gacha kutamiz.<span class="hint">Demoda holatlar soniyalarda keladi</span>', '📦 Your order is ready: Samarqand Darvoza mall, 2nd floor. Open until 21:00.<span class="hint">In the demo statuses arrive in seconds</span>')
+            : L('🛵 Курьер забрал заказ и привезёт сегодня до 20:00.<span class="hint">В демо статусы приходят за секунды</span>', '🛵 Kuryer buyurtmani oldi va bugun 20:00 gacha olib keladi.<span class="hint">Demoda holatlar soniyalarda keladi</span>', '🛵 The courier has your order and will deliver it today before 20:00.<span class="hint">In the demo statuses arrive in seconds</span>'), next: 'after', delay: 2600 }; },
+        after: () => ({ text: L('Как вам покупка? Если размер не подошёл, обменяем за 14 дней.', 'Xarid yoqdimi? O‘lcham to‘g‘ri kelmasa, 14 kun ichida almashtiramiz.', 'How’s your purchase? If the size doesn’t fit, we’ll exchange it within 14 days.'), kb: [[{ t: L('👍 Всё отлично', '👍 Hammasi zo‘r', '👍 All good'), go: 'thx' }, { t: L('🔁 Обменять размер', '🔁 O‘lchamni almashtirish', '🔁 Exchange size'), go: 'swap' }]] }),
+        thx: c => { c.cart = []; return { text: L('Спасибо! Новинки будем присылать сюда 🙌', 'Rahmat! Yangiliklarni shu yerga yuboramiz 🙌', 'Thank you! We’ll post new arrivals here 🙌'), kb: [[catBtn()]] }; },
+        swap: c => { feed(L('Клиент <b>хочет обменять</b> размер по заказу №3108', 'Mijoz №3108 buyurtma bo‘yicha o‘lchamni <b>almashtirmoqchi</b>', 'Customer <b>wants to exchange</b> a size on order #3108')); c.cart = [];
+          return { text: L('Принято! Курьер привезёт другой размер и заберёт этот. Менеджер напишет вам в течение часа.', 'Qabul qilindi! Kuryer boshqa o‘lchamni olib keladi va buni olib ketadi. Menejer bir soat ichida yozadi.', 'Got it! The courier will bring another size and take this one back. A manager will message you within an hour.'), kb: [[catBtn()]] }; },
+      });
+    }
+  };
+
+  /* ---------- 11. автосервис ---------- */
+  const autoSvc = [
+    { e: '🛢', n: 'Замена масла и фильтра', uz: 'Moy va filtrni almashtirish', en: 'Oil & filter change', sub: '40 мин', subUz: '40 daq', subEn: '40 min', p: 250000 },
+    { e: '🔍', n: 'Компьютерная диагностика', uz: 'Kompyuter diagnostikasi', en: 'Computer diagnostics', sub: '30 мин', subUz: '30 daq', subEn: '30 min', p: 100000 },
+    { e: '🛞', n: 'Развал-схождение', uz: 'Razval-sxojdeniye', en: 'Wheel alignment', sub: '60 мин', subUz: '60 daq', subEn: '60 min', p: 200000 },
+    { e: '🔧', n: 'Ремонт ходовой', uz: 'Yurish qismini ta’mirlash', en: 'Suspension repair', sub: 'цена после диагностики', subUz: 'narx diagnostikadan keyin', subEn: 'price after diagnostics', p: 0, est: 680000 }];
+  const autoRight = s => s.p ? sum(s.p) : L('по смете', 'smeta bo‘yicha', 'by estimate');
+  const cars = [{ e: '🚗', n: 'Chevrolet Cobalt' }, { e: '🚗', n: 'Chevrolet Gentra' }, { e: '🚙', n: 'Chevrolet Tracker' }, { e: '🚘', n: 'BYD Song Plus' }, { e: '🚗', n: 'Другая марка', uz: 'Boshqa marka', en: 'Other make', other: true }];
+  const carName = c => c.other ? L('ваш автомобиль', 'avtomobilingiz', 'your car') : c.n;
+  const repairW = () => L('Запись на ремонт', 'Ta’mirga yozilish', 'Service booking');
+  const autoSvcW = () => L('Автосервис', 'Avtoservis', 'Car service');
+  const auto = {
+    mode: 'bot',
+    side: () => ({ kicker: L('Автосервис · бот записи на ремонт', 'Avtoservis · ta’mirga yozilish boti', 'Car service · repair booking bot'),
+      title: L('Запись на ремонт и клиенты, которые возвращаются на ТО', 'Ta’mirga yozilish va texnik xizmatga qaytadigan mijozlar', 'Repair bookings and customers who come back for servicing'),
+      lead: L('Водитель выбирает услугу, свою машину и время, получает напоминание и сообщение «машина готова» с оплатой. Через 5 000 км бот сам зовёт на замену масла.', 'Haydovchi xizmat, mashinasi va vaqtni tanlaydi, eslatma va to‘lov bilan «mashina tayyor» xabarini oladi. 5 000 km dan keyin bot o‘zi moy almashtirishga chaqiradi.', 'Drivers pick a service, their car and a time, get a reminder and a “your car is ready” message with payment. After 5,000 km the bot invites them back for an oil change.'),
+      feats: L(['Запись на свободное время, без очереди на приёмке', 'Сообщение «машина готова» и оплата Payme / Click', 'Смета на ремонт с согласованием в боте', 'Напоминание о ТО через 5 000 км или полгода'],
+        ['Bo‘sh vaqtga yozilish, qabulda navbatsiz', '«Mashina tayyor» xabari va Payme / Click orqali to‘lov', 'Ta’mir smetasini botda kelishish', '5 000 km yoki yarim yildan keyin texnik xizmat eslatmasi'],
+        ['Book a free slot, no queue at reception', '“Car is ready” message and payment via Payme / Click', 'Repair estimate approved in the bot', 'Service reminder after 5,000 km or six months']),
+      feedTitle: L('Что видит мастер-приёмщик', 'Qabul ustasi nimani ko‘radi', 'What the service desk sees'),
+      feedEmpty: L('Запишитесь на ремонт в демо слева.', 'Chapdagi demoda ta’mirga yoziling.', 'Book a service in the demo on the left.'),
+      price: from('$270'), priceNote: supNote() }),
+    bot(screen) {
+      const signBtn = () => ({ t: L('🔧 Записаться на ремонт', '🔧 Ta’mirga yozilish', '🔧 Book a service'), go: 'svc' });
+      return chat(screen, { icon: '🔧', name: L('Автосервис · запись', 'Avtoservis · yozilish', 'Car service · booking') }, {
+        start: () => ({ text: L('Ассаламу алейкум! 🔧 Это бот автосервиса.<br>Запишу на ремонт или ТО за минуту, без звонков.', 'Assalomu alaykum! 🔧 Bu avtoservis boti.<br>Sizni bir daqiqada qo‘ng‘iroqsiz ta’mir yoki texnik xizmatga yozaman.', 'Hello! 🔧 This is the car service bot.<br>I’ll book your repair or service in a minute, no calls.'),
+          kb: [[signBtn()], [{ t: L('💰 Цены', '💰 Narxlar', '💰 Prices'), go: 'prices' }, { t: L('📍 Адрес', '📍 Manzil', '📍 Address'), go: 'addr' }]] }),
+        prices: () => ({ text: `<b>${L('Цены', 'Narxlar', 'Prices')}</b><br>` + autoSvc.map(s => `${N(s)} — ${autoRight(s)}`).join('<br>'), kb: [[signBtn()]] }),
+        addr: () => ({ text: L('📍 Ташкент, Сергелийский район, ул. Янги Сергели, 15<br>🕘 Пн–Сб 9:00–19:00', '📍 Toshkent, Sergeli tumani, Yangi Sergeli ko‘chasi, 15<br>🕘 Du–Sh 9:00–19:00', '📍 Tashkent, Sergeli district, Yangi Sergeli St, 15<br>🕘 Mon–Sat 9:00–19:00'), kb: [[signBtn()]] }),
+        svc: () => ({ text: L('Что нужно сделать?', 'Nima qilish kerak?', 'What needs doing?'), kb: autoSvc.map(s => [{ t: `${s.e} ${N(s)} · ${autoRight(s)}`, go: 'car', set: { s } }]) }),
+        car: () => ({ text: L('Какая у вас машина?', 'Mashinangiz qanaqa?', 'What car do you drive?'), kb: chunk(cars.map(x => ({ t: x.other ? N(x) : x.n, go: 'day', set: { car: x } })), 2) }),
+        day: dayStep,
+        time: timeStep,
+        confirm: c => ({ text: `${L('Проверьте запись:', 'Yozuvni tekshiring:', 'Check your booking:')}<br>${c.s.e} ${N(c.s)}<br>🚗 ${c.car.other ? N(c.car) : c.car.n}<br>📅 ${c.day}, ${c.time}<br>💵 ${autoRight(c.s)}`,
+          kb: [[{ t: L('✅ Подтвердить', '✅ Tasdiqlash', '✅ Confirm'), go: 'done' }], [{ t: L('Изменить', 'O‘zgartirish', 'Change'), go: 'svc' }]] }),
+        done: c => { feed(`<b>${repairW()}</b>: ${esc(N(c.s))}, ${esc(c.car.other ? N(c.car) : c.car.n)}, ${esc(atTime(c.day, c.time))}. ${client()}: ${phoneMask}`);
+          return { text: L('✅ Вы записаны! Накануне пришлём напоминание.', '✅ Siz yozildingiz! Bir kun oldin eslatma yuboramiz.', '✅ You’re booked! We’ll send a reminder the day before.'), next: 'remind', delay: 1800 }; },
+        remind: c => ({ text: L(`🔔 <b>Напоминание</b><br>Завтра в ${c.time} ждём ${carName(c.car)}: ${N(c.s).toLowerCase()}. Мастер-приёмщик — Шерзод.<span class="hint">Так клиент получит напоминание накануне</span>`, `🔔 <b>Eslatma</b><br>Ertaga soat ${c.time} da ${carName(c.car)}ni kutamiz: ${N(c.s).toLowerCase()}. Qabul ustasi — Sherzod.<span class="hint">Mijoz eslatmani bir kun oldin shunday oladi</span>`, `🔔 <b>Reminder</b><br>Tomorrow at ${c.time} we’re expecting ${carName(c.car)}: ${N(c.s).toLowerCase()}. Service advisor: Sherzod.<span class="hint">This is how the customer gets a reminder the day before</span>`),
+          kb: [[{ t: L('👍 Приеду', '👍 Kelaman', '👍 I’ll be there'), go: 'ok' }, { t: L('🔁 Перенести', '🔁 Ko‘chirish', '🔁 Reschedule'), go: 'day' }]] }),
+        ok: c => { feed(L('Клиент <b>подтвердил</b> визит', 'Mijoz tashrifni <b>tasdiqladi</b>', 'Customer <b>confirmed</b> the visit')); c.total = c.s.p || c.s.est;
+          return { text: L('Отлично, ждём вас!', 'Ajoyib, sizni kutamiz!', 'Great, see you then!'), next: c.s.p ? 'ready' : 'estimate', delay: 2200 }; },
+        estimate: c => { feed(L(`Смета отправлена клиенту: замена передних стоек, ${sum(c.total)}`, `Smeta mijozga yuborildi: old amortizatorlarni almashtirish, ${sum(c.total)}`, `Estimate sent to the customer: front struts replacement, ${sum(c.total)}`));
+          return { text: L(`🧾 <b>Смета после диагностики</b><br>Замена передних стоек: работа и запчасти — <b>${sum(c.total)}</b>. Делаем?<span class="hint">Клиент согласует смету в боте, без звонков</span>`, `🧾 <b>Diagnostikadan keyingi smeta</b><br>Old amortizatorlarni almashtirish: ish va ehtiyot qismlar — <b>${sum(c.total)}</b>. Qilamizmi?<span class="hint">Mijoz smetani botda, qo‘ng‘iroqsiz kelishadi</span>`, `🧾 <b>Estimate after diagnostics</b><br>Front struts replacement: labour and parts — <b>${sum(c.total)}</b>. Go ahead?<span class="hint">The customer approves the estimate in the bot, no calls</span>`),
+            kb: [[{ t: L('✅ Согласен', '✅ Roziman', '✅ Approve'), go: 'ready' }]] }; },
+        ready: c => ({ text: L(`✅ <b>${carName(c.car)[0].toUpperCase() + carName(c.car).slice(1)} готов</b><br>Можно забирать. К оплате: <b>${sum(c.total)}</b>. Оплатите сейчас и заберите машину без очереди на кассе.`, `✅ <b>${carName(c.car)[0].toUpperCase() + carName(c.car).slice(1)} tayyor</b><br>Olib ketishingiz mumkin. To‘lovga: <b>${sum(c.total)}</b>. Hozir to‘lang va mashinani kassada navbatsiz oling.`, `✅ <b>${carName(c.car)[0].toUpperCase() + carName(c.car).slice(1)} is ready</b><br>You can pick it up. To pay: <b>${sum(c.total)}</b>. Pay now and skip the queue at the till.`), kb: payKb('paid') }),
+        paid: c => { feed(`<b>${L('Оплата', 'To‘lov', 'Payment')}</b>: ${esc(N(c.s))}, ${sum(c.total)} (${c.via})`);
+          return { text: L('✅ Оплата прошла (демо). Спасибо, хорошей дороги! 🚗', '✅ To‘lov o‘tdi (demo). Rahmat, yo‘lingiz bexatar bo‘lsin! 🚗', '✅ Payment received (demo). Thank you, drive safe! 🚗'), next: 'later', delay: 2400 }; },
+        later: c => ({ text: L(`🗓 <b>Через 5 000 км</b><br>Пора менять масло в ${c.car.other ? 'вашем автомобиле' : c.car.n}. Записать на удобное время?<span class="hint">Так бот возвращает клиентов на ТО</span>`, `🗓 <b>5 000 km dan keyin</b><br>${c.car.other ? 'Avtomobilingiz' : c.car.n}da moyni almashtirish vaqti keldi. Qulay vaqtga yozaymi?<span class="hint">Bot mijozlarni texnik xizmatga shunday qaytaradi</span>`, `🗓 <b>5,000 km later</b><br>Time for an oil change in ${c.car.other ? 'your car' : c.car.n}. Shall I book a time?<span class="hint">This is how the bot brings customers back for servicing</span>`), kb: [[signBtn()]] }),
+      });
+    },
+    app(screen) { return pickApp(screen, { icon: '🔧', name: autoSvcW(), again: L('Новая запись', 'Yangi yozilish', 'New booking'),
+      steps: [
+        { key: 's', title: L('Что нужно сделать?', 'Nima qilish kerak?', 'What needs doing?'), items: () => autoSvc.map(s => ({ ...s, right: autoRight(s) })) },
+        { key: 'car', title: L('Ваш автомобиль', 'Avtomobilingiz', 'Your car'), items: () => cars.map(x => ({ ...x, sub: x.other ? L('уточним при приёмке', 'qabulda aniqlaymiz', 'we’ll check at reception') : L('легковой', 'yengil avtomobil', 'passenger car') })) },
+        { type: 'slots', title: st => `${N(st.s)} · ${st.car.other ? N(st.car) : st.car.n}`, right: st => autoRight(st.s) }],
+      onDone: st => feed(`<b>${repairW()}</b>: ${esc(N(st.s))}, ${esc(st.car.other ? N(st.car) : st.car.n)}, ${esc(atTime(st.day, st.time))}. ${client()}: ${phoneMask}`),
+      done: st => `<div class="card" style="text-align:center;justify-items:center"><span class="eyebrow">${youBooked()}</span><div class="big">${st.time}</div><span>${esc(st.day)}</span></div>
+        <div class="card"><div class="row"><span>${L('Услуга', 'Xizmat', 'Service')}</span><span>${esc(N(st.s))}</span></div><div class="row"><span>${L('Машина', 'Mashina', 'Car')}</span><span>${esc(st.car.other ? N(st.car) : st.car.n)}</span></div><div class="row"><span>${L('Стоимость', 'Narxi', 'Price')}</span><span>${esc(autoRight(st.s))}</span></div></div>
+        <div class="note">${L('🔔 Напомним накануне, а когда машина будет готова, пришлём сообщение с оплатой', '🔔 Bir kun oldin eslatamiz, mashina tayyor bo‘lganda to‘lov bilan xabar yuboramiz', '🔔 We’ll remind you the day before and message you with payment when the car is ready')}</div>` }); }
+  };
+
+  /* ---------- 12. мебель ---------- */
+  const furn = [
+    { e: '🍳', n: 'Кухни на заказ', uz: 'Buyurtma oshxonalar', en: 'Custom kitchens', sub: 'ЛДСП или МДФ · срок 21 день', subUz: 'LDSP yoki MDF · 21 kun', subEn: 'chipboard or MDF · 21 days', right: 'от 9 800 000', rightUz: '9 800 000 dan', rightEn: 'from 9 800 000',
+      est: 14600000, estN: 'Кухня 3,2 м, фасады МДФ, фурнитура Blum', estUz: 'Oshxona 3,2 m, MDF fasadlar, Blum furnituralari', estEn: '3.2 m kitchen, MDF fronts, Blum fittings' },
+    { e: '🚪', n: 'Шкафы-купе', uz: 'Kupe shkaflar', en: 'Sliding wardrobes', sub: 'по вашим размерам · срок 14 дней', subUz: 'sizning o‘lchamlaringiz bo‘yicha · 14 kun', subEn: 'made to measure · 14 days', right: 'от 4 500 000', rightUz: '4 500 000 dan', rightEn: 'from 4 500 000',
+      est: 5900000, estN: 'Шкаф-купе 2,4 м, зеркальные двери', estUz: 'Kupe shkaf 2,4 m, oynali eshiklar', estEn: '2.4 m wardrobe, mirrored doors' },
+    { e: '🛋', n: 'Диваны', uz: 'Divanlar', en: 'Sofas', sub: 'в наличии и на заказ', subUz: 'mavjud va buyurtmaga', subEn: 'in stock and made to order', right: 'от 5 200 000', rightUz: '5 200 000 dan', rightEn: 'from 5 200 000',
+      est: 6400000, estN: 'Угловой диван 2,8 м, велюр', estUz: 'Burchakli divan 2,8 m, velyur', estEn: '2.8 m corner sofa, velour' },
+    { e: '🛏', n: 'Спальни', uz: 'Yotoqxona mebellari', en: 'Bedroom sets', sub: 'кровать, тумбы, комод', subUz: 'karavot, tumbalar, komod', subEn: 'bed, nightstands, dresser', right: 'от 7 300 000', rightUz: '7 300 000 dan', rightEn: 'from 7 300 000',
+      est: 8900000, estN: 'Кровать 160×200, две тумбы, комод', estUz: 'Karavot 160×200, ikkita tumba, komod', estEn: '160×200 bed, two nightstands, dresser' }];
+  const districts = [{ e: '📍', n: 'Чиланзар', uz: 'Chilonzor', en: 'Chilanzar' }, { e: '📍', n: 'Юнусабад', uz: 'Yunusobod', en: 'Yunusabad' }, { e: '📍', n: 'Мирзо-Улугбек', uz: 'Mirzo Ulug‘bek', en: 'Mirzo Ulugbek' }, { e: '📍', n: 'Сергели', uz: 'Sergeli', en: 'Sergeli' }];
+  const measureW = () => L('Заявка на замер', 'O‘lchovga ariza', 'Measurement request');
+  const estName = f => LANG === 'uz' ? f.estUz : LANG === 'en' ? f.estEn : f.estN;
+  const furniture = {
+    mode: 'bot',
+    side: () => ({ kicker: L('Мебель · каталог и заявки на замер', 'Mebel · katalog va o‘lchovga arizalar', 'Furniture · catalog and measurement requests'),
+      title: L('Каталог с ценами и запись на бесплатный замер', 'Narxli katalog va bepul o‘lchovga yozilish', 'A priced catalog and free measurement bookings'),
+      lead: L('Покупатель смотрит каталог с ценами, вызывает замерщика на удобное время и получает смету прямо в Telegram. Предоплату вносит через Payme или Click, и заказ сразу уходит в производство.', 'Xaridor narxli katalogni ko‘radi, o‘lchovchini qulay vaqtga chaqiradi va smetani to‘g‘ridan-to‘g‘ri Telegram’da oladi. Oldindan to‘lovni Payme yoki Click orqali qiladi va buyurtma darhol ishlab chiqarishga ketadi.', 'Buyers browse a priced catalog, book a measurer for a convenient time and get the estimate right in Telegram. They pay the deposit via Payme or Click and the order goes straight into production.'),
+      feats: L(['Каталог с фото и ценами «от»', 'Запись на бесплатный замер по району и времени', 'Смета и предоплата 30% в боте', 'Статус изготовления и согласование доставки'],
+        ['Rasm va «dan» narxli katalog', 'Tuman va vaqt bo‘yicha bepul o‘lchovga yozilish', 'Smeta va botda 30% oldindan to‘lov', 'Tayyorlash holati va yetkazishni kelishish'],
+        ['Catalog with photos and starting prices', 'Free measurement booking by district and time', 'Estimate and 30% deposit in the bot', 'Production status and delivery scheduling']),
+      feedTitle: L('Что получает менеджер', 'Menejer nimani oladi', 'What the manager receives'),
+      feedEmpty: L('Вызовите замерщика в демо слева.', 'Chapdagi demoda o‘lchovchini chaqiring.', 'Book a measurer in the demo on the left.'),
+      price: from('$370'), priceNote: supNote() }),
+    bot(screen) {
+      const catBtn = () => ({ t: L('🛋 Каталог', '🛋 Katalog', '🛋 Catalog'), go: 'cat' });
+      const measureBtn = () => ({ t: L('📏 Бесплатный замер', '📏 Bepul o‘lchov', '📏 Free measurement'), go: 'what' });
+      return chat(screen, { icon: '🛋', name: L('Мебель на заказ', 'Buyurtma mebel', 'Custom furniture') }, {
+        start: () => ({ text: L('Ассаламу алейкум! 🛋 Это бот мебельной фабрики.<br>Покажу каталог и цены, запишу на бесплатный замер.', 'Assalomu alaykum! 🛋 Bu mebel fabrikasi boti.<br>Katalog va narxlarni ko‘rsataman, bepul o‘lchovga yozaman.', 'Hello! 🛋 This is the furniture factory bot.<br>I’ll show the catalog and prices and book a free measurement.'),
+          kb: [[catBtn()], [measureBtn(), { t: L('📍 Шоурум', '📍 Shourum', '📍 Showroom'), go: 'addr' }]] }),
+        addr: () => ({ text: L('📍 Шоурум: Ташкент, Юнусабад, ул. Амира Темура, 107<br>🕙 Ежедневно 10:00–20:00', '📍 Shourum: Toshkent, Yunusobod, Amir Temur ko‘chasi, 107<br>🕙 Har kuni 10:00–20:00', '📍 Showroom: Tashkent, Yunusabad, Amir Temur St, 107<br>🕙 Daily 10:00–20:00'), kb: [[catBtn()], [measureBtn()]] }),
+        cat: () => ({ text: L('Выберите раздел:', 'Bo‘limni tanlang:', 'Choose a section:'), kb: furn.map(f => [{ t: `${f.e} ${N(f)} · ${F(f, 'right')}`, go: 'item', set: { f } }]) }),
+        item: c => ({ text: `${c.f.e} <b>${N(c.f)}</b><br>${F(c.f, 'sub')}<br>${L('Цена', 'Narxi', 'Price')}: ${F(c.f, 'right')} ${L('сум', 'so‘m', 'UZS')}<br><br>${L('Точную цену назовём после бесплатного замера, там же покажем 3D-проект.', 'Aniq narxni bepul o‘lchovdan keyin aytamiz, o‘sha yerda 3D loyihani ko‘rsatamiz.', 'We’ll give the exact price after the free measurement and show you a 3D design there.')}`,
+          kb: [[{ t: L('📏 Вызвать замерщика', '📏 O‘lchovchini chaqirish', '📏 Book a measurer'), go: 'dist' }], [{ t: L('⬅️ Каталог', '⬅️ Katalog', '⬅️ Catalog'), go: 'cat' }]] }),
+        what: () => ({ text: L('Что будем замерять?', 'Nimani o‘lchaymiz?', 'What are we measuring for?'), kb: furn.map(f => [{ t: `${f.e} ${N(f)}`, go: 'dist', set: { f } }]) }),
+        dist: () => ({ text: L('В каком районе квартира или дом?', 'Kvartira yoki uy qaysi tumanda?', 'Which district is the home in?'), kb: chunk(districts.map(d => ({ t: N(d), go: 'day', set: { dist: d } })), 2) }),
+        day: dayStep,
+        time: timeStep,
+        confirm: c => ({ text: `${L('Проверьте заявку:', 'Arizani tekshiring:', 'Check your request:')}<br>${c.f.e} ${N(c.f)}<br>📍 ${N(c.dist)}<br>📅 ${c.day}, ${c.time}<br>📏 ${L('Замер бесплатно', 'O‘lchov bepul', 'Measurement is free')}`,
+          kb: [[{ t: L('✅ Подтвердить', '✅ Tasdiqlash', '✅ Confirm'), go: 'done' }], [{ t: L('Изменить', 'O‘zgartirish', 'Change'), go: 'what' }]] }),
+        done: c => { feed(`<b>${measureW()}</b>: ${esc(N(c.f))}, ${esc(N(c.dist))}, ${esc(atTime(c.day, c.time))}. ${client()}: ${phoneMask}`);
+          return { text: L('✅ Заявка принята! Накануне напомним, кто и когда приедет.', '✅ Ariza qabul qilindi! Bir kun oldin kim va qachon kelishini eslatamiz.', '✅ Request received! We’ll remind you the day before who is coming and when.'), next: 'remind', delay: 1800 }; },
+        remind: c => ({ text: L(`🔔 <b>Напоминание</b><br>Завтра в ${c.time} приедет замерщик Бахтиёр. Замер займёт около 40 минут.<span class="hint">Так клиент получит напоминание накануне</span>`, `🔔 <b>Eslatma</b><br>Ertaga soat ${c.time} da o‘lchovchi Baxtiyor keladi. O‘lchov taxminan 40 daqiqa davom etadi.<span class="hint">Mijoz eslatmani bir kun oldin shunday oladi</span>`, `🔔 <b>Reminder</b><br>Tomorrow at ${c.time} our measurer Bakhtiyor will come. It takes about 40 minutes.<span class="hint">This is how the client gets a reminder the day before</span>`),
+          kb: [[{ t: L('👍 Жду', '👍 Kutaman', '👍 See you'), go: 'ok' }, { t: L('🔁 Перенести', '🔁 Ko‘chirish', '🔁 Reschedule'), go: 'day' }]] }),
+        ok: () => { feed(L('Клиент <b>подтвердил</b> замер', 'Mijoz o‘lchovni <b>tasdiqladi</b>', 'Client <b>confirmed</b> the measurement')); return { text: L('Отлично, до встречи!', 'Ajoyib, ko‘rishguncha!', 'Great, see you then!'), next: 'calc', delay: 2400 }; },
+        calc: c => { c.pre = Math.round(c.f.est * 0.3 / 1000) * 1000;
+          return { text: L(`📐 <b>Проект и смета готовы</b><br>${estName(c.f)} — <b>${sum(c.f.est)}</b>.<br>Чтобы запустить в производство, внесите предоплату 30%: <b>${sum(c.pre)}</b>.<span class="hint">Смета и 3D-проект приходят прямо в бот</span>`, `📐 <b>Loyiha va smeta tayyor</b><br>${estName(c.f)} — <b>${sum(c.f.est)}</b>.<br>Ishlab chiqarishga topshirish uchun 30% oldindan to‘lang: <b>${sum(c.pre)}</b>.<span class="hint">Smeta va 3D loyiha to‘g‘ridan-to‘g‘ri botga keladi</span>`, `📐 <b>Design and estimate ready</b><br>${estName(c.f)} — <b>${sum(c.f.est)}</b>.<br>To start production, pay a 30% deposit: <b>${sum(c.pre)}</b>.<span class="hint">The estimate and 3D design arrive right in the bot</span>`), kb: payKb('paid') }; },
+        paid: c => { feed(`<b>${L('Предоплата 30%', '30% oldindan to‘lov', '30% deposit')}</b>: ${esc(estName(c.f))}, ${sum(c.pre)} (${c.via}). ${L('Заказ в производстве', 'Buyurtma ishlab chiqarishda', 'Order in production')}`);
+          return { text: L('✅ Предоплата получена (демо). Заказ в производстве: сообщим о готовности и согласуем доставку и сборку.', '✅ Oldindan to‘lov olindi (demo). Buyurtma ishlab chiqarishda: tayyor bo‘lganda xabar beramiz, yetkazish va yig‘ishni kelishamiz.', '✅ Deposit received (demo). Your order is in production: we’ll tell you when it’s ready and arrange delivery and assembly.'), kb: [[catBtn()]] }; },
+      });
+    },
+    app(screen) { return pickApp(screen, { icon: '🛋', name: L('Мебель на заказ', 'Buyurtma mebel', 'Custom furniture'), again: L('Новая заявка', 'Yangi ariza', 'New request'),
+      steps: [
+        { key: 'f', title: L('Что вас интересует?', 'Sizni nima qiziqtiradi?', 'What are you looking for?'), items: () => furn },
+        { key: 'dist', title: L('Район для замера', 'O‘lchov uchun tuman', 'District for measurement'), items: () => districts.map(d => ({ ...d, sub: L('замер бесплатно', 'o‘lchov bepul', 'free measurement') })) },
+        { type: 'slots', title: st => `${N(st.f)} · ${N(st.dist)}`, right: () => L('бесплатно', 'bepul', 'free') }],
+      onDone: st => feed(`<b>${measureW()}</b>: ${esc(N(st.f))}, ${esc(N(st.dist))}, ${esc(atTime(st.day, st.time))}. ${client()}: ${phoneMask}`),
+      done: st => `<div class="card" style="text-align:center;justify-items:center"><span class="eyebrow">${L('Замерщик приедет', 'O‘lchovchi keladi', 'The measurer will come')}</span><div class="big">${st.time}</div><span>${esc(st.day)}</span></div>
+        <div class="card"><div class="row"><span>${L('Мебель', 'Mebel', 'Furniture')}</span><span>${esc(N(st.f))}</span></div><div class="row"><span>${L('Район', 'Tuman', 'District')}</span><span>${esc(N(st.dist))}</span></div><div class="row"><span>${L('Цена', 'Narxi', 'Price')}</span><span>${esc(F(st.f, 'right'))}</span></div></div>
+        <div class="note">${L('📐 После замера пришлём смету и 3D-проект прямо сюда', '📐 O‘lchovdan keyin smeta va 3D loyihani shu yerga yuboramiz', '📐 After the measurement we’ll send the estimate and 3D design right here')}</div>` }); }
+  };
+
   const demos = { barber: ['💈', ['Барбершоп', 'Barbershop', 'Barbershop'], barber], club: ['🎮', ['Компьютерный клуб', 'Kompyuter klubi', 'Gaming club'], club],
     delivery: ['🍛', ['Доставка', 'Yetkazib berish', 'Delivery'], delivery], edu: ['🎓', ['Учебный центр', 'O‘quv markazi', 'Learning center'], edu],
     clinic: ['🦷', ['Стоматология', 'Stomatologiya', 'Dental clinic'], clinic], hotel: ['🏨', ['Отель', 'Mehmonxona', 'Hotel'], hotel],
+    fitness: ['🏋️', ['Фитнес-клуб', 'Fitnes-klub', 'Fitness club'], fitness], shop: ['🛍', ['Магазин', 'Do‘kon', 'Store'], shop],
+    auto: ['🔧', ['Автосервис', 'Avtoservis', 'Car service'], auto], furniture: ['🛋', ['Мебель', 'Mebel', 'Furniture'], furniture],
     loyalty: ['☕', ['Бонусная карта', 'Bonus karta', 'Loyalty card'], loyalty], owner: ['📊', ['Отчёты владельцу', 'Egasiga hisobotlar', 'Owner reports'], owner] };
   const tabs = document.getElementById('tabs'); const screen = document.getElementById('screen'); let cleanup = null; let current = 'barber';
   Object.keys(demos).forEach(k => { const b = document.createElement('button'); b.type = 'button'; b.className = 'tab'; b.setAttribute('role', 'tab'); b.dataset.k = k;
