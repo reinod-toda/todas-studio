@@ -1933,6 +1933,10 @@ en: {
       if (LEAD_API) out.innerHTML = `<h3>${L('Как это работает', 'Bu qanday ishlaydi', 'How it works')}</h3><p class="lead-muted">${L('Оставьте имя и телефон, и заявка сразу придёт нам в Telegram. Перезвоним в удобное для вас время.', 'Ism va telefoningizni qoldiring, ariza darhol bizga Telegram’da keladi. Sizga qulay vaqtda qo‘ng‘iroq qilamiz.', 'Leave your name and phone and the request comes straight to our Telegram. We’ll call you back at a time that suits you.')}</p>`;
       return;
     }
+    if (leadBusy) {
+      out.innerHTML = `<h3>${L('Отправляем заявку…', 'Ariza yuborilmoqda…', 'Sending your request…')}</h3><p class="lead-muted">${L('Пара секунд, и заявка будет у нас.', 'Bir necha soniya, ariza bizga yetib boradi.', 'Just a few seconds and it will reach us.')}</p>`;
+      return;
+    }
     if (leadState === 'sent') {
       out.innerHTML = `<h3>${L('Заявка отправлена ✓', 'Ariza yuborildi ✓', 'Request sent ✓')}</h3><p class="lead-muted">${L('Спасибо! Мы получили вашу заявку и перезвоним в удобное для вас время. Если вопрос срочный, позвоните нам по номерам ниже.', 'Rahmat! Arizangizni oldik va sizga qulay vaqtda qo‘ng‘iroq qilamiz. Savol shoshilinch bo‘lsa, quyidagi raqamlarga qo‘ng‘iroq qiling.', 'Thank you! We’ve received your request and will call you back at a time that suits you. If it’s urgent, call us at the numbers below.')}</p>`;
       return;
@@ -1960,7 +1964,7 @@ en: {
     err.hidden = true;
     lastLead = { name: v('lfName'), phone: v('lfPhone'), biz: v('lfBiz'), time: v('lfTime'), need: v('lfNeed') };
     if (!LEAD_API) { leadState = 'copy'; renderLeadOut(); return; }
-    leadBusy = true; renderLeadOut();
+    leadBusy = true; leadState = null; renderLeadOut();
     try {
       const ctl = new AbortController(), tm = setTimeout(() => ctl.abort(), 12000);
       const r = await fetch(LEAD_API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, signal: ctl.signal,
