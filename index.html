@@ -1915,7 +1915,7 @@ en: {
 
   /* ---------- заявка ---------- */
   const CONTACT = { telegram: 'todas_studio' }; // например 'todas_studio' — тогда появится кнопка «Открыть Telegram»
-  const LEAD_API = ''; // адрес сервера заявок, например 'https://api.todas.uz/lead'; пусто — форма только собирает текст
+  const LEAD_API = 'https://api.todas.uz/lead'; // адрес сервера заявок, например 'https://api.todas.uz/lead'; пусто — форма только собирает текст
   let lastLead = null, leadState = null, leadBusy = false; // leadState: 'sent' | 'copy' | 'failed'
   function renderBizOptions() {
     const sel = document.getElementById('lfBiz'); const idx = sel.selectedIndex;
